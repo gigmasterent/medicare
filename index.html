@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#0d0d0f" />
+  <meta name="description" content="MediCare Health Tracker — track vitals, labs, medications, and appointments" />
+  <title>MediCare Health Tracker</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    html, body { height: 100%; background: #0d0d0f; color: #e8e8ea; font-family: 'Segoe UI', system-ui, sans-serif; overflow: hidden; }
+
+    /* ── LAYOUT ── */
+    #app { display: flex; height: 100vh; background: #0d0d0f; }
+
+    /* ── SIDEBAR (desktop) ── */
+    .sidebar { width: 220px; min-width: 220px; background: #111115; border-right: 1px solid #1e1e24; display: flex; flex-direction: column; }
+    .logo-area { padding: 18px 16px; border-bottom: 1px solid #1e1e24; display: flex; align-items: center; gap: 10px; }
+    .logo-icon { width: 36px; height: 36px; background: #2563eb; border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+    .logo-icon i { color: #fff; font-size: 20px; }
+    .logo-text h3 { font-size: 14px; font-weight: 700; color: #f0f0f2; }
+    .logo-text p { font-size: 11px; color: #6b6b7a; }
+    .nav { padding: 12px 8px; flex: 1; overflow-y: auto; }
+    .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 8px; cursor: pointer; font-size: 13px; color: #8888a0; margin-bottom: 2px; transition: all 0.15s; user-select: none; }
+    .nav-item:hover { background: #1a1a22; color: #c8c8d8; }
+    .nav-item.active { background: #2563eb; color: #fff; }
+    .nav-item i { font-size: 18px; }
+
+    /* ── MAIN ── */
+    .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; min-width: 0; }
+    .topbar { padding: 14px 20px; border-bottom: 1px solid #1e1e24; display: flex; align-items: center; justify-content: space-between; background: #111115; flex-shrink: 0; gap: 8px; }
+    .topbar h2 { font-size: 16px; font-weight: 600; color: #f0f0f2; white-space: nowrap; }
+    .topbar-actions { display: flex; gap: 6px; flex-wrap: nowrap; }
+    .btn { padding: 7px 12px; border-radius: 7px; border: 1px solid #2a2a35; background: #1a1a22; color: #c0c0d0; font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 5px; transition: all 0.15s; white-space: nowrap; }
+    .btn:hover { background: #222230; border-color: #3a3a48; }
+    .btn:active { transform: scale(0.97); }
+    .btn.primary { background: #2563eb; border-color: #2563eb; color: white; }
+    .btn.primary:hover { background: #1d55d4; }
+    .btn.success { background: #059669; border-color: #059669; color: white; }
+    .content { flex: 1; overflow-y: auto; padding: 20px; }
+    .content::-webkit-scrollbar { width: 4px; }
+    .content::-webkit-scrollbar-thumb { background: #2a2a35; border-radius: 4px; }
+
+    /* ── CARDS ── */
+    .card { background: #161620; border: 1px solid #1e1e28; border-radius: 10px; padding: 16px; margin-bottom: 14px; }
+    .card h4 { font-size: 13px; font-weight: 500; color: #a0a0b8; margin-bottom: 12px; }
+
+    /* ── DASHBOARD ── */
+    .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 14px; }
+    .stat-card { background: #161620; border: 1px solid #1e1e28; border-radius: 10px; padding: 14px; }
+    .stat-card .label { font-size: 10px; color: #6b6b7a; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .stat-card .value { font-size: 20px; font-weight: 700; color: #f0f0f2; }
+    .stat-card .sub { font-size: 10px; color: #4ade80; margin-top: 3px; }
+    .stat-card .sub.warn { color: #f87171; }
+    .mini-chart { height: 70px; display: flex; align-items: flex-end; gap: 3px; }
+    .bar { flex: 1; background: #2563eb33; border-radius: 3px 3px 0 0; transition: all 0.3s; cursor: pointer; }
+    .bar:hover { background: #2563eb88; }
+    .activity-list { list-style: none; }
+    .activity-list li { display: flex; align-items: center; gap: 8px; padding: 7px 0; border-bottom: 1px solid #1e1e28; font-size: 12px; color: #8888a0; }
+    .activity-list li:last-child { border-bottom: none; }
+    .dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+
+    /* ── VITALS ── */
+    .vitals-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .vital-card { background: #161620; border: 1px solid #1e1e28; border-radius: 10px; padding: 16px; }
+    .vital-card .v-label { font-size: 10px; color: #6b6b7a; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 5px; }
+    .vital-card .v-value { font-size: 22px; font-weight: 700; color: #f0f0f2; }
+    .vital-card .v-unit { font-size: 12px; color: #6b6b7a; margin-left: 3px; font-weight: 400; }
+    .vital-card .v-status { font-size: 10px; margin-top: 5px; padding: 2px 7px; border-radius: 4px; display: inline-block; }
+    .status-normal { background: #04342c; color: #4ade80; }
+    .status-high { background: #4a1b0c; color: #fb923c; }
+    .status-low { background: #042c53; color: #60a5fa; }
+
+    /* ── LABS ── */
+    .labs-table { background: #161620; border: 1px solid #1e1e28; border-radius: 10px; overflow: hidden; }
+    .labs-table table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    .labs-table th { background: #1a1a24; padding: 9px 12px; text-align: left; font-size: 10px; text-transform: uppercase; color: #6b6b7a; letter-spacing: 0.5px; }
+    .labs-table td { padding: 10px 12px; border-top: 1px solid #1e1e28; color: #c0c0d0; }
+    .badge { padding: 2px 7px; border-radius: 4px; font-size: 10px; font-weight: 500; }
+    .badge-normal { background: #04342c; color: #4ade80; }
+    .badge-high { background: #4a1b0c; color: #fb923c; }
+    .badge-low { background: #042c53; color: #60a5fa; }
+    .empty-state { text-align: center; padding: 50px 20px; color: #4a4a5a; }
+    .empty-state i { font-size: 40px; display: block; margin-bottom: 10px; }
+
+    /* ── MEDS ── */
+    .med-card { background: #161620; border: 1px solid #1e1e28; border-radius: 10px; padding: 14px 16px; display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+    .med-icon { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+    .med-info { flex: 1; min-width: 0; }
+    .med-name { font-size: 13px; font-weight: 500; color: #e0e0f0; }
+    .med-dose { font-size: 11px; color: #6b6b7a; margin-top: 2px; }
+    .med-time { font-size: 11px; color: #8888a0; white-space: nowrap; }
+    .taken-btn { padding: 5px 10px; border-radius: 6px; border: 1px solid #2a2a35; background: transparent; color: #6b6b7a; font-size: 11px; cursor: pointer; white-space: nowrap; }
+    .taken-btn.taken { background: #04342c; border-color: #059669; color: #4ade80; }
+
+    /* ── APPOINTMENTS ── */
+    .appt-card { background: #161620; border: 1px solid #1e1e28; border-radius: 10px; padding: 14px 16px; display: flex; align-items: center; gap: 14px; margin-bottom: 10px; }
+    .appt-date { background: #1a1a28; border-radius: 8px; padding: 8px 10px; text-align: center; flex-shrink: 0; min-width: 50px; }
+    .appt-date .day { font-size: 18px; font-weight: 700; color: #f0f0f2; line-height: 1; }
+    .appt-date .month { font-size: 9px; color: #6b6b7a; text-transform: uppercase; }
+    .appt-info { flex: 1; min-width: 0; }
+    .appt-title { font-size: 13px; font-weight: 500; color: #e0e0f0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .appt-sub { font-size: 11px; color: #6b6b7a; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .appt-time { font-size: 11px; color: #8888a0; white-space: nowrap; }
+
+    /* ── AI ADVISOR ── */
+    .ai-wrap { display: flex; flex-direction: column; height: 100%; min-height: 0; }
+    .ai-messages { flex: 1; overflow-y: auto; padding-bottom: 10px; min-height: 0; }
+    .ai-messages::-webkit-scrollbar { width: 3px; }
+    .ai-messages::-webkit-scrollbar-thumb { background: #2a2a35; }
+    .msg { display: flex; gap: 8px; margin-bottom: 12px; }
+    .msg.user { flex-direction: row-reverse; }
+    .msg-bubble { max-width: 80%; padding: 10px 13px; border-radius: 10px; font-size: 13px; line-height: 1.5; }
+    .msg.ai .msg-bubble { background: #1a1a28; color: #c8c8e0; border-bottom-left-radius: 2px; }
+    .msg.user .msg-bubble { background: #2563eb; color: white; border-bottom-right-radius: 2px; }
+    .avatar { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
+    .ai-avatar { background: #1d1d30; }
+    .ai-input-row { display: flex; gap: 8px; padding-top: 10px; border-top: 1px solid #1e1e28; margin-top: 6px; flex-shrink: 0; }
+    .ai-input { flex: 1; background: #161620; border: 1px solid #2a2a35; border-radius: 8px; padding: 9px 12px; color: #e0e0f0; font-size: 13px; outline: none; }
+    .ai-input:focus { border-color: #2563eb55; }
+    .typing { display: flex; gap: 4px; align-items: center; }
+    .typing span { width: 6px; height: 6px; background: #4a4a62; border-radius: 50%; animation: bounce 1.2s infinite; }
+    .typing span:nth-child(2) { animation-delay: 0.2s; }
+    .typing span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes bounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-5px)} }
+
+    /* ── MODAL ── */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.75); display: flex; align-items: center; justify-content: center; z-index: 200; }
+    .modal { background: #161620; border: 1px solid #2a2a35; border-radius: 12px; padding: 22px; width: 340px; max-width: 92vw; max-height: 90vh; overflow-y: auto; }
+    .modal h3 { font-size: 15px; font-weight: 600; margin-bottom: 14px; color: #f0f0f2; }
+    .form-row { margin-bottom: 11px; }
+    .form-row label { display: block; font-size: 10px; color: #6b6b7a; margin-bottom: 4px; text-transform: uppercase; }
+    .form-row input, .form-row select { width: 100%; background: #111115; border: 1px solid #2a2a35; border-radius: 7px; padding: 8px 12px; color: #e0e0f0; font-size: 13px; outline: none; }
+    .form-row input:focus, .form-row select:focus { border-color: #2563eb66; }
+    .form-row select option { background: #161620; }
+    .modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 14px; }
+
+    /* ── BOTTOM NAV (mobile) ── */
+    .bottom-nav { display: none; }
+
+    /* ── PAGE VISIBILITY ── */
+    .page { display: none; height: 100%; }
+    .page.active { display: block; }
+    #page-ai { display: none; }
+    #page-ai.active { display: flex; flex-direction: column; height: 100%; }
+
+    /* ── MOBILE ── */
+    @media (max-width: 600px) {
+      .sidebar { display: none; }
+      .bottom-nav { display: flex; position: fixed; bottom: 0; left: 0; right: 0; background: #111115; border-top: 1px solid #1e1e24; z-index: 100; }
+      .bn-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 8px 4px; cursor: pointer; font-size: 9px; color: #6b6b7a; gap: 2px; transition: color 0.15s; }
+      .bn-item i { font-size: 20px; }
+      .bn-item.active { color: #2563eb; }
+      .main { padding-bottom: 60px; }
+      .topbar { padding: 12px 14px; }
+      .topbar h2 { font-size: 14px; }
+      .btn span { display: none; }
+      .content { padding: 14px; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+      .vitals-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+      .labs-table { overflow-x: auto; }
+      #page-ai.active { height: calc(100vh - 60px - 52px); }
+    }
+
+    @media (min-width: 601px) and (max-width: 900px) {
+      .sidebar { width: 180px; min-width: 180px; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<div id="app">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="logo-area">
+      <div class="logo-icon"><i class="ti ti-heart-plus"></i></div>
+      <div class="logo-text"><h3>MediCare</h3><p>Health Tracker</p></div>
+    </div>
+    <nav class="nav">
+      <div class="nav-item active" data-page="dashboard"><i class="ti ti-layout-dashboard"></i> Dashboard</div>
+      <div class="nav-item" data-page="vitals"><i class="ti ti-heartbeat"></i> Vitals</div>
+      <div class="nav-item" data-page="labs"><i class="ti ti-flask"></i> Labs</div>
+      <div class="nav-item" data-page="meds"><i class="ti ti-pill"></i> Meds</div>
+      <div class="nav-item" data-page="appts"><i class="ti ti-calendar-event"></i> Appts</div>
+      <div class="nav-item" data-page="analytics"><i class="ti ti-chart-bar"></i> Analytics</div>
+      <div class="nav-item" data-page="ai"><i class="ti ti-robot"></i> AI Advisor</div>
+    </nav>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="topbar">
+      <h2 id="page-title">Dashboard</h2>
+      <div class="topbar-actions">
+        <button class="btn" onclick="exportCSV()"><i class="ti ti-download"></i><span> Export CSV</span></button>
+        <button class="btn success" onclick="takeScreenshot()"><i class="ti ti-camera"></i><span> Screenshot</span></button>
+        <button class="btn primary" id="add-btn" onclick="showAddModal()"><i class="ti ti-plus"></i><span> Add</span></button>
+      </div>
+    </div>
+
+    <div class="content" id="content-area">
+
+      <!-- DASHBOARD -->
+      <div class="page active" id="page-dashboard">
+        <div class="stats-grid">
+          <div class="stat-card"><div class="label">Heart Rate</div><div class="value">72 <span style="font-size:13px;color:#6b6b7a">bpm</span></div><div class="sub">↓ 3 from last week</div></div>
+          <div class="stat-card"><div class="label">Blood Pressure</div><div class="value">118/76</div><div class="sub">Normal range</div></div>
+          <div class="stat-card"><div class="label">Blood Glucose</div><div class="value">94 <span style="font-size:13px;color:#6b6b7a">mg/dL</span></div><div class="sub warn">↑ 2 from yesterday</div></div>
+          <div class="stat-card"><div class="label">BMI</div><div class="value">22.4</div><div class="sub">Healthy weight</div></div>
+        </div>
+        <div class="card"><h4>Heart Rate — Last 7 Days</h4><div class="mini-chart" id="hr-chart"></div></div>
+        <div class="card">
+          <h4>Recent Activity</h4>
+          <ul class="activity-list">
+            <li><span class="dot" style="background:#4ade80"></span>Lab results updated — CBC panel</li>
+            <li><span class="dot" style="background:#60a5fa"></span>Medication taken — Metformin 500mg</li>
+            <li><span class="dot" style="background:#f87171"></span>Appointment — Dr. Ahmed, Cardiology</li>
+            <li><span class="dot" style="background:#facc15"></span>Vitals recorded — BP 120/78</li>
+            <li><span class="dot" style="background:#c084fc"></span>AI Advisor consultation</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4>Upcoming Appointments</h4>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;">
+            <div style="background:#1a1a28;border-radius:8px;padding:10px 14px;font-size:12px;min-width:160px;">
+              <div style="color:#60a5fa;font-size:10px;margin-bottom:4px;">MAY 25, 2026</div>
+              <div style="color:#e0e0f0;font-weight:500;">Dr. Fatima Khan</div>
+              <div style="color:#6b6b7a;font-size:11px;">General Physician · 10:00 AM</div>
+            </div>
+            <div style="background:#1a1a28;border-radius:8px;padding:10px 14px;font-size:12px;min-width:160px;">
+              <div style="color:#fb923c;font-size:10px;margin-bottom:4px;">JUN 3, 2026</div>
+              <div style="color:#e0e0f0;font-weight:500;">Dr. Imran Siddiqui</div>
+              <div style="color:#6b6b7a;font-size:11px;">Cardiologist · 2:30 PM</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- VITALS -->
+      <div class="page" id="page-vitals">
+        <div class="vitals-grid" id="vitals-grid">
+          <div class="vital-card"><div class="v-label"><i class="ti ti-heartbeat"></i> Heart Rate</div><div class="v-value">72<span class="v-unit">bpm</span></div><div class="v-status status-normal">Normal</div></div>
+          <div class="vital-card"><div class="v-label"><i class="ti ti-activity"></i> Blood Pressure</div><div class="v-value">118/76<span class="v-unit">mmHg</span></div><div class="v-status status-normal">Normal</div></div>
+          <div class="vital-card"><div class="v-label"><i class="ti ti-droplet"></i> Blood Glucose</div><div class="v-value">94<span class="v-unit">mg/dL</span></div><div class="v-status status-normal">Normal</div></div>
+          <div class="vital-card"><div class="v-label"><i class="ti ti-lungs"></i> O₂ Saturation</div><div class="v-value">98<span class="v-unit">%</span></div><div class="v-status status-normal">Normal</div></div>
+          <div class="vital-card"><div class="v-label"><i class="ti ti-temperature"></i> Temperature</div><div class="v-value">98.6<span class="v-unit">°F</span></div><div class="v-status status-normal">Normal</div></div>
+          <div class="vital-card"><div class="v-label"><i class="ti ti-man"></i> BMI</div><div class="v-value">22.4</div><div class="v-status status-normal">Healthy</div></div>
+        </div>
+        <div class="card" style="margin-top:14px;"><h4>Last recorded: Today, 9:15 AM</h4><p style="font-size:12px;color:#6b6b7a;margin-top:4px;">All vitals within normal ranges. Keep monitoring regularly.</p></div>
+      </div>
+
+      <!-- LABS -->
+      <div class="page" id="page-labs">
+        <div id="labs-empty" class="empty-state" style="display:none;">
+          <i class="ti ti-flask"></i>
+          <div style="font-size:15px;font-weight:500;color:#5a5a70;margin-bottom:6px;">No lab tests recorded yet</div>
+          <div style="font-size:12px;">Add your lab test results to track your health over time.</div>
+        </div>
+        <div class="labs-table" id="labs-table">
+          <table><thead><tr><th>Test</th><th>Value</th><th>Unit</th><th>Ref</th><th>Status</th><th>Date</th></tr></thead>
+          <tbody id="labs-tbody"></tbody></table>
+        </div>
+      </div>
+
+      <!-- MEDS -->
+      <div class="page" id="page-meds">
+        <div id="meds-list"></div>
+      </div>
+
+      <!-- APPOINTMENTS -->
+      <div class="page" id="page-appts">
+        <div id="appts-list"></div>
+      </div>
+
+      <!-- ANALYTICS -->
+      <div class="page" id="page-analytics">
+        <div class="card"><h4>Heart Rate Trend (30 days)</h4>
+          <div style="position:relative;height:160px;"><canvas id="chart-hr" role="img" aria-label="Heart rate trend over 30 days">Heart rate data trend.</canvas></div>
+        </div>
+        <div class="card"><h4>Blood Glucose Trend (30 days)</h4>
+          <div style="position:relative;height:160px;"><canvas id="chart-bg" role="img" aria-label="Blood glucose trend over 30 days">Blood glucose data trend.</canvas></div>
+        </div>
+        <div class="card"><h4>Health Score Overview</h4>
+          <div style="position:relative;height:220px;"><canvas id="chart-score" role="img" aria-label="Health score radar chart">Health score radar.</canvas></div>
+        </div>
+      </div>
+
+      <!-- AI ADVISOR -->
+      <div class="page" id="page-ai">
+        <div class="ai-messages" id="ai-messages">
+          <div class="msg ai">
+            <div class="avatar ai-avatar">🩺</div>
+            <div class="msg-bubble">Hello! I'm your MediCare AI Advisor powered by Claude. I can help you understand your health data, explain lab results, review medication interactions, or answer general health questions. How can I help you today?</div>
+          </div>
+        </div>
+        <div class="ai-input-row">
+          <input class="ai-input" id="ai-input" placeholder="Ask about your health, labs, meds..." onkeydown="if(event.key==='Enter')sendAIMsg()">
+          <button class="btn primary" onclick="sendAIMsg()"><i class="ti ti-send"></i></button>
+        </div>
+      </div>
+
+    </div><!-- /content -->
+  </div><!-- /main -->
+
+  <!-- BOTTOM NAV (mobile) -->
+  <div class="bottom-nav">
+    <div class="bn-item active" data-page="dashboard"><i class="ti ti-layout-dashboard"></i>Home</div>
+    <div class="bn-item" data-page="vitals"><i class="ti ti-heartbeat"></i>Vitals</div>
+    <div class="bn-item" data-page="labs"><i class="ti ti-flask"></i>Labs</div>
+    <div class="bn-item" data-page="meds"><i class="ti ti-pill"></i>Meds</div>
+    <div class="bn-item" data-page="appts"><i class="ti ti-calendar-event"></i>Appts</div>
+    <div class="bn-item" data-page="analytics"><i class="ti ti-chart-bar"></i>Stats</div>
+    <div class="bn-item" data-page="ai"><i class="ti ti-robot"></i>AI</div>
+  </div>
+
+</div><!-- /app -->
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal" style="display:none;" onclick="if(event.target===this)closeModal()">
+  <div class="modal" id="modal-inner"></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script>
+// ── STATE ──
+const state = {
+  page: 'dashboard',
+  chartsBuilt: false,
+  labs: [
+    { name:'Hemoglobin', value:'14.2', unit:'g/dL', ref:'13.5–17.5', status:'normal', date:'2026-05-15' },
+    { name:'WBC Count',  value:'7.8',  unit:'K/μL', ref:'4.5–11.0', status:'normal', date:'2026-05-15' },
+    { name:'LDL Cholesterol', value:'142', unit:'mg/dL', ref:'<100', status:'high', date:'2026-05-10' },
+    { name:'HbA1c', value:'5.6', unit:'%', ref:'<5.7', status:'normal', date:'2026-05-10' },
+    { name:'Creatinine', value:'0.72', unit:'mg/dL', ref:'0.6–1.2', status:'normal', date:'2026-05-05' },
+  ],
+  meds: [
+    { name:'Metformin',    dose:'500mg', freq:'Twice daily',       time:'8 AM / 8 PM', taken:false, icon:'💊', color:'#1d4ed8' },
+    { name:'Lisinopril',   dose:'10mg',  freq:'Once daily',        time:'7:00 AM',     taken:true,  icon:'💉', color:'#059669' },
+    { name:'Atorvastatin', dose:'20mg',  freq:'Once daily (night)', time:'10:00 PM',   taken:false, icon:'🔵', color:'#7c3aed' },
+  ],
+  appts: [
+    { day:'25', month:'May', title:'Dr. Fatima Khan',    sub:'General Physician — Aga Khan Hospital', time:'10:00 AM' },
+    { day:'03', month:'Jun', title:'Dr. Imran Siddiqui', sub:'Cardiologist — NICVD Karachi',          time:'2:30 PM'  },
+    { day:'15', month:'Jun', title:'Lab Tests',          sub:'CBC + Lipid Panel',                     time:'9:00 AM'  },
+  ]
+};
+
+// ── NAVIGATION ──
+function navigate(page) {
+  state.page = page;
+  document.querySelectorAll('.nav-item, .bn-item').forEach(n => n.classList.toggle('active', n.dataset.page === page));
+  document.querySelectorAll('.page').forEach(p => { p.classList.remove('active'); p.style.display = ''; });
+  const el = document.getElementById('page-' + page);
+  if (el) {
+    el.classList.add('active');
+    if (page === 'ai') el.style.display = 'flex';
+  }
+  const titles = { dashboard:'Dashboard', vitals:'Vitals', labs:'Lab Tests', meds:'Medications', appts:'Appointments', analytics:'Analytics', ai:'AI Advisor' };
+  document.getElementById('page-title').textContent = titles[page] || page;
+  const addLabels = { labs:'Add Lab', meds:'Add Med', appts:'Add Appt', vitals:'Record Vital', ai:'Clear Chat', dashboard:'Add Entry', analytics:'Export Data' };
+  document.getElementById('add-btn').querySelector('span').textContent = ' ' + (addLabels[page] || 'Add');
+  if (page === 'analytics' && !state.chartsBuilt) { state.chartsBuilt = true; setTimeout(buildCharts, 120); }
+}
+
+document.querySelectorAll('.nav-item, .bn-item').forEach(n => n.addEventListener('click', () => navigate(n.dataset.page)));
+
+// ── RENDER LABS ──
+function renderLabs() {
+  const tbody = document.getElementById('labs-tbody');
+  tbody.innerHTML = state.labs.map(l => `<tr>
+    <td>${l.name}</td>
+    <td style="font-weight:600;color:#f0f0f2">${l.value}</td>
+    <td style="color:#6b6b7a">${l.unit}</td>
+    <td style="color:#6b6b7a">${l.ref}</td>
+    <td><span class="badge badge-${l.status}">${l.status}</span></td>
+    <td style="color:#6b6b7a">${l.date}</td>
+  </tr>`).join('');
+  document.getElementById('labs-empty').style.display = state.labs.length ? 'none' : 'block';
+  document.getElementById('labs-table').style.display = state.labs.length ? '' : 'none';
+}
+
+// ── RENDER MEDS ──
+function renderMeds() {
+  document.getElementById('meds-list').innerHTML = state.meds.map((m, i) => `
+    <div class="med-card">
+      <div class="med-icon" style="background:${m.color}22">${m.icon}</div>
+      <div class="med-info">
+        <div class="med-name">${m.name} — ${m.dose}</div>
+        <div class="med-dose">${m.freq}</div>
+      </div>
+      <div class="med-time">${m.time}</div>
+      <button class="taken-btn ${m.taken?'taken':''}" onclick="toggleMed(${i})">${m.taken?'✓ Taken':'Mark taken'}</button>
+    </div>`).join('');
+}
+function toggleMed(i) { state.meds[i].taken = !state.meds[i].taken; renderMeds(); }
+
+// ── RENDER APPTS ──
+function renderAppts() {
+  document.getElementById('appts-list').innerHTML = state.appts.map(a => `
+    <div class="appt-card">
+      <div class="appt-date"><div class="day">${a.day}</div><div class="month">${a.month}</div></div>
+      <div class="appt-info">
+        <div class="appt-title">${a.title}</div>
+        <div class="appt-sub">${a.sub}</div>
+      </div>
+      <div class="appt-time">${a.time}</div>
+    </div>`).join('');
+}
+
+// ── MINI HR CHART ──
+function buildMiniHRChart() {
+  const vals = [68,74,70,72,75,71,72];
+  const max = Math.max(...vals), min = Math.min(...vals);
+  document.getElementById('hr-chart').innerHTML = vals.map(v =>
+    `<div class="bar" style="height:${Math.round(55*(v-min)/(max-min)+15)}px" title="${v} bpm"></div>`
+  ).join('');
+}
+
+// ── ANALYTICS CHARTS ──
+function buildCharts() {
+  const hrVals = [68,71,74,70,72,69,73,75,71,72,70,74,76,73,71,74,72,70,73,71,74,72,70,73,71,72,74,72,73,72];
+  const bgVals = [92,96,88,94,98,91,95,93,97,94,90,96,92,95,94,91,93,96,94,92,95,93,97,92,94,96,91,95,94,94];
+  const labels = hrVals.map((_,i) => i+1);
+
+  new Chart(document.getElementById('chart-hr'), { type:'line',
+    data:{ labels, datasets:[{ label:'BPM', data:hrVals, borderColor:'#2563eb', backgroundColor:'#2563eb18', tension:0.4, pointRadius:0, fill:true }]},
+    options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}},
+      scales:{ x:{ticks:{color:'#6b6b7a',font:{size:10}},grid:{color:'#1e1e28'}}, y:{ticks:{color:'#6b6b7a',font:{size:10}},grid:{color:'#1e1e28'},min:60,max:85}}}});
+
+  new Chart(document.getElementById('chart-bg'), { type:'line',
+    data:{ labels, datasets:[{ label:'mg/dL', data:bgVals, borderColor:'#4ade80', backgroundColor:'#4ade8018', tension:0.4, pointRadius:0, fill:true }]},
+    options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}},
+      scales:{ x:{ticks:{color:'#6b6b7a',font:{size:10}},grid:{color:'#1e1e28'}}, y:{ticks:{color:'#6b6b7a',font:{size:10}},grid:{color:'#1e1e28'},min:70,max:120}}}});
+
+  new Chart(document.getElementById('chart-score'), { type:'radar',
+    data:{ labels:['Heart','Blood Pressure','Glucose','Sleep','Activity','Nutrition'],
+      datasets:[{ label:'Score', data:[82,88,90,72,65,78], backgroundColor:'#2563eb22', borderColor:'#2563eb', pointBackgroundColor:'#2563eb' }]},
+    options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}},
+      scales:{ r:{ ticks:{color:'#6b6b7a',font:{size:10},backdropColor:'transparent'}, grid:{color:'#1e1e28'}, pointLabels:{color:'#8888a0',font:{size:11}}, min:0, max:100}}}});
+}
+
+// ── ADD MODAL ──
+function showAddModal() {
+  const p = state.page;
+  if (p === 'ai') { document.getElementById('ai-messages').innerHTML = '<div class="msg ai"><div class="avatar ai-avatar">🩺</div><div class="msg-bubble">Chat cleared. How can I help you?</div></div>'; return; }
+  const modal = document.getElementById('modal');
+  const inner = document.getElementById('modal-inner');
+
+  if (p === 'labs') {
+    inner.innerHTML = `<h3>Add Lab Result</h3>
+      <div class="form-row"><label>Test Name</label><input id="f-name" placeholder="e.g. Hemoglobin"></div>
+      <div class="form-row"><label>Value</label><input id="f-val" placeholder="e.g. 14.2"></div>
+      <div class="form-row"><label>Unit</label><input id="f-unit" placeholder="e.g. g/dL"></div>
+      <div class="form-row"><label>Reference Range</label><input id="f-ref" placeholder="e.g. 13.5-17.5"></div>
+      <div class="form-row"><label>Status</label><select id="f-status"><option value="normal">Normal</option><option value="high">High</option><option value="low">Low</option></select></div>
+      <div class="modal-actions"><button class="btn" onclick="closeModal()">Cancel</button><button class="btn primary" onclick="addLab()">Add Lab</button></div>`;
+  } else if (p === 'meds') {
+    inner.innerHTML = `<h3>Add Medication</h3>
+      <div class="form-row"><label>Name</label><input id="f-name" placeholder="e.g. Aspirin"></div>
+      <div class="form-row"><label>Dose</label><input id="f-dose" placeholder="e.g. 100mg"></div>
+      <div class="form-row"><label>Frequency</label><input id="f-freq" placeholder="e.g. Once daily"></div>
+      <div class="form-row"><label>Time</label><input id="f-time" placeholder="e.g. 8:00 AM"></div>
+      <div class="modal-actions"><button class="btn" onclick="closeModal()">Cancel</button><button class="btn primary" onclick="addMed()">Add Med</button></div>`;
+  } else if (p === 'appts') {
+    inner.innerHTML = `<h3>Add Appointment</h3>
+      <div class="form-row"><label>Doctor / Event</label><input id="f-title" placeholder="e.g. Dr. Ahmed"></div>
+      <div class="form-row"><label>Details</label><input id="f-sub" placeholder="e.g. Cardiology — City Hospital"></div>
+      <div class="form-row"><label>Day (number)</label><input id="f-day" placeholder="e.g. 20"></div>
+      <div class="form-row"><label>Month</label><input id="f-month" placeholder="e.g. Jun"></div>
+      <div class="form-row"><label>Time</label><input id="f-time" placeholder="e.g. 3:00 PM"></div>
+      <div class="modal-actions"><button class="btn" onclick="closeModal()">Cancel</button><button class="btn primary" onclick="addAppt()">Add Appt</button></div>`;
+  } else if (p === 'vitals') {
+    inner.innerHTML = `<h3>Record Vital</h3>
+      <div class="form-row"><label>Vital Type</label><select id="f-vital"><option>Heart Rate (bpm)</option><option>Blood Pressure (mmHg)</option><option>Blood Glucose (mg/dL)</option><option>O₂ Saturation (%)</option><option>Temperature (°F)</option><option>BMI</option></select></div>
+      <div class="form-row"><label>Value</label><input id="f-val" placeholder="e.g. 72"></div>
+      <div class="modal-actions"><button class="btn" onclick="closeModal()">Cancel</button><button class="btn primary" onclick="closeModal()">Save Vital</button></div>`;
+  } else { return; }
+
+  modal.style.display = 'flex';
+}
+
+function closeModal() { document.getElementById('modal').style.display = 'none'; }
+
+function addLab() {
+  const n=document.getElementById('f-name').value, v=document.getElementById('f-val').value;
+  const u=document.getElementById('f-unit').value, r=document.getElementById('f-ref').value;
+  const s=document.getElementById('f-status').value;
+  if(!n||!v) return;
+  state.labs.unshift({ name:n, value:v, unit:u, ref:r, status:s, date:new Date().toISOString().split('T')[0] });
+  renderLabs(); closeModal();
+}
+function addMed() {
+  const n=document.getElementById('f-name').value, d=document.getElementById('f-dose').value;
+  const f=document.getElementById('f-freq').value, t=document.getElementById('f-time').value;
+  if(!n) return;
+  state.meds.push({ name:n, dose:d, freq:f, time:t, taken:false, icon:'💊', color:'#2563eb' });
+  renderMeds(); closeModal();
+}
+function addAppt() {
+  const t=document.getElementById('f-title').value, s=document.getElementById('f-sub').value;
+  const d=document.getElementById('f-day').value, m=document.getElementById('f-month').value, tm=document.getElementById('f-time').value;
+  if(!t) return;
+  state.appts.push({ day:d, month:m, title:t, sub:s, time:tm });
+  renderAppts(); closeModal();
+}
+
+// ── EXPORT CSV ──
+function exportCSV() {
+  const p = state.page;
+  let csv = '', filename = 'medicare.csv';
+  if (['labs','dashboard'].includes(p)) {
+    csv = 'Test Name,Value,Unit,Reference,Status,Date\n' + state.labs.map(l=>[l.name,l.value,l.unit,l.ref,l.status,l.date].join(',')).join('\n');
+    filename = 'labs.csv';
+  } else if (p === 'meds') {
+    csv = 'Name,Dose,Frequency,Time,Taken\n' + state.meds.map(m=>[m.name,m.dose,m.freq,m.time,m.taken].join(',')).join('\n');
+    filename = 'medications.csv';
+  } else if (p === 'appts') {
+    csv = 'Day,Month,Title,Details,Time\n' + state.appts.map(a=>[a.day,a.month,a.title,a.sub,a.time].join(',')).join('\n');
+    filename = 'appointments.csv';
+  } else if (p === 'vitals') {
+    csv = 'Vital,Value,Unit,Status\nHeart Rate,72,bpm,Normal\nBlood Pressure,118/76,mmHg,Normal\nBlood Glucose,94,mg/dL,Normal\nO2 Saturation,98,%,Normal\nTemperature,98.6,°F,Normal\nBMI,22.4,,Healthy';
+    filename = 'vitals.csv';
+  } else { alert('No data to export for this section.'); return; }
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([csv], { type:'text/csv' }));
+  a.download = filename; a.click();
+}
+
+// ── SCREENSHOT ──
+function takeScreenshot() {
+  const el = document.getElementById('app');
+  if (typeof html2canvas === 'undefined') { alert('Screenshot library loading, try again.'); return; }
+  html2canvas(el, { backgroundColor:'#0d0d0f', scale:2, useCORS:true, logging:false }).then(canvas => {
+    const a = document.createElement('a');
+    a.href = canvas.toDataURL('image/png');
+    a.download = 'medicare_' + state.page + '_' + Date.now() + '.png';
+    a.click();
+  });
+}
+
+// ── AI ADVISOR ──
+async function sendAIMsg() {
+  const input = document.getElementById('ai-input');
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+  const msgs = document.getElementById('ai-messages');
+  msgs.innerHTML += `<div class="msg user"><div class="avatar" style="background:#2563eb22">👤</div><div class="msg-bubble">${text}</div></div>`;
+  const tid = 'typing-' + Date.now();
+  msgs.innerHTML += `<div class="msg ai" id="${tid}"><div class="avatar ai-avatar">🩺</div><div class="msg-bubble"><div class="typing"><span></span><span></span><span></span></div></div></div>`;
+  msgs.scrollTop = msgs.scrollHeight;
+
+  const systemPrompt = `You are a helpful MediCare AI health advisor. User health data:
+Labs: ${JSON.stringify(state.labs.slice(0,3))}
+Vitals: HR 72bpm, BP 118/76, Glucose 94mg/dL, BMI 22.4
+Medications: ${state.meds.map(m=>m.name+' '+m.dose).join(', ')}
+Be concise, empathetic, and always remind users to consult their doctor for medical decisions.`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST',
+      headers:{ 'Content-Type':'application/json' },
+      body: JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:800,
+        system: systemPrompt, messages:[{ role:'user', content:text }] })
+    });
+    const data = await res.json();
+    const reply = data.content?.map(c=>c.text||'').join('') || 'Sorry, no response received.';
+    document.getElementById(tid).outerHTML = `<div class="msg ai"><div class="avatar ai-avatar">🩺</div><div class="msg-bubble">${reply.replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>')}</div></div>`;
+  } catch(e) {
+    document.getElementById(tid).outerHTML = `<div class="msg ai"><div class="avatar ai-avatar">🩺</div><div class="msg-bubble">⚠️ AI Advisor unavailable. Check your internet connection and try again.</div></div>`;
+  }
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+// ── INIT ──
+renderLabs();
+renderMeds();
+renderAppts();
+buildMiniHRChart();
+</script>
+</body>
+</html>
