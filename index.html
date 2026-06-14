@@ -1,11 +1,7 @@
+
 <!DOCTYPE html>
 <html lang="en" data-theme="dark-purple">
 <head>
-
-
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#2563eb">
-   
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
 <meta name="description" content="MedTracker — Personal Health Records Manager"/>
@@ -19,7 +15,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
 <style>
-  
 /* ============================================================
    THEME SYSTEM — 10 themes
    ============================================================ */
@@ -39,8 +34,9 @@
 [data-theme="midnight"]{--bg:#000008;--bg2:#08080f;--bg3:#0e0e18;--bg4:#141420;--bd:#1e1e30;--bd2:#2a2a42;--tx:#c8c8e8;--tx2:#6868a0;--tx3:#303060;--ac:#6366f1;--ac2:#818cf8;--ac3:#3730a3;--ac4:#1e1b4b;}
 [data-theme="arctic"]{--bg:#f0f8ff;--bg2:#ffffff;--bg3:#e8f4fd;--bg4:#daeef8;--bd:#b0d8f0;--bd2:#80b8e0;--tx:#0a1e2e;--tx2:#3a6080;--tx3:#80a8c0;--ac:#0284c7;--ac2:#0369a1;--ac3:#0c4a6e;--ac4:#e0f2fe;}
 [data-theme="desert"]{--bg:#100e08;--bg2:#1a160a;--bg3:#241e0e;--bg4:#2e2814;--bd:#423c1a;--bd2:#5a5020;--tx:#f5f0d8;--tx2:#b0a060;--tx3:#605030;--ac:#ca8a04;--ac2:#eab308;--ac3:#854d0e;--ac4:#713f12;}
-[data-theme="medical-white"]{--bg:#f8fafb;--bg2:#ffffff;--bg3:#f0f4f8;--bg4:#e5ecf2;--bd:#c8d8e8;--bd2:#a0b8cc;--tx:#0f2030;--tx2:#3a5570;--tx3:#8090a0;--ac:#1e6ba8;--ac2:#2780c0;--ac3:#144e7a;--ac4:#d8eef8;}
+[data-theme="medical-white"]{--bg:#f4f7fb;  --bg2:#ffffff;  --bg3:#edf2f7;  --bg4:#e2e8f0;  --bd:#cbd5e1;  --bd2:#94a3b8;  --tx:#0f172a;  --tx2:#334155;  --tx3:#64748b;  --ac:#2563eb; --ac2:#3b82f6;  --ac3:#1d4ed8;  --ac4:#dbeafe;  --grn:#16a34a;  --red:#dc2626;  --amb:#d97706;  --blu:#2563eb;  --cyn:#0891b2;  --pnk:#db2777;}
 [data-theme="charcoal"]{--bg:#0a0a0a;--bg2:#141414;--bg3:#1e1e1e;--bg4:#282828;--bd:#383838;--bd2:#484848;--tx:#e0e0e0;--tx2:#808080;--tx3:#484848;--ac:#60a5fa;--ac2:#93c5fd;--ac3:#1e3a5a;--ac4:#0f2040;}
+
 
 /* ============================================================
    RESET & BASE
@@ -313,6 +309,14 @@ input,select,textarea{font-family:var(--font)}
 .rad-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
 .rad-card{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r2);overflow:hidden;transition:all .2s}
 .rad-card:hover{border-color:var(--ac3);transform:translateY(-1px)}
+.rad-panel{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r2);padding:14px}
+.rad-filter-sel{background:var(--bg3);border:1px solid var(--bd);border-radius:var(--r);padding:6px 8px;color:var(--tx);font-size:11px;width:100%}
+.rad-upload-zone{background:var(--bg2);border:2px dashed var(--bd2);border-radius:var(--r2);padding:20px;text-align:center;cursor:pointer;transition:all .2s}
+.rad-upload-zone:hover{border-color:var(--ac);background:var(--ac4)}
+.rad-main-split{grid-template-columns:1fr 280px}
+@media(max-width:700px){.rad-main-split{grid-template-columns:1fr!important;display:flex!important;flex-direction:column}}
+@media(max-width:900px){#rad-stats-row{grid-template-columns:repeat(3,1fr)!important}}
+@media(max-width:600px){#rad-stats-row{grid-template-columns:repeat(2,1fr)!important}}
 .rad-thumbnail{background:var(--bg3);height:120px;display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;overflow:hidden}
 .rad-thumbnail img{width:100%;height:100%;object-fit:cover}
 .rad-thumbnail .rad-overlay{position:absolute;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .2s}
@@ -523,12 +527,54 @@ input,select,textarea{font-family:var(--font)}
 .stl-type{font-size:9px;text-transform:uppercase;letter-spacing:.4px;color:var(--ac2);margin-bottom:2px}
 .stl-content{font-size:12px;color:var(--tx)}
 
+/* ============================================================
+   PHASE 2 — VITALS REDESIGN
+   ============================================================ */
+.vt2-card{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r2)}
+.vt2-mini-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.vt2-mini-card{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r2);padding:14px 12px;text-align:center}
+.vt2-mini-icon{font-size:20px;margin-bottom:4px}
+.vt2-mini-label{font-size:10px;color:var(--tx3);margin-bottom:6px;font-weight:500}
+.vt2-mini-val{font-size:22px;font-weight:700;color:var(--tx);line-height:1}
+.vt2-mini-unit{font-size:10px;color:var(--tx3);margin-bottom:4px}
+.vt2-status-normal{font-size:10px;font-weight:600;color:var(--grn);display:flex;align-items:center;justify-content:center;gap:3px}
+.vt2-status-warning{font-size:10px;font-weight:600;color:var(--amb);display:flex;align-items:center;justify-content:center;gap:3px}
+.vt2-status-critical{font-size:10px;font-weight:600;color:var(--red);display:flex;align-items:center;justify-content:center;gap:3px}
+.vt2-period-btn{padding:4px 10px;border-radius:5px;border:1px solid var(--bd);background:transparent;color:var(--tx2);font-size:10px;cursor:pointer;transition:all .15s}
+.vt2-period-btn.on{background:var(--ac3);border-color:var(--ac3);color:#fff}
+.vt2-insight-card{display:flex;align-items:flex-start;gap:10px;background:var(--bg3);border-radius:var(--r);padding:10px 12px}
+.vt2-insight-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.vt2-split{grid-template-columns:1fr 300px}
+@media(max-width:768px){
+  .vt2-mini-grid{grid-template-columns:repeat(2,1fr)}
+  .vt2-split{grid-template-columns:1fr!important;display:flex!important;flex-direction:column}
+}
+@media(max-width:480px){
+  .vt2-mini-grid{grid-template-columns:1fr 1fr}
+}
+
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+/* AI Prompt chips */
+#ai-prompt-chips { padding: 10px 0 8px; }
+.ai-chip { padding: 5px 12px; border-radius: 20px; border: 1px solid var(--bd); background: var(--bg3); color: var(--tx2); font-size: 11px; cursor: pointer; transition: all .15s; white-space: nowrap; }
+.ai-chip:hover { background: var(--ac3); border-color: var(--ac3); color: #fff; }
+
+/* Dashboard redesign */
+.dash-grid{display:grid;grid-template-columns:220px 1fr 280px;gap:12px;align-items:start}
+@media(max-width:1100px){.dash-grid{grid-template-columns:200px 1fr!important;grid-template-rows:auto auto}}
+@media(max-width:700px){.dash-grid{grid-template-columns:1fr!important}}
+.body-vital-tag{position:absolute;display:flex;align-items:center}
+.bvt-box{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:5px 8px;min-width:90px}
+
 /* Misc */
 .empty-state{text-align:center;padding:50px 20px;color:var(--tx3)}
 .empty-state i{font-size:40px;display:block;margin-bottom:10px;opacity:.5}
 .empty-state p{font-size:13px;margin-bottom:12px}
 .section-label{font-size:11px;font-weight:600;color:var(--tx2);margin-bottom:8px;text-transform:uppercase;letter-spacing:.4px}
 </style>
+<!-- EmailJS for real OTP email sending (free: emailjs.com) -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 </head>
 <body>
 
@@ -618,20 +664,34 @@ input,select,textarea{font-family:var(--font)}
 
     <!-- OTP VERIFY -->
     <div id="tab-otp" style="display:none">
-      <p style="font-size:13px;color:var(--tx2);margin-bottom:14px;text-align:center">We sent a 6-digit OTP to your email. Enter it below:</p>
+      <p style="font-size:13px;color:var(--tx2);margin-bottom:14px;text-align:center" id="otp-label">Enter the 6-digit code sent to your email:</p>
       <div class="otp-inputs" id="otp-inputs"></div>
-      <button class="auth-btn" onclick="verifyOTP()" style="margin-top:12px">Verify & Login</button>
-      <p style="text-align:center;margin-top:10px;font-size:12px;color:var(--tx3)">Didn't receive? <span class="auth-link" onclick="resendOTP()">Resend OTP</span></p>
+      <button class="auth-btn" onclick="verifyOTP()" style="margin-top:12px">Verify Code</button>
+      <p style="text-align:center;margin-top:10px;font-size:12px;color:var(--tx3)">Didn't receive? <span class="auth-link" onclick="resendOTP()">Resend Code</span></p>
+    </div>
+
+    <!-- NEW PASSWORD (after reset OTP verified) -->
+    <div id="tab-new-password" style="display:none">
+      <p style="font-size:13px;color:var(--tx2);margin-bottom:14px">Set your new password:</p>
+      <div class="auth-form-group">
+        <label class="auth-label">New Password</label>
+        <input type="password" class="auth-input" id="new-pass" placeholder="Min 6 characters"/>
+      </div>
+      <div class="auth-form-group">
+        <label class="auth-label">Confirm Password</label>
+        <input type="password" class="auth-input" id="conf-pass" placeholder="Repeat password"/>
+      </div>
+      <button class="auth-btn" onclick="doResetPassword()">Set New Password</button>
     </div>
 
     <!-- FORGOT -->
     <div id="tab-forgot" style="display:none">
-      <p style="font-size:13px;color:var(--tx2);margin-bottom:14px">Enter your email to receive a reset link:</p>
+      <p style="font-size:13px;color:var(--tx2);margin-bottom:14px">Enter your registered email to receive a reset code:</p>
       <div class="auth-form-group">
         <label class="auth-label">Email Address</label>
         <input type="email" class="auth-input" id="forgot-email" placeholder="your@email.com"/>
       </div>
-      <button class="auth-btn" onclick="doForgot()">Send Reset Link</button>
+      <button class="auth-btn" onclick="doForgot()">Send Reset Code</button>
       <div style="text-align:center;margin-top:10px">
         <span class="auth-link" onclick="switchAuthTab('login')">Back to login</span>
       </div>
@@ -689,6 +749,7 @@ input,select,textarea{font-family:var(--font)}
     </nav>
     <div class="sb-footer">
       <button class="sb-footer-btn" onclick="openThemePanel()"><i class="ti ti-palette" aria-hidden="true"></i><span>Themes</span></button>
+      <button class="sb-footer-btn" onclick="showAPIKeyModal()"><i class="ti ti-key" aria-hidden="true"></i><span>AI API Key</span></button>
       <button class="sb-footer-btn" onclick="doLogout()"><i class="ti ti-logout" aria-hidden="true"></i><span>Logout</span></button>
     </div>
   </div>
@@ -738,50 +799,195 @@ input,select,textarea{font-family:var(--font)}
       <!-- DASHBOARD -->
       <div class="pg" id="pdash">
         <div id="dash-alerts"></div>
-        <div class="dash-hero card" style="margin-bottom:12px">
-          <div class="dash-hero-bg"></div>
-          <div class="dash-hero-inner">
-            <div style="font-size:20px;font-weight:700;color:#fff" id="dh-name">Patient</div>
-            <div style="font-size:11px;color:rgba(255,255,255,.5);margin-top:2px" id="dh-meta"></div>
-            <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap" id="dh-conditions"></div>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px">
-              <div style="background:rgba(0,0,0,.2);border-radius:8px;padding:8px 11px">
-                <div style="font-size:9px;text-transform:uppercase;color:rgba(255,255,255,.35);letter-spacing:.3px">Current Issues</div>
-                <div style="font-size:11px;color:rgba(255,255,255,.75);margin-top:2px" id="dh-issues">—</div>
+
+        <div class="dash-grid">
+
+          <!-- COL 1: Patient info -->
+          <div style="display:flex;flex-direction:column;gap:10px">
+
+            <!-- Patient card -->
+            <div class="card" style="padding:0;overflow:hidden">
+              <div style="background:linear-gradient(135deg,var(--ac),var(--ac3));padding:14px;text-align:center">
+                <div id="dash-pt-avatar" style="width:72px;height:72px;border-radius:50%;background:rgba(255,255,255,.2);margin:0 auto 8px;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;color:#fff;border:3px solid rgba(255,255,255,.4);overflow:hidden"></div>
+                <div style="font-size:15px;font-weight:700;color:#fff" id="dh-name">—</div>
+                <div style="font-size:11px;color:rgba(255,255,255,.7);margin-top:2px" id="dh-meta">—</div>
+                <div style="margin-top:6px" id="dh-conditions"></div>
               </div>
-              <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px">
-                <div style="background:rgba(0,0,0,.2);border-radius:8px;padding:8px">
-                  <div style="font-size:9px;text-transform:uppercase;color:rgba(255,255,255,.35)">Last Checkup</div>
-                  <div style="font-size:11px;color:rgba(255,255,255,.75);margin-top:2px" id="dh-checkup">—</div>
+              <div style="padding:10px 12px">
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:11px">
+                  <div style="color:var(--tx3)">Doctor</div><div style="color:var(--tx);font-weight:600;text-align:right" id="dh-doctor">—</div>
+                  <div style="color:var(--tx3)">Blood Group</div><div style="color:var(--tx);font-weight:600;text-align:right" id="dh-blood">—</div>
+                  <div style="color:var(--tx3)">Last Checkup</div><div style="color:var(--tx);font-weight:600;text-align:right" id="dh-checkup">—</div>
+                  <div style="color:var(--tx3)">Allergies</div><div style="color:var(--ac2);font-weight:600;text-align:right;font-size:10px" id="dh-allergies">None</div>
                 </div>
-                <div style="background:rgba(0,0,0,.2);border-radius:8px;padding:8px">
-                  <div style="font-size:9px;text-transform:uppercase;color:rgba(255,255,255,.35)">Doctor</div>
-                  <div style="font-size:11px;color:rgba(255,255,255,.75);margin-top:2px" id="dh-doctor">—</div>
-                </div>
+                <div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--bd);font-size:11px;color:var(--tx2)" id="dh-issues-box"></div>
+              </div>
+            </div>
+
+            <!-- Stats boxes -->
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+              <div class="card" style="padding:10px;text-align:center;cursor:pointer" onclick="navigate('labs')">
+                <div style="font-size:22px;font-weight:700;color:var(--blu)" id="di-labs">0</div>
+                <div style="font-size:10px;color:var(--tx3)">Lab Tests</div>
+              </div>
+              <div class="card" style="padding:10px;text-align:center;cursor:pointer" onclick="navigate('meds')">
+                <div style="font-size:22px;font-weight:700;color:var(--grn)" id="di-meds">0</div>
+                <div style="font-size:10px;color:var(--tx3)">Medications</div>
+              </div>
+              <div class="card" style="padding:10px;text-align:center;cursor:pointer" onclick="navigate('rad')">
+                <div style="font-size:22px;font-weight:700;color:var(--ac2)" id="di-rad">0</div>
+                <div style="font-size:10px;color:var(--tx3)">Radiology</div>
+              </div>
+              <div class="card" style="padding:10px;text-align:center;background:var(--ac4);border-color:var(--ac3);cursor:pointer" onclick="navigate('labs')">
+                <div style="font-size:22px;font-weight:700;color:var(--red)" id="di-abn">0</div>
+                <div style="font-size:10px;color:var(--tx3)">Abnormal</div>
+              </div>
+            </div>
+
+            <!-- Overall health score -->
+            <div class="card" style="padding:12px">
+              <div style="font-size:11px;color:var(--tx3);margin-bottom:6px">Overall Health Status</div>
+              <div style="display:flex;align-items:center;justify-content:space-between">
+                <div style="font-size:28px;font-weight:700;color:var(--ac)" id="dh-score">—%</div>
+                <span id="dh-score-badge" style="font-size:11px;padding:3px 10px;border-radius:20px;background:var(--grn);color:#fff">Active</span>
+              </div>
+              <div style="background:var(--bg3);border-radius:20px;height:6px;margin-top:8px;overflow:hidden">
+                <div id="dh-score-bar" style="height:100%;background:linear-gradient(90deg,var(--grn),var(--ac));border-radius:20px;transition:width .5s;width:0%"></div>
               </div>
             </div>
           </div>
+
+          <!-- COL 2: Body vitals visualization -->
+          <div class="card" style="padding:12px;position:relative;overflow:hidden">
+            <div style="font-size:12px;font-weight:600;color:var(--tx);margin-bottom:8px;text-align:center">Check Your Overall Health Status</div>
+
+            <!-- Body SVG with vitals overlaid -->
+            <div style="position:relative;width:100%;min-height:380px;display:flex;align-items:center;justify-content:center">
+
+              <!-- Body silhouette SVG -->
+              <svg viewBox="0 0 160 380" style="height:360px;opacity:.18;position:absolute" xmlns="http://www.w3.org/2000/svg">
+                <!-- Head -->
+                <ellipse cx="80" cy="38" rx="28" ry="33" fill="var(--tx)"/>
+                <!-- Neck -->
+                <rect x="70" y="68" width="20" height="18" rx="4" fill="var(--tx)"/>
+                <!-- Torso -->
+                <path d="M38 86 Q30 100 28 150 Q26 200 32 240 L128 240 Q134 200 132 150 Q130 100 122 86 Z" fill="var(--tx)"/>
+                <!-- Left arm -->
+                <path d="M38 90 Q18 110 14 160 Q12 195 20 220 Q26 230 34 220 Q36 195 36 165 Q38 125 50 100 Z" fill="var(--tx)"/>
+                <!-- Right arm -->
+                <path d="M122 90 Q142 110 146 160 Q148 195 140 220 Q134 230 126 220 Q124 195 124 165 Q122 125 110 100 Z" fill="var(--tx)"/>
+                <!-- Left leg -->
+                <path d="M52 240 Q44 280 42 320 Q40 355 50 365 Q62 370 66 355 Q66 320 68 280 L76 240 Z" fill="var(--tx)"/>
+                <!-- Right leg -->
+                <path d="M108 240 Q116 280 118 320 Q120 355 110 365 Q98 370 94 355 Q94 320 92 280 L84 240 Z" fill="var(--tx)"/>
+              </svg>
+
+              <!-- Vitals labels overlaid on body -->
+              <div style="position:relative;width:240px;height:360px">
+
+                <!-- Neurological - top right -->
+                <div class="body-vital-tag" style="top:0;right:0">
+                  <div class="bvt-line"></div>
+                  <div class="bvt-box">
+                    <div style="font-size:9px;color:var(--tx3)">Neurological</div>
+                  </div>
+                </div>
+
+                <!-- Thyroid - top left -->
+                <div class="body-vital-tag" style="top:55px;left:0">
+                  <div class="bvt-box">
+                    <div style="font-size:9px;color:var(--tx3)">Thyroid</div>
+                    <div style="font-size:11px;font-weight:600;color:var(--tx)" id="bv-thyroid">—</div>
+                  </div>
+                </div>
+
+                <!-- O2 Saturation - right -->
+                <div class="body-vital-tag" style="top:110px;right:0">
+                  <div class="bvt-box" style="background:var(--ac4);border-color:var(--ac3)">
+                    <div style="font-size:9px;color:var(--tx3)">OXYGEN SAT.</div>
+                    <div style="font-size:18px;font-weight:700;color:var(--ac2)" id="bv-spo2">—%</div>
+                    <div style="font-size:9px;color:var(--tx3)">SpO2</div>
+                  </div>
+                </div>
+
+                <!-- Blood Pressure - left -->
+                <div class="body-vital-tag" style="top:145px;left:0">
+                  <div class="bvt-box" style="background:#0c1a2e;border-color:#1e3a5f">
+                    <div style="font-size:9px;color:rgba(255,255,255,.5)">BLOOD PRESSURE</div>
+                    <div style="font-size:18px;font-weight:700;color:#60a5fa" id="bv-bp">—</div>
+                    <div style="font-size:9px;color:rgba(255,255,255,.4)">mmHg</div>
+                  </div>
+                </div>
+
+                <!-- Temperature - right -->
+                <div class="body-vital-tag" style="top:185px;right:0">
+                  <div class="bvt-box">
+                    <div style="font-size:9px;color:var(--tx3)">TEMPERATURE</div>
+                    <div style="font-size:14px;font-weight:700;color:var(--amb)" id="bv-temp">—°F</div>
+                    <div style="font-size:9px;color:var(--tx3)">Core metabolic heat</div>
+                  </div>
+                </div>
+
+                <!-- Glucose - left bottom -->
+                <div class="body-vital-tag" style="top:235px;left:0">
+                  <div class="bvt-box">
+                    <div style="font-size:9px;color:var(--tx3)">Glucose</div>
+                    <div style="font-size:14px;font-weight:700;color:var(--tx)" id="bv-glucose">— <span style="font-size:9px;font-weight:400">mg/dL</span></div>
+                    <div style="font-size:9px;color:var(--tx3)">(fasting)</div>
+                  </div>
+                </div>
+
+                <!-- Calcium / extra lab - right bottom -->
+                <div class="body-vital-tag" style="top:290px;right:0">
+                  <div class="bvt-box">
+                    <div style="font-size:9px;color:var(--tx3)" id="bv-extra-label">Heart Rate</div>
+                    <div style="font-size:14px;font-weight:700;color:var(--tx)" id="bv-extra-val">— <span style="font-size:9px;font-weight:400" id="bv-extra-unit">bpm</span></div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- COL 3: Charts + history + appointments -->
+          <div style="display:flex;flex-direction:column;gap:10px">
+
+            <!-- Daily vitals chart -->
+            <div class="card" style="padding:12px">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+                <span style="font-size:12px;font-weight:600;color:var(--tx)">Daily Vitals Trends — Last 7 Days</span>
+                <button class="icon-btn" onclick="navigate('vitals')" title="View all"><i class="ti ti-arrow-up-right"></i></button>
+              </div>
+              <div style="height:140px"><canvas id="dash-vitals-chart"></canvas></div>
+            </div>
+
+            <!-- Patient history -->
+            <div class="card" style="padding:12px">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+                <span style="font-size:12px;font-weight:600;color:var(--tx)">Patient History for Review</span>
+                <button class="icon-btn" onclick="navigate('summary')" title="View all"><i class="ti ti-arrow-up-right"></i></button>
+              </div>
+              <div id="dash-history-list" style="font-size:11px;color:var(--tx2);line-height:2"></div>
+            </div>
+
+            <!-- Upcoming appointment calendar -->
+            <div class="card" style="padding:12px">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+                <span style="font-size:12px;font-weight:600;color:var(--tx)">Upcoming Appointment</span>
+                <button class="icon-btn" onclick="navigate('appts')" title="View all"><i class="ti ti-arrow-up-right"></i></button>
+              </div>
+              <div id="dash-appt-cal"></div>
+              <div id="dash-next-appt" style="margin-top:8px;font-size:11px;color:var(--tx2)"></div>
+            </div>
+
+          </div>
         </div>
-        <div class="vital-cards" id="vital-cards">
-          <div class="vital-card vc-bp"><div class="vc-label"><i class="ti ti-heart" aria-hidden="true"></i> Blood Pressure</div><div class="vc-value" id="dv-bp">—<span class="vc-unit">mmHg</span></div><div class="vc-status status-green" id="dv-bp-s">Normal</div><i class="ti ti-heart vc-icon" aria-hidden="true"></i></div>
-          <div class="vital-card vc-hr"><div class="vc-label"><i class="ti ti-activity" aria-hidden="true"></i> Heart Rate</div><div class="vc-value" id="dv-hr">—<span class="vc-unit">bpm</span></div><div class="vc-status status-green" id="dv-hr-s">Normal</div><i class="ti ti-activity vc-icon" aria-hidden="true"></i></div>
-          <div class="vital-card vc-spo2"><div class="vc-label"><i class="ti ti-lungs" aria-hidden="true"></i> SpO2</div><div class="vc-value" id="dv-spo2">—<span class="vc-unit">%</span></div><div class="vc-status status-green" id="dv-spo2-s">Normal</div><i class="ti ti-lungs vc-icon" aria-hidden="true"></i></div>
-          <div class="vital-card vc-wt"><div class="vc-label"><i class="ti ti-weight" aria-hidden="true"></i> Weight</div><div class="vc-value" id="dv-wt">—<span class="vc-unit">kg</span></div><div class="vc-status status-green" id="dv-wt-s">Normal</div><i class="ti ti-weight vc-icon" aria-hidden="true"></i></div>
-        </div>
-        <div class="dash-info-row">
-          <div class="dash-info-box"><div class="dib-icon" style="background:#0c2a4a"><i class="ti ti-flask" style="color:#60a5fa;font-size:17px" aria-hidden="true"></i></div><div><div class="dib-val" id="di-labs">0</div><div class="dib-lbl">Lab Tests · Total</div></div></div>
-          <div class="dash-info-box"><div class="dib-icon" style="background:#052e16"><i class="ti ti-pill" style="color:var(--grn);font-size:17px" aria-hidden="true"></i></div><div><div class="dib-val" id="di-meds">0</div><div class="dib-lbl">Medications · Active</div></div></div>
-          <div class="dash-info-box"><div class="dib-icon" style="background:#450a0a"><i class="ti ti-alert-triangle" style="color:#f87171;font-size:17px" aria-hidden="true"></i></div><div><div class="dib-val" id="di-abn">0</div><div class="dib-lbl">Abnormal Results</div></div></div>
-        </div>
-        <!-- Mini vital chart on dashboard -->
-        <div class="card" style="margin-bottom:12px">
-          <div class="card-header"><span class="card-title">Vitals Trend (Last 30 Days)</span></div>
-          <div style="height:140px;position:relative"><canvas id="dash-vitals-chart" role="img" aria-label="Dashboard vitals trend">Vitals data.</canvas></div>
-        </div>
-        <div class="ai-panel" id="dash-ai-panel">
+
+        <!-- AI panel below the grid -->
+        <div class="ai-panel" id="dash-ai-panel" style="margin-top:12px">
           <div class="ai-panel-header">
             <div class="ai-panel-title">
-              <div class="ai-avatar-icon"><i class="ti ti-robot" style="font-size:16px;color:var(--ac2)" aria-hidden="true"></i></div>
+              <div class="ai-avatar-icon"><i class="ti ti-robot" style="font-size:16px;color:var(--ac2)"></i></div>
               <div>
                 <div style="font-size:12px;font-weight:600;color:#fff">AI Health Advisor — Pakistan Specific</div>
                 <div style="font-size:10px;color:rgba(255,255,255,.4)">Karachi · 3 languages</div>
@@ -793,7 +999,7 @@ input,select,textarea{font-family:var(--font)}
                 <button class="ai-lang-btn" onclick="setAILang('ur',this)">اردو</button>
                 <button class="ai-lang-btn" onclick="setAILang('ro',this)">Roman</button>
               </div>
-              <button class="btn btn-primary" style="font-size:10px" onclick="getAIAdvice()"><i class="ti ti-sparkles" aria-hidden="true"></i> Get AI Advice</button>
+              <button class="btn btn-primary" style="font-size:10px" onclick="getAIAdvice()"><i class="ti ti-sparkles"></i> Get AI Advice</button>
             </div>
           </div>
           <div class="ai-messages" id="ai-messages">
@@ -801,7 +1007,7 @@ input,select,textarea{font-family:var(--font)}
           </div>
           <div class="ai-input-row">
             <input class="ai-input" id="ai-chat-input" placeholder="Ask about your health, labs, medications..." onkeydown="if(event.key==='Enter')sendAIMessage()"/>
-            <button class="btn btn-primary" style="font-size:10px" onclick="sendAIMessage()"><i class="ti ti-send" aria-hidden="true"></i> Send</button>
+            <button class="btn btn-primary" style="font-size:10px" onclick="sendAIMessage()"><i class="ti ti-send"></i> Send</button>
           </div>
           <div class="ai-hospitals">
             <div style="font-size:9px;text-transform:uppercase;letter-spacing:.4px;color:rgba(255,255,255,.3);margin-bottom:5px">Recommended Karachi Hospitals</div>
@@ -830,26 +1036,122 @@ input,select,textarea{font-family:var(--font)}
             <button class="lab-cat" onclick="filterLabs('Glucose',this)">Glucose</button>
             <button class="lab-cat" onclick="filterLabs('Other',this)">Other</button>
           </div>
-          <div style="display:flex;gap:5px;align-items:center">
+          <div style="display:flex;gap:5px;align-items:center;flex-wrap:wrap">
+            <button class="btn" style="font-size:11px" onclick="uploadLabReport()"><i class="ti ti-upload"></i> Upload Report</button>
             <select style="background:var(--bg3);border:1px solid var(--bd);border-radius:6px;color:var(--tx2);font-size:11px;padding:4px 8px;outline:none" onchange="S.labSort=this.value;renderLabs()">
               <option value="newest">Newest First</option>
               <option value="oldest">Oldest First</option>
               <option value="alpha">A-Z</option>
             </select>
             <div class="view-toggle">
-              <button class="vt-btn on" id="vt-charts" onclick="setLabView('charts',this)" title="Charts view"><i class="ti ti-chart-line" aria-hidden="true"></i></button>
-              <button class="vt-btn" id="vt-table" onclick="setLabView('table',this)" title="Table view"><i class="ti ti-table" aria-hidden="true"></i></button>
+              <button class="vt-btn" id="vt-charts" onclick="setLabView('charts',this)" title="Charts view"><i class="ti ti-chart-line"></i></button>
+              <button class="vt-btn on" id="vt-table" onclick="setLabView('table',this)" title="Table view"><i class="ti ti-table"></i></button>
             </div>
           </div>
         </div>
-        <div id="labs-charts-view"><div class="charts-grid" id="charts-grid"></div></div>
-        <div id="labs-table-view" style="display:none"><div class="lab-table-wrap card"><div id="lab-tbl-container"></div></div></div>
+        <div id="labs-charts-view" style="display:none"><div class="charts-grid" id="charts-grid"></div></div>
+        <div id="labs-table-view"><div class="lab-table-wrap card"><div id="lab-tbl-container"></div></div></div>
       </div>
 
       <!-- RADIOLOGY -->
       <div class="pg" id="prad">
-        <div class="rad-grid" id="rad-grid"></div>
-        <div class="empty-state" id="rad-empty" style="display:none"><i class="ti ti-scan" aria-hidden="true"></i><p>No radiology records yet</p><p style="font-size:11px;color:var(--tx3)">Add X-rays, Ultrasounds, MRI reports and films</p></div>
+
+        <!-- Header -->
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px">
+          <div>
+            <div style="font-size:18px;font-weight:700;color:var(--tx)">🩻 Radiology &amp; Imaging</div>
+            <div style="font-size:11px;color:var(--tx3)">All your imaging records in one place</div>
+          </div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <button class="btn" onclick="exportRad()"><i class="ti ti-download"></i> Export</button>
+            <button class="btn btn-primary" onclick="showAddRad()"><i class="ti ti-plus"></i> Add New</button>
+          </div>
+        </div>
+
+        <!-- Stats Row -->
+        <div id="rad-stats-row" style="display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-bottom:14px"></div>
+
+        <!-- Search + Filter + Upload row -->
+        <div style="display:grid;grid-template-columns:1fr 320px;gap:12px;margin-bottom:14px" class="rad-main-split">
+
+          <!-- Left: Search & Filter + Upload -->
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div class="rad-panel">
+              <div style="font-size:12px;font-weight:600;color:var(--tx);margin-bottom:10px">Search &amp; Filter</div>
+              <input id="rad-search" placeholder="Search study, body part, modality..." style="width:100%;background:var(--bg3);border:1px solid var(--bd);border-radius:var(--r);padding:7px 12px;color:var(--tx);font-size:12px;margin-bottom:10px" oninput="renderRad()"/>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:6px">
+                <select id="rad-filter-type" class="rad-filter-sel" onchange="renderRad()">
+                  <option value="">All Modalities</option>
+                  <option>ECG</option><option>ETT</option><option>Echo</option>
+                  <option>CT Scan</option><option>MRI</option><option>X-Ray</option>
+                  <option>Ultrasound</option><option>Mammogram</option><option>Bone Density</option><option>Other</option>
+                </select>
+                <select id="rad-filter-body" class="rad-filter-sel" onchange="renderRad()">
+                  <option value="">All Body Parts</option>
+                  <option>Brain</option><option>Chest</option><option>Abdomen</option>
+                  <option>Pelvis</option><option>Spine</option><option>Heart</option>
+                  <option>Knee</option><option>Hip</option><option>Shoulder</option><option>Full Body</option>
+                </select>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+                <select id="rad-filter-date" class="rad-filter-sel" onchange="renderRad()">
+                  <option value="">All Dates</option>
+                  <option value="30d">Last 30 Days</option>
+                  <option value="90d">Last 3 Months</option>
+                  <option value="1y">Last Year</option>
+                </select>
+                <select id="rad-filter-status" class="rad-filter-sel" onchange="renderRad()">
+                  <option value="">All Results</option>
+                  <option>Normal</option><option>Abnormal</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Upload Zone -->
+            <div class="rad-upload-zone" onclick="document.getElementById('rad-quick-upload').click()">
+              <i class="ti ti-cloud-upload" style="font-size:28px;color:var(--ac2);margin-bottom:6px"></i>
+              <div style="font-size:13px;font-weight:600;color:var(--tx)">Upload New Study</div>
+              <div style="font-size:11px;color:var(--tx3);margin-top:2px">Drag &amp; drop files here or</div>
+              <button class="btn btn-primary" style="margin-top:8px;font-size:12px" onclick="event.stopPropagation();document.getElementById('rad-quick-upload').click()"><i class="ti ti-folder-open"></i> Browse Files</button>
+              <div style="font-size:10px;color:var(--tx3);margin-top:6px">Supports DICOM, JPG, PNG, PDF · Max 200MB</div>
+              <input type="file" id="rad-quick-upload" multiple accept="image/*,.pdf,.dcm" style="display:none" onchange="handleQuickRadUpload(event)"/>
+            </div>
+
+            <!-- Tips -->
+            <div class="rad-panel" style="background:var(--ac4);border-color:var(--ac3)">
+              <div style="font-size:11px;font-weight:600;color:var(--ac2);margin-bottom:6px">💡 Tips</div>
+              <ul style="font-size:11px;color:var(--tx2);padding-left:14px;line-height:1.8">
+                <li>Upload DICOM files for better image quality</li>
+                <li>Add findings or notes for your doctor</li>
+                <li>Keep your imaging records organized and up to date</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Right: Recent Studies list -->
+          <div class="rad-panel" style="display:flex;flex-direction:column">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+              <span style="font-size:12px;font-weight:600;color:var(--tx)">Recent Studies</span>
+              <span style="font-size:11px;color:var(--ac2);cursor:pointer" onclick="document.getElementById('rad-view-all').scrollIntoView({behavior:'smooth'})">View All →</span>
+            </div>
+            <div id="rad-recent-list" style="display:flex;flex-direction:column;gap:8px;flex:1;overflow-y:auto;max-height:420px"></div>
+          </div>
+        </div>
+
+        <!-- Full study detail view (shown when a study is clicked) -->
+        <div id="rad-detail-view" style="display:none;margin-bottom:14px"></div>
+
+        <!-- All studies grid -->
+        <div id="rad-view-all">
+          <div style="font-size:12px;font-weight:600;color:var(--tx);margin-bottom:10px" id="rad-all-label">All Studies</div>
+          <div class="rad-grid" id="rad-grid"></div>
+          <div class="empty-state" id="rad-empty" style="display:none">
+            <i class="ti ti-scan" style="font-size:36px;color:var(--tx3)"></i>
+            <p style="margin-top:8px">No radiology records yet</p>
+            <p style="font-size:11px;color:var(--tx3)">Click "Add New" to add X-rays, MRI, CT, Echo, ECG reports</p>
+          </div>
+        </div>
+
       </div>
 
       <!-- MEDICATIONS -->
@@ -869,31 +1171,140 @@ input,select,textarea{font-family:var(--font)}
 
       <!-- VITALS -->
       <div class="pg" id="pvitals">
-        <div id="vitals-alerts"></div>
-        <div class="vitals-trend-card">
-          <div class="card-header" style="margin-bottom:10px">
-            <span class="card-title">Vitals Trend Over Time</span>
-            <div style="display:flex;gap:4px">
-              <button class="btn" id="vchart-all" onclick="setVitalsChartMode('all',this)" style="font-size:10px;background:var(--ac3);border-color:var(--ac3);color:#fff">All</button>
-              <button class="btn" id="vchart-bp" onclick="setVitalsChartMode('bp',this)" style="font-size:10px">BP</button>
-              <button class="btn" id="vchart-hr" onclick="setVitalsChartMode('hr',this)" style="font-size:10px">HR</button>
-              <button class="btn" id="vchart-spo2" onclick="setVitalsChartMode('spo2',this)" style="font-size:10px">SpO2</button>
-            </div>
+        <!-- Page Header -->
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px">
+          <div>
+            <div style="font-size:18px;font-weight:700;color:var(--tx)">🫀 Daily Vitals</div>
+            <div style="font-size:11px;color:var(--tx3)">Real-time monitoring &amp; history</div>
           </div>
-          <div class="vitals-chart-wrap"><canvas id="vitals-chart" role="img" aria-label="Vitals trend chart">Vitals data.</canvas></div>
-          <div class="vital-legend">
-            <div class="vl-item"><div class="vl-dot" style="background:#f87171"></div>BP Systolic</div>
-            <div class="vl-item"><div class="vl-dot" style="background:#fb923c"></div>BP Diastolic</div>
-            <div class="vl-item"><div class="vl-dot" style="background:#c084fc"></div>Heart Rate</div>
-            <div class="vl-item"><div class="vl-dot" style="background:#22d3ee"></div>SpO2</div>
-            <div class="vl-item"><div class="vl-dot" style="background:#4ade80"></div>Weight</div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <input type="date" id="vitals-date-filter" style="background:var(--bg3);border:1px solid var(--bd);border-radius:var(--r);padding:6px 10px;color:var(--tx);font-size:12px" onchange="renderVitals()"/>
+            <button class="btn btn-primary" onclick="openModal('modal-vital')"><i class="ti ti-plus"></i> Add Reading</button>
           </div>
         </div>
-        <div class="vitals-records">
-          <table class="vr-table" style="width:100%;border-collapse:collapse">
-            <thead><tr><th>Date</th><th>Time</th><th>BP (sys/dia)</th><th>HR</th><th>SpO2</th><th>Wt</th><th>Temp</th><th>Status</th><th></th></tr></thead>
-            <tbody id="vitals-tbody"></tbody>
-          </table>
+
+        <div id="vitals-alerts"></div>
+
+        <!-- Heart Rate ECG Card -->
+        <div class="vt2-card" style="margin-bottom:12px;padding:16px 20px">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+            <div style="display:flex;align-items:center;gap:8px">
+              <span style="font-size:14px">🫀</span>
+              <span style="font-size:13px;font-weight:600;color:var(--tx)">Heart Rate</span>
+            </div>
+            <span style="font-size:11px;color:var(--grn);display:flex;align-items:center;gap:4px"><span style="width:7px;height:7px;background:var(--grn);border-radius:50%;display:inline-block;animation:pulse 1.5s infinite"></span>Live ECG</span>
+          </div>
+          <div style="display:flex;align-items:flex-end;gap:14px">
+            <div>
+              <div style="font-size:44px;font-weight:700;color:var(--tx);line-height:1" id="vt2-hr-val">—</div>
+              <div style="font-size:11px;color:var(--tx3)">bpm</div>
+              <div style="margin-top:4px" id="vt2-hr-status"></div>
+              <div style="font-size:10px;color:var(--tx3);margin-top:3px">Normal Range: 60–100 bpm</div>
+            </div>
+            <div style="flex:1;height:60px;position:relative;overflow:hidden">
+              <canvas id="vt2-ecg-canvas" style="width:100%;height:60px"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5 Vital Cards Row -->
+        <div class="vt2-mini-grid" style="margin-bottom:12px">
+          <div class="vt2-mini-card">
+            <div class="vt2-mini-icon">🩸</div>
+            <div class="vt2-mini-label">Blood Pressure</div>
+            <div class="vt2-mini-val" id="vt2-bp-val">—</div>
+            <div class="vt2-mini-unit">mmHg</div>
+            <div id="vt2-bp-status"></div>
+          </div>
+          <div class="vt2-mini-card">
+            <div class="vt2-mini-icon">💧</div>
+            <div class="vt2-mini-label">SpO2</div>
+            <div class="vt2-mini-val" id="vt2-spo2-val">—</div>
+            <div class="vt2-mini-unit">%</div>
+            <div id="vt2-spo2-status"></div>
+          </div>
+          <div class="vt2-mini-card">
+            <div class="vt2-mini-icon">🌬️</div>
+            <div class="vt2-mini-label">Respiratory Rate</div>
+            <div class="vt2-mini-val" id="vt2-rr-val">—</div>
+            <div class="vt2-mini-unit">breaths/min</div>
+            <div id="vt2-rr-status"></div>
+          </div>
+          <div class="vt2-mini-card">
+            <div class="vt2-mini-icon">🌡️</div>
+            <div class="vt2-mini-label">Temperature</div>
+            <div class="vt2-mini-val" id="vt2-temp-val">—</div>
+            <div class="vt2-mini-unit">°F</div>
+            <div id="vt2-temp-status"></div>
+          </div>
+          <div class="vt2-mini-card">
+            <div class="vt2-mini-icon">🍬</div>
+            <div class="vt2-mini-label">Blood Glucose</div>
+            <div class="vt2-mini-val" id="vt2-gluc-val">—</div>
+            <div class="vt2-mini-unit">mg/dL</div>
+            <div id="vt2-gluc-status"></div>
+          </div>
+        </div>
+
+        <!-- History Chart + Risk Assessment -->
+        <div style="display:grid;grid-template-columns:1fr 340px;gap:12px;margin-bottom:12px" class="vt2-split">
+          <div class="vt2-card" style="padding:16px">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px">
+              <span style="font-size:13px;font-weight:600;color:var(--tx)">Vitals History</span>
+              <div style="display:flex;gap:4px">
+                <button class="vt2-period-btn on" onclick="setVitalsChartMode('today',this)">Today</button>
+                <button class="vt2-period-btn" onclick="setVitalsChartMode('7d',this)">7 Days</button>
+                <button class="vt2-period-btn" onclick="setVitalsChartMode('30d',this)">30 Days</button>
+                <button class="vt2-period-btn" onclick="setVitalsChartMode('90d',this)">90 Days</button>
+                <button class="vt2-period-btn" onclick="setVitalsChartMode('custom',this)">Custom</button>
+              </div>
+            </div>
+            <div style="height:180px;position:relative"><canvas id="vitals-chart"></canvas></div>
+            <div class="vital-legend" style="margin-top:10px">
+              <div class="vl-item"><div class="vl-dot" style="background:#f87171"></div>Heart Rate (bpm)</div>
+              <div class="vl-item"><div class="vl-dot" style="background:#3b82f6"></div>BP (mmHg)</div>
+              <div class="vl-item"><div class="vl-dot" style="background:#22d3ee"></div>SpO2 (%)</div>
+              <div class="vl-item"><div class="vl-dot" style="background:#fbbf24"></div>Glucose (mg/dL)</div>
+            </div>
+          </div>
+
+          <!-- Health Risk Gauge -->
+          <div class="vt2-card" style="padding:16px;display:flex;flex-direction:column;align-items:center">
+            <div style="font-size:13px;font-weight:600;color:var(--tx);margin-bottom:8px;align-self:flex-start">Health Risk Assessment</div>
+            <canvas id="vt2-risk-gauge" width="200" height="120"></canvas>
+            <div style="font-size:18px;font-weight:700;margin-top:-10px" id="vt2-risk-label">—</div>
+            <div style="font-size:11px;color:var(--tx3);text-align:center;margin-top:4px;max-width:200px" id="vt2-risk-desc"></div>
+            <div style="width:100%;margin-top:12px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px" id="vt2-risk-grid"></div>
+          </div>
+        </div>
+
+        <!-- Recent Readings Table -->
+        <div class="vt2-card" style="padding:0;margin-bottom:12px;overflow:hidden">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--bd)">
+            <span style="font-size:13px;font-weight:600;color:var(--tx)">Recent Readings</span>
+            <button class="btn" style="font-size:11px;padding:4px 10px" onclick="exportVitals()"><i class="ti ti-download"></i> Export</button>
+          </div>
+          <div style="overflow-x:auto">
+            <table class="vr-table" style="width:100%;border-collapse:collapse">
+              <thead><tr>
+                <th>Date &amp; Time</th>
+                <th>Heart Rate</th>
+                <th>Blood Pressure</th>
+                <th>SpO2</th>
+                <th>Temperature</th>
+                <th>Weight</th>
+                <th>Status</th>
+                <th></th>
+              </tr></thead>
+              <tbody id="vitals-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Insights -->
+        <div class="vt2-card" style="padding:16px">
+          <div style="font-size:13px;font-weight:600;color:var(--tx);margin-bottom:12px">Insights &amp; Recommendations</div>
+          <div id="vt2-insights" style="display:flex;flex-direction:column;gap:8px"></div>
         </div>
       </div>
 
@@ -940,7 +1351,17 @@ input,select,textarea{font-family:var(--font)}
 
       <!-- AI ADVISOR FULL PAGE -->
       <div class="pg" id="ppai" style="height:100%;flex-direction:column">
-        <div style="flex:1;overflow-y:auto;padding-bottom:10px" id="ai-full-messages"></div>
+
+        <!-- Smart Prompt Templates -->
+        <div id="ai-prompt-chips" style="padding:0 0 10px 0;flex-shrink:0">
+          <div style="font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--tx3);margin-bottom:7px;font-weight:600">⚡ Quick Prompts</div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px" id="chips-container"></div>
+        </div>
+
+        <!-- Messages -->
+        <div style="flex:1;overflow-y:auto;padding-bottom:10px;border-top:1px solid var(--bd);padding-top:10px" id="ai-full-messages"></div>
+
+        <!-- Input Row -->
         <div style="border-top:1px solid var(--bd);padding-top:12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
           <div class="ai-lang-btns">
             <button class="ai-lang-btn on" onclick="setAILang('en',this)">English</button>
@@ -1043,42 +1464,56 @@ input,select,textarea{font-family:var(--font)}
 <div class="modal-overlay" id="modal-add-rad" onclick="if(event.target===this)closeModal('modal-add-rad')">
   <div class="modal modal-wide">
     <div class="modal-header">
-      <h3>Add Radiology / Imaging Record</h3>
+      <h3 id="rad-modal-title">Add Radiology / Imaging Study</h3>
       <button class="modal-close" onclick="closeModal('modal-add-rad')"><i class="ti ti-x" aria-hidden="true"></i></button>
     </div>
     <div class="modal-body">
       <div class="form-2col">
-        <div class="form-row"><label>Type *</label><select id="fr-type"><option>X-Ray</option><option>Ultrasound</option><option>MRI</option><option>CT Scan</option><option>ECG</option><option>Echo</option><option>Mammogram</option><option>Bone Density</option><option>Other</option></select></div>
-        <div class="form-row"><label>Body Part</label><input id="fr-body" placeholder="e.g. Chest, Abdomen"/></div>
+        <div class="form-row"><label>Modality / Type *</label>
+          <select id="fr-type">
+            <option>X-Ray</option><option>MRI</option><option>CT Scan</option>
+            <option>Ultrasound</option><option>ECG</option><option>ETT</option>
+            <option>Echo</option><option>Mammogram</option><option>Bone Density</option>
+            <option>PET Scan</option><option>Fluoroscopy</option><option>Other</option>
+          </select>
+        </div>
+        <div class="form-row"><label>Body Part / Region</label><input id="fr-body" placeholder="e.g. Brain, Chest, Abdomen"/></div>
       </div>
       <div class="form-2col">
-        <div class="form-row"><label>Report Date *</label><input id="fr-date" type="date"/></div>
-        <div class="form-row"><label>Result</label>
-          <div class="toggle-group">
-            <button class="tgb on" id="rad-normal" onclick="setRadStatus('Normal')">Normal</button>
-            <button class="tgb" id="rad-abnormal" onclick="setRadStatus('Abnormal')">Abnormal</button>
-          </div>
+        <div class="form-row"><label>Study Date *</label><input id="fr-date" type="date"/></div>
+        <div class="form-row"><label>Study ID</label><input id="fr-study-id" placeholder="e.g. MRI-2026-001 (auto if blank)"/></div>
+      </div>
+      <div class="form-2col">
+        <div class="form-row"><label>Referring Doctor</label><input id="fr-doctor" placeholder="e.g. Dr. Salman Ali"/></div>
+        <div class="form-row"><label>Facility / Hospital</label><input id="fr-hospital" placeholder="e.g. AKUH, LNH, Chughtai"/></div>
+      </div>
+      <div class="form-row"><label>Result</label>
+        <div class="toggle-group">
+          <button class="tgb on" id="rad-normal" onclick="setRadStatus('Normal')">Normal</button>
+          <button class="tgb" id="rad-abnormal" onclick="setRadStatus('Abnormal')">Abnormal</button>
+          <button class="tgb" id="rad-pending" onclick="setRadStatus('Pending')">Pending</button>
         </div>
       </div>
-      <div class="form-2col">
-        <div class="form-row"><label>Doctor / Radiologist</label><input id="fr-doctor" placeholder="e.g. Dr. Ahmed"/></div>
-        <div class="form-row"><label>Hospital / Lab</label><input id="fr-hospital" placeholder="e.g. AKUH, Chughtai"/></div>
-      </div>
-      <div class="form-row"><label>Findings</label><textarea id="fr-findings" placeholder="Radiologist findings..."></textarea></div>
-      <div class="form-row"><label>Impression / Conclusion</label><textarea id="fr-impression" placeholder="Clinical impression..."></textarea></div>
+      <div class="form-row"><label>Findings Summary</label><textarea id="fr-findings" rows="2" placeholder="Radiologist findings e.g. No active disease, Normal study..."></textarea></div>
+      <div class="form-row"><label>Clinical Impression / Notes</label><textarea id="fr-impression" rows="2" placeholder="Clinical impression or patient notes..."></textarea></div>
       <div class="form-row">
-        <label>Films / Report Files (PDF, JPG, PNG)</label>
-        <div class="file-drop-zone" onclick="document.getElementById('fr-files').click()">
-          <i class="ti ti-cloud-upload" aria-hidden="true"></i>
-          <p>Click to upload files — PDF, JPG, PNG supported</p>
-          <input type="file" id="fr-files" multiple accept=".pdf,.jpg,.jpeg,.png" style="display:none" onchange="handleRadFiles(event)"/>
+        <label>Upload Films / Reports</label>
+        <div style="display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap">
+          <button class="btn" style="font-size:11px" onclick="document.getElementById('fr-files').click()"><i class="ti ti-folder-open"></i> Browse Files</button>
+          <button class="btn" style="font-size:11px" onclick="document.getElementById('fr-camera').click()"><i class="ti ti-camera"></i> Take Photo</button>
+        </div>
+        <div class="file-drop-zone" onclick="document.getElementById('fr-files').click()" style="padding:10px">
+          <i class="ti ti-cloud-upload" style="font-size:20px"></i>
+          <p style="font-size:11px;margin-top:4px">Drag &amp; drop files · DICOM, JPG, PNG, PDF supported</p>
+          <input type="file" id="fr-files" multiple accept="image/*,.pdf,.dcm" style="display:none" onchange="handleRadFiles(event)"/>
+          <input type="file" id="fr-camera" accept="image/*" capture="environment" style="display:none" onchange="handleRadFiles(event)"/>
         </div>
         <div class="attached-files-list" id="rad-files-preview"></div>
       </div>
     </div>
     <div class="modal-footer">
       <button class="btn" onclick="closeModal('modal-add-rad')">Cancel</button>
-      <button class="btn btn-primary" onclick="saveRad()">Save Record</button>
+      <button class="btn btn-primary" onclick="saveRad()"><i class="ti ti-device-floppy"></i> Save Study</button>
     </div>
   </div>
 </div>
@@ -1309,7 +1744,7 @@ const S = {
   currentPatient: null,
   currentPage: 'home',
   labFilter: 'All',
-  labView: 'charts',
+  labView: 'table',
   labSort: 'newest',
   aiLang: 'en',
   exportFmt: 'pdf',
@@ -1330,6 +1765,7 @@ const S = {
   sumVitChart: null,
   patients: [],
   aiRetryCount: 0,
+  summaryPeriod: '30d',
 };
 
 // ============================================================
@@ -1490,8 +1926,9 @@ function closeThemePanel() { document.getElementById('theme-panel').classList.re
 // AUTH
 // ============================================================
 function switchAuthTab(tab) {
-  ['login','register','otp','forgot'].forEach(t => {
-    document.getElementById('tab-'+t).style.display = t===tab?'block':'none';
+  ['login','register','otp','forgot','new-password'].forEach(t => {
+    const el = document.getElementById('tab-'+t);
+    if (el) el.style.display = t===tab?'block':'none';
   });
   document.querySelectorAll('.auth-tab').forEach((btn,i) => {
     btn.classList.toggle('on', (i===0&&tab==='login')||(i===1&&tab==='register'));
@@ -1505,15 +1942,60 @@ function showAuthError(msg) {
   el.style.display = 'block';
 }
 
+// ============================================================
+// AUTH — Real email OTP via EmailJS (free, works on GitHub Pages)
+// EmailJS setup: https://www.emailjs.com — free 200 emails/month
+// Set your keys in localStorage: mt_ejs_service, mt_ejs_template, mt_ejs_pubkey
+// ============================================================
+let _pendingOTP = '';
+let _pendingEmail = '';
+let _pendingName = '';
+let _pendingPass = '';
+let _otpPurpose = 'register'; // 'register' or 'reset'
+
+function generateOTP() {
+  return String(Math.floor(100000 + Math.random() * 900000));
+}
+
+async function sendOTPEmail(email, name, otp, purpose) {
+  const serviceId  = localStorage.getItem('mt_ejs_service')  || '';
+  const templateId = localStorage.getItem('mt_ejs_template') || '';
+  const pubKey     = localStorage.getItem('mt_ejs_pubkey')   || '';
+
+  if (!serviceId || !templateId || !pubKey) {
+    // EmailJS not configured — show OTP in toast for demo
+    showToast(`Demo OTP: ${otp} (Configure EmailJS in Settings for real email)`, 'success');
+    return true;
+  }
+
+  try {
+    await emailjs.send(serviceId, templateId, {
+      to_email: email,
+      to_name: name || email,
+      otp_code: otp,
+      purpose: purpose === 'reset' ? 'Password Reset' : 'Account Verification',
+      app_name: 'MedTracker'
+    }, pubKey);
+    showToast(`OTP sent to ${email}`, 'success');
+    return true;
+  } catch(err) {
+    showToast(`Demo OTP: ${otp} (Email send failed — use this code)`, 'success');
+    return true;
+  }
+}
+
 function doLogin() {
-  const email = document.getElementById('login-email').value.trim();
-  const pass = document.getElementById('login-pass').value;
+  const email = document.getElementById('login-email').value.trim().toLowerCase();
+  const pass  = document.getElementById('login-pass').value;
   if (!email) return showAuthError('Please enter your email address.');
-  if (!pass) return showAuthError('Please enter your password.');
+  if (!pass)  return showAuthError('Please enter your password.');
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return showAuthError('Please enter a valid email address.');
   const users = JSON.parse(localStorage.getItem('mt_accounts')||'[]');
-  const user = users.find(u => u.email===email && u.pass===pass);
-  if (!user && email !== 'demo@medtracker.pk') return showAuthError('Invalid email or password. Try demo@medtracker.pk with any password.');
-  const u = user || {name:'Demo User',email,theme:'dark-purple'};
+  const user  = users.find(u => u.email===email && u.pass===btoa(pass));
+  // Allow demo account
+  if (!user && !(email==='demo@medtracker.pk')) return showAuthError('Invalid email or password.');
+  const u = user || {name:'Demo User', email, theme:'dark-purple', verified:true};
+  if (!u.verified) return showAuthError('Email not verified. Please check your OTP email.');
   S.currentUser = u;
   localStorage.setItem('mt_user', JSON.stringify(u));
   if (u.theme) applyTheme(u.theme);
@@ -1521,19 +2003,23 @@ function doLogin() {
 }
 
 function doRegister() {
-  const name = document.getElementById('reg-name').value.trim();
-  const email = document.getElementById('reg-email').value.trim();
-  const pass = document.getElementById('reg-pass').value;
+  const name  = document.getElementById('reg-name').value.trim();
+  const email = document.getElementById('reg-email').value.trim().toLowerCase();
+  const pass  = document.getElementById('reg-pass').value;
   if (!name||!email||!pass) return showAuthError('Please fill all required fields.');
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return showAuthError('Please enter a valid email address.');
   if (pass.length < 6) return showAuthError('Password must be at least 6 characters.');
   const users = JSON.parse(localStorage.getItem('mt_accounts')||'[]');
-  if (users.find(u=>u.email===email)) return showAuthError('This email is already registered.');
-  const theme = document.documentElement.getAttribute('data-theme')||'dark-purple';
-  users.push({name,email,pass,theme});
-  localStorage.setItem('mt_accounts',JSON.stringify(users));
+  if (users.find(u=>u.email===email)) return showAuthError('This email is already registered. Please login.');
+  _pendingEmail = email;
+  _pendingName  = name;
+  _pendingPass  = pass;
+  _pendingOTP   = generateOTP();
+  _otpPurpose   = 'register';
+  sendOTPEmail(email, name, _pendingOTP, 'register');
   buildOTPInputs();
+  document.getElementById('otp-label').textContent = `Enter the 6-digit code sent to ${email}`;
   switchAuthTab('otp');
-  showToast('OTP sent to '+email+' (Demo OTP: 123456)', 'success');
 }
 
 function buildOTPInputs() {
@@ -1541,38 +2027,85 @@ function buildOTPInputs() {
   c.innerHTML = '';
   for (let i=0;i<6;i++) {
     const inp = document.createElement('input');
-    inp.type = 'text';
-    inp.maxLength = 1;
-    inp.className = 'otp-input';
+    inp.type = 'text'; inp.maxLength = 1; inp.className = 'otp-input';
+    inp.setAttribute('inputmode','numeric');
     inp.oninput = e => { if(e.target.value&&inp.nextSibling) inp.nextSibling.focus(); };
     inp.onkeydown = e => { if(e.key==='Backspace'&&!e.target.value&&inp.previousSibling) inp.previousSibling.focus(); };
     c.appendChild(inp);
   }
+  setTimeout(()=>c.querySelector('.otp-input')?.focus(), 100);
 }
 
 function verifyOTP() {
-  const otp = [...document.querySelectorAll('.otp-input')].map(i=>i.value).join('');
-  if (otp.length < 6) return showAuthError('Please enter the full 6-digit OTP.');
-  if (otp !== '123456') return showAuthError('Invalid OTP. Demo OTP is 123456.');
-  const email = document.getElementById('reg-email').value;
-  const users = JSON.parse(localStorage.getItem('mt_accounts')||'[]');
-  const user = users.find(u=>u.email===email);
-  if (user) { S.currentUser=user; localStorage.setItem('mt_user',JSON.stringify(user)); }
-  showApp();
+  const entered = [...document.querySelectorAll('.otp-input')].map(i=>i.value).join('');
+  if (entered.length < 6) return showAuthError('Please enter the full 6-digit code.');
+  if (entered !== _pendingOTP) return showAuthError('Incorrect code. Please try again.');
+
+  if (_otpPurpose === 'register') {
+    const users = JSON.parse(localStorage.getItem('mt_accounts')||'[]');
+    const newUser = {name:_pendingName, email:_pendingEmail, pass:btoa(_pendingPass), theme:'dark-purple', verified:true, created:new Date().toISOString()};
+    users.push(newUser);
+    localStorage.setItem('mt_accounts', JSON.stringify(users));
+    S.currentUser = newUser;
+    localStorage.setItem('mt_user', JSON.stringify(newUser));
+    showToast('Account created successfully!','success');
+    showApp();
+  } else if (_otpPurpose === 'reset') {
+    switchAuthTab('new-password');
+  }
 }
 
-function resendOTP() { showToast('New OTP sent (Demo: 123456)','success'); }
+function resendOTP() {
+  _pendingOTP = generateOTP();
+  sendOTPEmail(_pendingEmail, _pendingName, _pendingOTP, _otpPurpose);
+  buildOTPInputs();
+}
 
 function doForgot() {
-  const email = document.getElementById('forgot-email').value.trim();
-  if (!email) return showAuthError('Please enter your email.');
-  showToast('Reset link sent to '+email+' (demo mode)','success');
-  setTimeout(()=>switchAuthTab('login'),2000);
+  const email = document.getElementById('forgot-email').value.trim().toLowerCase();
+  if (!email) return showAuthError('Please enter your email address.');
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return showAuthError('Please enter a valid email address.');
+  const users = JSON.parse(localStorage.getItem('mt_accounts')||'[]');
+  const user = users.find(u=>u.email===email);
+  if (!user) return showAuthError('No account found with this email.');
+  _pendingEmail = email;
+  _pendingName  = user.name||email;
+  _pendingOTP   = generateOTP();
+  _otpPurpose   = 'reset';
+  sendOTPEmail(email, user.name||email, _pendingOTP, 'reset');
+  buildOTPInputs();
+  document.getElementById('otp-label').textContent = `Enter the reset code sent to ${email}`;
+  switchAuthTab('otp');
+}
+
+function doResetPassword() {
+  const newPass = document.getElementById('new-pass').value;
+  const confPass = document.getElementById('conf-pass').value;
+  if (!newPass||newPass.length<6) return showAuthError('Password must be at least 6 characters.');
+  if (newPass!==confPass) return showAuthError('Passwords do not match.');
+  const users = JSON.parse(localStorage.getItem('mt_accounts')||'[]');
+  const idx = users.findIndex(u=>u.email===_pendingEmail);
+  if (idx<0) return showAuthError('Account not found.');
+  users[idx].pass = btoa(newPass);
+  localStorage.setItem('mt_accounts', JSON.stringify(users));
+  showToast('Password reset successfully. Please login.','success');
+  setTimeout(()=>switchAuthTab('login'),1500);
 }
 
 function socialLogin(provider) {
-  S.currentUser = {name:provider+' User',email:'user@'+provider.toLowerCase()+'.com',theme:localStorage.getItem('mt_theme')||'dark-purple'};
-  localStorage.setItem('mt_user',JSON.stringify(S.currentUser));
+  // Social login simulation — in real deployment, use Firebase/Auth0
+  const mockEmails = {Google:'user@gmail.com', Microsoft:'user@outlook.com'};
+  const email = mockEmails[provider]||`user@${provider.toLowerCase()}.com`;
+  const users = JSON.parse(localStorage.getItem('mt_accounts')||'[]');
+  let user = users.find(u=>u.email===email);
+  if (!user) {
+    user = {name:`${provider} User`, email, pass:'', theme:'dark-purple', verified:true, social:provider};
+    users.push(user);
+    localStorage.setItem('mt_accounts', JSON.stringify(users));
+  }
+  S.currentUser = user;
+  localStorage.setItem('mt_user', JSON.stringify(user));
+  if (user.theme) applyTheme(user.theme);
   showApp();
 }
 
@@ -1648,6 +2181,13 @@ function selectPatient(id) {
   S.currentPatient = S.patients.find(p=>p.id===id);
   if (!S.currentPatient) return;
   const pt = S.currentPatient;
+  // Reset AI context for new patient
+  S.aiHistory = [];
+  S.summaryPeriod = '30d';
+  const aiMsgs = document.getElementById('ai-full-messages');
+  if (aiMsgs) aiMsgs.innerHTML = '';
+  const chips = document.getElementById('chips-container');
+  if (chips) chips.innerHTML = '';
   document.getElementById('sb-av').textContent=pt.initials;
   document.getElementById('sb-av').style.background=pt.color;
   document.getElementById('sb-pt-name').textContent=pt.name;
@@ -1765,32 +2305,65 @@ function statusLabel(s) {
 
 function renderDash() {
   const pt = S.currentPatient;
+  if (!pt) return;
+
+  // Patient card
+  const av = document.getElementById('dash-pt-avatar');
+  if (av) {
+    if (pt.photo) {
+      av.innerHTML = `<img src="${pt.photo}" style="width:100%;height:100%;object-fit:cover"/>`;
+    } else {
+      av.textContent = pt.initials||pt.name.slice(0,2).toUpperCase();
+      av.style.background = pt.color||'rgba(255,255,255,.2)';
+    }
+  }
   document.getElementById('dh-name').textContent = pt.name;
-  document.getElementById('dh-meta').textContent = `Age: ${pt.age} · ${pt.gender} · Blood: ${pt.blood}`;
-  document.getElementById('dh-issues').textContent = pt.issues||'—';
-  document.getElementById('dh-checkup').textContent = pt.checkup||'—';
+  document.getElementById('dh-meta').textContent = `${pt.age} yrs · ${pt.gender}`;
   document.getElementById('dh-doctor').textContent = pt.doctor||'—';
-  document.getElementById('dh-conditions').innerHTML = (pt.diseases||[]).map(d=>`<span style="font-size:10px;padding:2px 9px;border-radius:12px;background:rgba(255,255,255,.1);color:rgba(255,255,255,.7)">${d}</span>`).join('');
+  document.getElementById('dh-blood').textContent = pt.blood||'—';
+  document.getElementById('dh-checkup').textContent = pt.checkup||'—';
+  document.getElementById('dh-allergies').textContent = pt.allergies||'None';
+  document.getElementById('dh-conditions').innerHTML = (pt.diseases||[]).map(d=>`<span style="font-size:9px;padding:2px 8px;border-radius:12px;background:rgba(255,255,255,.15);color:rgba(255,255,255,.85)">${d}</span>`).join(' ');
+  const issBox = document.getElementById('dh-issues-box');
+  if (issBox) issBox.innerHTML = pt.issues ? `<span style="color:var(--tx3)">Issues: </span>${pt.issues}` : '';
 
-  const v = (pt.vitals||[])[0]||{};
-  const age = pt.age||60;
-  const vData = [
-    {id:'dv-bp',sid:'dv-bp-s',val:v.sys?`${v.sys}/${v.dia}`:'—',status:v.sys?getVitalStatus('sys',v.sys,age):'normal'},
-    {id:'dv-hr',sid:'dv-hr-s',val:v.hr||'—',status:v.hr?getVitalStatus('hr',v.hr,age):'normal'},
-    {id:'dv-spo2',sid:'dv-spo2-s',val:v.spo2||'—',status:v.spo2?getVitalStatus('spo2',v.spo2,age):'normal'},
-    {id:'dv-wt',sid:'dv-wt-s',val:v.wt||'—',status:'normal'},
-  ];
-  vData.forEach(d=>{
-    const el = document.getElementById(d.id);
-    if (el) el.innerHTML = d.val + (d.id==='dv-bp'?'<span class="vc-unit">mmHg</span>':d.id==='dv-hr'?'<span class="vc-unit">bpm</span>':d.id==='dv-spo2'?'<span class="vc-unit">%</span>':d.id==='dv-wt'?'<span class="vc-unit">kg</span>':'');
-    const sel = document.getElementById(d.sid);
-    if (sel) { sel.className='vc-status '+statusClass(d.status); sel.textContent=statusLabel(d.status); }
-  });
-
+  // Stats
   document.getElementById('di-labs').textContent = (pt.labs||[]).reduce((a,l)=>a+l.entries.length,0);
   document.getElementById('di-meds').textContent = (pt.meds||[]).filter(m=>m.active).length;
+  document.getElementById('di-rad').textContent  = (pt.radiology||[]).length;
   const abnCount = (pt.labs||[]).filter(l=>{const e=l.entries[0];return e&&(e.val>l.mx||e.val<l.mn)}).length;
   document.getElementById('di-abn').textContent = abnCount;
+
+  // Health score
+  const vitals = pt.vitals||[];
+  const v = vitals.length ? [...vitals].sort((a,b)=>new Date(b.date)-new Date(a.date))[0] : {};
+  const age = pt.age||60;
+  let score = 80;
+  if (v.sys && getVitalStatus('sys',v.sys,age)!=='normal') score -= 15;
+  if (v.spo2 && getVitalStatus('spo2',v.spo2,age)!=='normal') score -= 20;
+  if (v.hr && getVitalStatus('hr',v.hr,age)!=='normal') score -= 10;
+  if (abnCount > 0) score -= Math.min(20, abnCount*4);
+  score = Math.max(10, Math.min(100, score));
+  document.getElementById('dh-score').textContent = score+'%';
+  document.getElementById('dh-score-bar').style.width = score+'%';
+  document.getElementById('dh-score-bar').style.background = score>=70?'linear-gradient(90deg,var(--grn),#22d3ee)':score>=40?'linear-gradient(90deg,var(--amb),#f97316)':'linear-gradient(90deg,var(--red),#f87171)';
+  const badge = document.getElementById('dh-score-badge');
+  badge.textContent = score>=70?'Active':score>=40?'Monitor':'At Risk';
+  badge.style.background = score>=70?'var(--grn)':score>=40?'var(--amb)':'var(--red)';
+
+  // Body vitals overlay
+  const glucLab = (pt.labs||[]).find(l=>l.name.toLowerCase().includes('glucose'));
+  const glucVal = v.glucose || glucLab?.entries?.[0]?.val || null;
+  const thyroidLab = (pt.labs||[]).find(l=>l.name.toLowerCase().includes('tsh')||l.name.toLowerCase().includes('thyroid'));
+
+  document.getElementById('bv-spo2').textContent = v.spo2 ? v.spo2+'%' : '—%';
+  document.getElementById('bv-bp').textContent   = v.sys ? `${v.sys}/${v.dia}` : '—';
+  document.getElementById('bv-temp').textContent = v.temp ? v.temp+'°F' : '—°F';
+  document.getElementById('bv-glucose').innerHTML= glucVal ? `${glucVal} <span style="font-size:9px;font-weight:400">mg/dL</span>` : '—';
+  document.getElementById('bv-extra-val').innerHTML = v.hr ? `${v.hr} <span style="font-size:9px;font-weight:400" id="bv-extra-unit">bpm</span>` : '—';
+  if (thyroidLab?.entries?.[0]) {
+    document.getElementById('bv-thyroid').textContent = `Value: ${thyroidLab.entries[0].val} ${thyroidLab.unit||'mIU/L'}`;
+  }
 
   // Alerts
   const alerts = [];
@@ -1798,29 +2371,74 @@ function renderDash() {
   if (v.sys && (v.sys>180||v.sys<90)) alerts.push({level:'critical',msg:`Blood pressure critical: ${v.sys}/${v.dia} mmHg`});
   if (v.hr && (v.hr>120||v.hr<50)) alerts.push({level:'critical',msg:`Heart rate critical: ${v.hr} bpm`});
   if (abnCount>0) alerts.push({level:'warning',msg:`${abnCount} abnormal lab result(s) require attention`});
-  document.getElementById('dash-alerts').innerHTML = alerts.map(a=>`<div class="alert-banner alert-${a.level==='critical'?'critical':'warning'}"><i class="ti ti-alert-triangle"></i> ${a.msg}</div>`).join('');
+  document.getElementById('dash-alerts').innerHTML = alerts.map(a=>`<div class="alert-banner alert-${a.level==='critical'?'critical':'warning'}" style="margin-bottom:6px"><i class="ti ti-alert-triangle"></i> ${a.msg}</div>`).join('');
 
-  // Mini vitals chart
+  // Patient history list
+  const events=[];
+  (pt.appts||[]).filter(a=>a.status==='Completed').slice(0,3).forEach(a=>events.push(`- Appointment: ${a.doctor} (${a.date})`));
+  (pt.diseases||[]).slice(0,2).forEach(d=>events.push(`- Chronic Condition: ${d}`));
+  if (pt.allergies) events.push(`- Past Allergy: ${pt.allergies}`);
+  (pt.meds||[]).filter(m=>m.active).slice(0,2).forEach(m=>events.push(`- Medication: ${m.name} ${m.dose}`));
+  document.getElementById('dash-history-list').innerHTML = events.length
+    ? events.map(e=>`<div style="padding:2px 0;border-bottom:1px solid var(--bd)">${e}</div>`).join('')
+    : '<div style="color:var(--tx3)">No history recorded yet</div>';
+
+  // Appointment mini-calendar
+  renderDashCalendar();
+
+  // Vitals chart
   renderDashVitalsChart();
+}
+
+function renderDashCalendar() {
+  const pt = S.currentPatient;
+  const cal = document.getElementById('dash-appt-cal');
+  if (!cal) return;
+  const today = new Date();
+  const todayStr = today.toISOString().split('T')[0];
+  // Show 7 days starting from today
+  const days = Array.from({length:7},(_,i)=>{
+    const d = new Date(today); d.setDate(today.getDate()+i);
+    return d;
+  });
+  const appts = pt.appts||[];
+  cal.innerHTML = `<div style="display:flex;gap:4px;overflow-x:auto;padding-bottom:4px">${days.map(d=>{
+    const ds = d.toISOString().split('T')[0];
+    const hasAppt = appts.some(a=>a.date===ds&&a.status!=='Cancelled');
+    const isToday = ds===todayStr;
+    const dayNames=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    return `<div style="min-width:40px;text-align:center;padding:6px 4px;border-radius:8px;background:${hasAppt?'var(--ac)':isToday?'var(--bg3)':'transparent'};border:1px solid ${hasAppt||isToday?'var(--ac)':'var(--bd)'};cursor:pointer;flex-shrink:0" onclick="navigate('appts')">
+      <div style="font-size:9px;color:${hasAppt?'rgba(255,255,255,.7)':'var(--tx3)'}">${dayNames[d.getDay()]}</div>
+      <div style="font-size:13px;font-weight:700;color:${hasAppt?'#fff':isToday?'var(--ac)':'var(--tx)'}">${d.getDate()}</div>
+    </div>`;
+  }).join('')}</div>`;
+
+  // Next appointment
+  const upcoming = appts.filter(a=>a.date>=todayStr&&a.status!=='Cancelled').sort((a,b)=>a.date.localeCompare(b.date))[0];
+  const nextEl = document.getElementById('dash-next-appt');
+  if (nextEl) nextEl.innerHTML = upcoming
+    ? `<div style="background:var(--bg3);border-radius:var(--r);padding:8px 10px;border-left:3px solid var(--ac)"><div style="font-weight:600;color:var(--tx)">${upcoming.doctor}</div><div style="color:var(--tx3);font-size:10px">${upcoming.date} · ${upcoming.hospital||''} · ${upcoming.specialty||''}</div></div>`
+    : `<div style="color:var(--tx3);font-size:11px">No upcoming appointments</div>`;
 }
 
 function renderDashVitalsChart() {
   const pt = S.currentPatient;
   if (!pt) return;
   if (S.dashVitalsChart) { try{S.dashVitalsChart.destroy();}catch(e){} S.dashVitalsChart=null; }
-  const vitals = [...(pt.vitals||[])].sort((a,b)=>new Date(a.date)-new Date(b.date));
+  const cutoff = new Date(Date.now() - 7*864e5);
+  const vitals = [...(pt.vitals||[])].filter(v=>new Date(v.date)>=cutoff).sort((a,b)=>new Date(a.date)-new Date(b.date));
   if (!vitals.length) return;
   requestAnimationFrame(()=>{
     const ctx = document.getElementById('dash-vitals-chart');
     if (!ctx) return;
     S.dashVitalsChart = new Chart(ctx, {
       type:'line',
-      data:{labels:vitals.map(v=>v.date.slice(5)),datasets:[
-        {label:'BP Sys',data:vitals.map(v=>v.sys),borderColor:'#f87171',backgroundColor:'transparent',tension:.4,pointRadius:3,borderWidth:1.5},
-        {label:'HR',data:vitals.map(v=>v.hr),borderColor:'#c084fc',backgroundColor:'transparent',tension:.4,pointRadius:3,borderWidth:1.5},
-        {label:'SpO2',data:vitals.map(v=>v.spo2),borderColor:'#22d3ee',backgroundColor:'transparent',tension:.4,pointRadius:3,borderWidth:1.5},
+      data:{labels:vitals.map(v=>{const d=new Date(v.date);return (d.getDate()+'/'+(d.getMonth()+1));}),datasets:[
+        {label:'BP Sys',data:vitals.map(v=>v.sys||null),borderColor:'#f87171',backgroundColor:'transparent',tension:.4,pointRadius:3,borderWidth:1.5},
+        {label:'HR',data:vitals.map(v=>v.hr||null),borderColor:'#c084fc',backgroundColor:'transparent',tension:.4,pointRadius:3,borderWidth:1.5},
+        {label:'SpO2',data:vitals.map(v=>v.spo2||null),borderColor:'#22d3ee',backgroundColor:'transparent',tension:.4,pointRadius:3,borderWidth:1.5},
       ]},
-      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#50506a',font:{size:9}},grid:{color:'#1a1a2e'}},y:{ticks:{color:'#50506a',font:{size:9}},grid:{color:'#1a1a2e'}}}}
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'var(--tx3)',font:{size:9}}},tooltip:{mode:'index',intersect:false}},scales:{x:{ticks:{color:'var(--tx3)',font:{size:9}},grid:{color:'rgba(128,128,128,.1)'}},y:{ticks:{color:'var(--tx3)',font:{size:9}},grid:{color:'rgba(128,128,128,.1)'}}}}
     });
   });
 }
@@ -1846,7 +2464,7 @@ function renderLabs() {
   else labs=[...labs].sort((a,b)=>new Date(b.entries[0]?.date)-new Date(a.entries[0]?.date));
 
   const abn = labs.filter(l=>{const e=l.entries[0];return e&&(e.val>l.mx||e.val<l.mn)}).length;
-  document.getElementById('lab-alerts').innerHTML = abn?`<div class="alert-banner alert-warning"><i class="ti ti-alert-triangle"></i> ${abn} abnormal result(s) detected in current view</div>`:'';
+  document.getElementById('lab-alerts').innerHTML = abn?`<div class="alert-banner alert-warning"><i class="ti ti-alert-triangle"></i> ${abn} abnormal result(s) detected — highlighted in red/blue below</div>`:'';
 
   if (S.labView==='charts') {
     document.getElementById('labs-charts-view').style.display='';
@@ -1855,11 +2473,11 @@ function renderLabs() {
     if (!labs.length) { grid.innerHTML=`<div class="empty-state" style="grid-column:1/-1"><i class="ti ti-flask"></i><p>No lab tests in this category</p><button class="btn btn-primary" onclick="showAddLab()"><i class="ti ti-plus"></i> Add Lab Test</button></div>`; return; }
     grid.innerHTML = labs.map((l,i)=>{
       const s=getStatus(l);const sc=getColor(s);const e0=l.entries[0];
-      const arrow=s==='n'?'—':s==='h'?'↑ High':'↓ Low';
+      const arrow=s==='n'?'Normal':s==='h'?'↑ High':'↓ Low';
       return `<div class="lab-chart-card" onclick="showTestDetail(${JSON.stringify(pt.labs.indexOf(l))})">
         <div class="lcc-hdr"><span class="lcc-name">${l.name}</span><span class="lcc-val" style="color:${sc}">${e0?e0.val+' '+l.unit:'—'}</span></div>
-        <div class="lcc-ref">Ref: ${l.ref} ${l.unit} · <span style="color:${sc}">${arrow}</span></div>
-        <div class="lcc-chart-wrap"><canvas id="lc${i}" role="img" aria-label="${l.name} trend">Lab trend.</canvas></div>
+        <div class="lcc-ref">Ref: ${l.ref} ${l.unit} · <span style="color:${sc};font-weight:600">${arrow}</span></div>
+        <div class="lcc-chart-wrap"><canvas id="lc${i}"></canvas></div>
       </div>`;
     }).join('');
     requestAnimationFrame(()=>{
@@ -1869,10 +2487,10 @@ function renderLabs() {
         const s=getStatus(l);const sc=getColor(s);
         try {
           S.chartInstances[i]=new Chart(ctx,{type:'line',
-            data:{labels:sorted.map(e=>e.date.slice(5)),datasets:[{data:sorted.map(e=>e.val),borderColor:sc,backgroundColor:sc+'18',tension:.4,pointRadius:4,pointBackgroundColor:sc,fill:true,borderWidth:2}]},
+            data:{labels:sorted.map(e=>fmtDate(e.date)),datasets:[{data:sorted.map(e=>e.val),borderColor:sc,backgroundColor:sc+'18',tension:.4,pointRadius:4,pointBackgroundColor:sc,fill:true,borderWidth:2}]},
             options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`${c.parsed.y} ${l.unit}`}}},
-              scales:{x:{ticks:{color:'#50506a',font:{size:9}},grid:{color:'#1a1a2e'}},
-                y:{ticks:{color:'#50506a',font:{size:9}},grid:{color:'#1a1a2e'},
+              scales:{x:{ticks:{color:'var(--tx3)',font:{size:9}},grid:{color:'rgba(128,128,128,.1)'}},
+                y:{ticks:{color:'var(--tx3)',font:{size:9}},grid:{color:'rgba(128,128,128,.1)'},
                   suggestedMin:Math.min(l.mn,...sorted.map(e=>e.val))*.9,
                   suggestedMax:Math.max(l.mx,...sorted.map(e=>e.val))*1.1}}}});
         } catch(err){}
@@ -1881,29 +2499,69 @@ function renderLabs() {
   } else {
     document.getElementById('labs-charts-view').style.display='none';
     document.getElementById('labs-table-view').style.display='';
-    const dates=[...new Set((pt.labs||[]).flatMap(l=>l.entries.map(e=>e.date)))].sort((a,b)=>new Date(b)-new Date(a)).slice(0,6);
+
+    // Get all unique dates sorted newest first
+    const allDates=[...new Set((pt.labs||[]).flatMap(l=>l.entries.map(e=>e.date)))].sort((a,b)=>new Date(b)-new Date(a));
+    // Get lab names for each date (all unique lab names used on that date)
+    const dateLabNames={};
+    (pt.labs||[]).forEach(l=>l.entries.forEach(e=>{
+      if(!dateLabNames[e.date]) dateLabNames[e.date]=new Set();
+      if(e.lab) dateLabNames[e.date].add(e.lab);
+    }));
+
     const container = document.getElementById('lab-tbl-container');
-    container.innerHTML = `<table class="lab-tbl" style="width:100%;border-collapse:collapse">
-      <thead><tr>
-        <th>Test</th><th>Category</th><th>Ref Range</th>
-        ${dates.map(d=>`<th>${d.slice(5)}</th>`).join('')}
-        <th></th>
-      </tr></thead>
-      <tbody>${labs.map((l,idx)=>{
-        const s=getStatus(l);
-        return `<tr>
-          <td style="font-weight:600;color:var(--tx)">${l.name}</td>
-          <td><span style="font-size:10px;padding:2px 6px;border-radius:3px;border:1px solid var(--bd);color:var(--tx3)">${l.cat}</span></td>
-          <td style="color:var(--tx3);font-size:11px">${l.ref} ${l.unit}</td>
-          ${dates.map(d=>{const e=l.entries.find(x=>x.date===d);const v=e?e.val:null;const vs=v!==null?(v>l.mx?'val-h':v<l.mn?'val-l':'val-n'):'';return `<td class="${vs}">${v!==null?v:'—'}</td>`}).join('')}
-          <td style="white-space:nowrap">
-            <button class="btn" style="font-size:10px;padding:3px 6px" onclick="showTestDetail(${pt.labs.indexOf(l)})"><i class="ti ti-chart-line"></i></button>
-            <button class="btn btn-danger" style="font-size:10px;padding:3px 6px" onclick="deleteLabTest(${pt.labs.indexOf(l)})"><i class="ti ti-trash"></i></button>
-          </td>
-        </tr>`;
-      }).join('')}</tbody>
-    </table>`;
+    container.innerHTML = `
+      <div style="overflow-x:auto">
+      <table class="lab-tbl" style="width:100%;border-collapse:collapse;min-width:600px">
+        <thead>
+          <tr style="position:sticky;top:0;z-index:5;background:var(--bg2)">
+            <th style="position:sticky;left:0;z-index:6;background:var(--bg2);min-width:150px">Test</th>
+            <th style="min-width:100px">Ref. Range</th>
+            ${allDates.map(d=>{
+              const labNames=[...( dateLabNames[d]||new Set())].join(', ')||'';
+              return `<th style="min-width:90px;white-space:nowrap">${fmtDate(d)}${labNames?`<br><span style="font-size:9px;color:var(--tx3);font-weight:400">${labNames}</span>`:''}`;
+            }).join('')}
+            <th style="min-width:60px"></th>
+          </tr>
+        </thead>
+        <tbody>
+          ${labs.length ? labs.map((l)=>{
+            const s=getStatus(l);
+            const isAbn = s!=='n';
+            return `<tr style="${isAbn?'background:rgba(239,68,68,.04)':''}">
+              <td style="font-weight:600;color:var(--tx);position:sticky;left:0;background:${isAbn?'rgba(239,68,68,.06)':'var(--bg2)'};cursor:pointer" onclick="showTestDetail(${pt.labs.indexOf(l)})" title="Click to view trend chart">
+                ${l.name}
+                ${isAbn?`<span style="font-size:9px;color:${s==='h'?'#f87171':'#60a5fa'};margin-left:4px">${s==='h'?'↑':'↓'}</span>`:''}
+              </td>
+              <td style="color:var(--tx3);font-size:11px;white-space:nowrap">${l.ref} ${l.unit}</td>
+              ${allDates.map(d=>{
+                const e=l.entries.find(x=>x.date===d);
+                const v=e?e.val:null;
+                let cellStyle='';
+                if(v!==null){
+                  if(v>l.mx) cellStyle='color:#f87171;font-weight:700;background:rgba(239,68,68,.12)';
+                  else if(v<l.mn) cellStyle='color:#60a5fa;font-weight:700;background:rgba(96,165,250,.12)';
+                  else cellStyle='color:#4ade80';
+                }
+                return `<td style="${cellStyle}">${v!==null?v:'—'}</td>`;
+              }).join('')}
+              <td style="white-space:nowrap">
+                <button class="btn" style="font-size:10px;padding:3px 6px" onclick="showTestDetail(${pt.labs.indexOf(l)})" title="View trend"><i class="ti ti-chart-line"></i></button>
+                <button class="btn btn-danger" style="font-size:10px;padding:3px 6px" onclick="deleteLabTest(${pt.labs.indexOf(l)})"><i class="ti ti-trash"></i></button>
+              </td>
+            </tr>`;
+          }).join('') : `<tr><td colspan="99" style="text-align:center;padding:24px;color:var(--tx3)">No lab tests recorded. <button class="btn btn-primary" style="margin-left:8px" onclick="showAddLab()"><i class="ti ti-plus"></i> Add Lab Test</button></td></tr>`}
+        </tbody>
+      </table>
+      </div>`;
   }
+}
+
+// Format date as DD-MM-YY
+function fmtDate(d) {
+  if(!d) return '—';
+  const dt=new Date(d);
+  return `${String(dt.getDate()).padStart(2,'0')}-${String(dt.getMonth()+1).padStart(2,'0')}-${String(dt.getFullYear()).slice(2)}`;
 }
 
 function filterLabs(cat,btn) {
@@ -1969,41 +2627,223 @@ function deleteLabTest(idx) {
 // ============================================================
 // RADIOLOGY
 // ============================================================
+// Modality colors and icons for badges
+const RAD_META = {
+  'MRI':         {color:'#818cf8',bg:'#1e1b4b',icon:'ti-brain'},
+  'CT Scan':     {color:'#f59e0b',bg:'#422006',icon:'ti-scan'},
+  'X-Ray':       {color:'#94a3b8',bg:'#1e293b',icon:'ti-lungs'},
+  'Ultrasound':  {color:'#34d399',bg:'#022c22',icon:'ti-wave-sine'},
+  'ECG':         {color:'#f87171',bg:'#450a0a',icon:'ti-activity'},
+  'ETT':         {color:'#fb923c',bg:'#431407',icon:'ti-run'},
+  'Echo':        {color:'#60a5fa',bg:'#0f2040',icon:'ti-heart'},
+  'Mammogram':   {color:'#f472b6',bg:'#4a044e',icon:'ti-scan'},
+  'Bone Density':{color:'#e2e8f0',bg:'#1e293b',icon:'ti-bone'},
+  'PET Scan':    {color:'#a78bfa',bg:'#2e1065',icon:'ti-atom'},
+  'Other':       {color:'#9ca3af',bg:'#1f2937',icon:'ti-file-report'},
+};
+
+function radBadge(type) {
+  const m = RAD_META[type] || RAD_META['Other'];
+  return `<span style="background:${m.bg};color:${m.color};border:1px solid ${m.color}33;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700">${type}</span>`;
+}
+
 function renderRad() {
   const pt = S.currentPatient;
-  const rad = pt.radiology||[];
+  if (!pt) return;
+  const all = pt.radiology||[];
+
+  // --- Stats row ---
+  const statsRow = document.getElementById('rad-stats-row');
+  if (statsRow) {
+    const thisYear = new Date().getFullYear();
+    const byType = {};
+    all.forEach(r=>{ byType[r.type]=(byType[r.type]||0)+1; });
+    const topTypes = ['MRI','CT Scan','X-Ray','Ultrasound'];
+    const statCards = [
+      {label:'Total Studies',val:all.length,sub:'All time',color:'var(--ac2)',icon:'ti-scan'},
+      {label:'This Year',val:all.filter(r=>r.date&&r.date.startsWith(thisYear)).length,sub:'Studies',color:'var(--blu)',icon:'ti-calendar'},
+      ...topTypes.map(t=>({label:t,val:byType[t]||0,sub:'Studies',color:(RAD_META[t]||{}).color||'var(--tx2)',icon:(RAD_META[t]||{}).icon||'ti-scan'}))
+    ];
+    statsRow.innerHTML = statCards.map(s=>`
+      <div style="background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r2);padding:12px;text-align:left">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+          <span style="font-size:10px;color:var(--tx3)">${s.label}</span>
+          <i class="ti ${s.icon}" style="font-size:14px;color:${s.color}"></i>
+        </div>
+        <div style="font-size:22px;font-weight:700;color:${s.color}">${s.val}</div>
+        <div style="font-size:10px;color:var(--tx3)">${s.sub}</div>
+      </div>`).join('');
+  }
+
+  // --- Apply filters ---
+  const search  = (document.getElementById('rad-search')?.value||'').toLowerCase();
+  const fType   = document.getElementById('rad-filter-type')?.value||'';
+  const fBody   = document.getElementById('rad-filter-body')?.value||'';
+  const fDate   = document.getElementById('rad-filter-date')?.value||'';
+  const fStatus = document.getElementById('rad-filter-status')?.value||'';
+  const now = new Date();
+  const dateCutoff = fDate==='30d'?new Date(now-30*864e5):fDate==='90d'?new Date(now-90*864e5):fDate==='1y'?new Date(now-365*864e5):null;
+
+  const filtered = all.filter(r=>{
+    if(fType && r.type!==fType) return false;
+    if(fBody && !(r.body||'').toLowerCase().includes(fBody.toLowerCase())) return false;
+    if(fStatus && r.status!==fStatus) return false;
+    if(dateCutoff && r.date && new Date(r.date)<dateCutoff) return false;
+    if(search && !`${r.type} ${r.body} ${r.doctor} ${r.hospital} ${r.findings}`.toLowerCase().includes(search)) return false;
+    return true;
+  });
+
+  // --- Recent studies list (right panel, top 4) ---
+  const recentList = document.getElementById('rad-recent-list');
+  const recent = [...all].sort((a,b)=>new Date(b.date)-new Date(a.date)).slice(0,4);
+  if (recentList) {
+    recentList.innerHTML = recent.length ? recent.map((r,i)=>{
+      const meta = RAD_META[r.type]||RAD_META['Other'];
+      const firstImg = (r.files||[]).find(f=>f.type?.startsWith('image'));
+      const thumb = firstImg
+        ? `<img src="${firstImg.data}" style="width:52px;height:52px;object-fit:cover;border-radius:6px;flex-shrink:0"/>`
+        : `<div style="width:52px;height:52px;border-radius:6px;background:${meta.bg};display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ${meta.icon}" style="font-size:20px;color:${meta.color}"></i></div>`;
+      return `<div style="display:flex;align-items:center;gap:10px;padding:8px;background:var(--bg3);border-radius:var(--r);border:1px solid var(--bd);cursor:pointer" onclick="openRadDetail(${all.indexOf(r)})">
+        ${thumb}
+        <div style="flex:1;min-width:0">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:2px">${radBadge(r.type)}</div>
+          <div style="font-size:12px;font-weight:600;color:var(--tx);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${r.body||'—'}</div>
+          <div style="font-size:10px;color:var(--tx3)">${r.date} ${r.hospital?'· '+r.hospital:''}</div>
+          ${r.findings?`<div style="font-size:10px;color:var(--tx2);margin-top:1px">Findings: ${r.findings.slice(0,40)}${r.findings.length>40?'...':''}</div>`:''}
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">
+          ${r.files?.length?`<span style="font-size:10px;color:var(--tx3)">📎 ${r.files.length} file${r.files.length>1?'s':''}</span>`:''}
+          <button class="icon-btn" onclick="event.stopPropagation();editRad(${all.indexOf(r)})"><i class="ti ti-dots-vertical"></i></button>
+        </div>
+      </div>`;
+    }).join('') : `<div style="text-align:center;padding:20px;color:var(--tx3);font-size:12px">No studies yet</div>`;
+  }
+
+  // --- All studies grid ---
   const grid = document.getElementById('rad-grid');
   const empty = document.getElementById('rad-empty');
-  if (!rad.length) { grid.style.display='none'; empty.style.display='block'; return; }
-  grid.style.display='grid'; empty.style.display='none';
-  grid.innerHTML = rad.map((r,i)=>{
-    const hasFile = r.files&&r.files.length>0;
-    const firstFile = hasFile?r.files[0]:null;
-    const isImg = firstFile&&(firstFile.type?.startsWith('image')||firstFile.name?.match(/\.(jpg|jpeg|png)$/i));
-    const thumbHTML = firstFile
-      ? `<div class="rad-thumbnail" onclick="openLightbox('${firstFile.name||'Report'}',${i},0,'rad')">
-          ${firstFile.data?(isImg?`<img src="${firstFile.data}" alt="Report"/>`:`<div class="no-file"><i class="ti ti-file-type-pdf" style="font-size:32px;color:var(--ac2)"></i><span style="font-size:10px">PDF Report</span></div>`):'<div class="no-file"><i class="ti ti-file" style="font-size:32px"></i></div>'}
-          <div class="rad-overlay"><i class="ti ti-eye" style="font-size:24px;color:#fff"></i></div>
-        </div>`
-      : `<div class="rad-thumbnail"><div class="no-file"><i class="ti ti-scan" style="font-size:28px"></i><span style="font-size:10px;color:var(--tx3)">No files attached</span></div></div>`;
+  const label = document.getElementById('rad-all-label');
+  if(label) label.textContent = `All Studies (${filtered.length})`;
+
+  if (!filtered.length) {
+    grid.style.display='none';
+    empty.style.display='block';
+    empty.querySelector('p').textContent = all.length ? 'No studies match your filters' : 'No radiology records yet';
+    return;
+  }
+  grid.style.display='grid';
+  empty.style.display='none';
+
+  grid.innerHTML = filtered.map((r,fi)=>{
+    const i = all.indexOf(r);
+    const meta = RAD_META[r.type]||RAD_META['Other'];
+    const firstImg = (r.files||[]).find(f=>f.type?.startsWith('image'));
+    const thumbHTML = firstImg
+      ? `<div class="rad-thumbnail" onclick="openRadDetail(${i})"><img src="${firstImg.data}" alt="${r.type}" style="width:100%;height:100%;object-fit:cover"/><div class="rad-overlay"><i class="ti ti-eye" style="font-size:24px;color:#fff"></i></div></div>`
+      : `<div class="rad-thumbnail" style="background:${meta.bg};cursor:pointer" onclick="openRadDetail(${i})"><div class="no-file"><i class="ti ${meta.icon}" style="font-size:32px;color:${meta.color}"></i><span style="font-size:10px;color:${meta.color}">${r.type}</span></div></div>`;
     return `<div class="rad-card">
       ${thumbHTML}
       <div class="rad-body">
-        <div class="rad-type-badge"><i class="ti ti-scan"></i>${r.type}</div>
+        <div style="margin-bottom:4px">${radBadge(r.type)}</div>
         <div style="font-size:13px;font-weight:700;color:var(--tx)">${r.body||'—'}</div>
-        <div style="font-size:10px;color:var(--tx3);margin-top:1px">${r.date}</div>
-        <div class="badge ${r.status==='Normal'?'badge-n':'badge-h'}" style="margin-top:5px">${r.status}</div>
+        <div style="font-size:10px;color:var(--tx3);margin-top:1px">${r.date}${r.hospital?' · '+r.hospital:''}</div>
+        <div style="margin-top:5px;display:flex;align-items:center;gap:6px">
+          <span class="badge ${r.status==='Normal'?'badge-n':r.status==='Pending'?'badge-w':'badge-h'}">${r.status||'—'}</span>
+          ${r.files?.length?`<span style="font-size:10px;color:var(--tx3)">📎 ${r.files.length}</span>`:''}
+        </div>
         ${r.doctor?`<div style="font-size:10px;color:var(--tx3);margin-top:4px"><i class="ti ti-user-md"></i> ${r.doctor}</div>`:''}
-        ${r.hospital?`<div style="font-size:10px;color:var(--tx3)"><i class="ti ti-building-hospital"></i> ${r.hospital}</div>`:''}
-        ${r.findings?`<div style="font-size:11px;color:var(--tx2);margin-top:5px;line-height:1.4">${r.findings}</div>`:''}
+        ${r.findings?`<div style="font-size:11px;color:var(--tx2);margin-top:5px;line-height:1.4;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical">${r.findings}</div>`:''}
         <div style="display:flex;gap:5px;margin-top:8px">
-          <button class="btn" style="font-size:10px;padding:3px 7px" onclick="editRad(${i})"><i class="ti ti-edit"></i> Edit</button>
-          <button class="btn btn-danger" style="font-size:10px;padding:3px 7px" onclick="deleteRad(${i})"><i class="ti ti-trash"></i></button>
+          <button class="btn" style="font-size:10px;padding:3px 8px;flex:1" onclick="openRadDetail(${i})"><i class="ti ti-eye"></i> View</button>
+          <button class="btn" style="font-size:10px;padding:3px 8px" onclick="editRad(${i})"><i class="ti ti-edit"></i></button>
+          <button class="btn btn-danger" style="font-size:10px;padding:3px 8px" onclick="deleteRad(${i})"><i class="ti ti-trash"></i></button>
         </div>
       </div>
-      ${r.files&&r.files.length>1?`<div class="rad-films">${r.files.map((f,fi)=>`<div class="film-thumb" onclick="openLightbox('${f.name||'Film'}',${i},${fi},'rad')" title="${f.name||'Film '+fi}">${f.data&&f.type?.startsWith('image')?`<img src="${f.data}" alt="Film"/>`:f.data?`<i class="ti ti-file-type-pdf" style="font-size:18px;color:var(--ac2)"></i>`:`<i class="ti ti-file" style="font-size:18px"></i>`}</div>`).join('')}</div>`:''}
+      ${r.files&&r.files.length>1?`<div class="rad-films">${r.files.slice(0,6).map((f,fi)=>`<div class="film-thumb" onclick="openLightbox('${f.name||'Film'}',${i},${fi},'rad')" title="${f.name||'Film '+fi}">${f.data&&f.type?.startsWith('image')?`<img src="${f.data}" alt="Film"/>`:f.data?`<i class="ti ti-file-type-pdf" style="font-size:16px;color:var(--ac2)"></i>`:`<i class="ti ti-file" style="font-size:16px"></i>`}</div>`).join('')}${r.files.length>6?`<div class="film-thumb" style="color:var(--tx3);font-size:10px">+${r.files.length-6}</div>`:''}</div>`:''}
     </div>`;
   }).join('');
+}
+
+function openRadDetail(i) {
+  const pt = S.currentPatient;
+  const r = (pt.radiology||[])[i];
+  if (!r) return;
+  const meta = RAD_META[r.type]||RAD_META['Other'];
+  const dv = document.getElementById('rad-detail-view');
+  dv.style.display='block';
+  dv.scrollIntoView({behavior:'smooth',block:'start'});
+  const imgs = (r.files||[]).filter(f=>f.type?.startsWith('image'));
+  const pdfs = (r.files||[]).filter(f=>f.type?.includes('pdf'));
+  dv.innerHTML=`
+    <div style="background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r2);overflow:hidden">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--bd);flex-wrap:wrap;gap:8px">
+        <div>
+          <div style="font-size:15px;font-weight:700;color:var(--tx)">${r.type} · ${r.body||'—'}</div>
+          <div style="font-size:11px;color:var(--tx3)">${r.date} ${r.hospital?'· '+r.hospital:''} ${r.doctor?'· '+r.doctor:''}</div>
+        </div>
+        <div style="display:flex;gap:6px">
+          <button class="btn" style="font-size:11px" onclick="editRad(${i})"><i class="ti ti-edit"></i> Edit</button>
+          <button class="btn btn-danger" style="font-size:11px" onclick="deleteRad(${i})"><i class="ti ti-trash"></i></button>
+          <button class="btn" style="font-size:11px" onclick="document.getElementById('rad-detail-view').style.display='none'"><i class="ti ti-x"></i></button>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 280px;gap:0" class="rad-detail-split">
+        <!-- Image viewer -->
+        <div style="padding:12px;border-right:1px solid var(--bd)">
+          ${imgs.length?`
+            <div style="background:#000;border-radius:var(--r);overflow:hidden;text-align:center;min-height:200px;display:flex;align-items:center;justify-content:center" id="rad-main-img-wrap">
+              <img id="rad-main-img" src="${imgs[0].data}" style="max-width:100%;max-height:320px;object-fit:contain;cursor:zoom-in" onclick="openLightbox('${imgs[0].name||r.type}',${i},0,'rad')"/>
+            </div>
+            ${imgs.length>1?`<div style="display:flex;gap:6px;margin-top:8px;overflow-x:auto;padding-bottom:4px">${imgs.map((f,fi)=>`<img src="${f.data}" style="width:52px;height:52px;object-fit:cover;border-radius:6px;cursor:pointer;border:2px solid ${fi===0?'var(--ac)':'transparent'};flex-shrink:0" onclick="document.getElementById('rad-main-img').src='${f.data}';document.getElementById('rad-main-img').onclick=()=>openLightbox('${f.name||r.type}',${i},${fi},'rad')"/>`).join('')}</div>`:''}
+            <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
+              <button class="btn" style="font-size:11px" onclick="openLightbox('${r.type}',${i},0,'rad')"><i class="ti ti-arrows-maximize"></i> Full Screen</button>
+            </div>`
+          : pdfs.length ? `<div style="text-align:center;padding:30px;color:var(--tx3)"><i class="ti ti-file-type-pdf" style="font-size:40px;color:var(--ac2)"></i><p style="margin-top:8px;font-size:12px">${pdfs.length} PDF Report(s)</p><button class="btn btn-primary" style="margin-top:8px;font-size:11px" onclick="openLightbox('${r.type}',${i},0,'rad')"><i class="ti ti-eye"></i> View PDF</button></div>`
+          : `<div style="text-align:center;padding:30px;color:var(--tx3)"><i class="ti ${meta.icon}" style="font-size:40px;color:${meta.color}"></i><p style="margin-top:8px;font-size:12px">No image files attached</p><button class="btn btn-primary" style="margin-top:8px;font-size:11px" onclick="editRad(${i})"><i class="ti ti-upload"></i> Upload Files</button></div>`}
+        </div>
+        <!-- Study info + notes -->
+        <div style="padding:12px">
+          <div style="font-size:11px;font-weight:600;color:var(--tx);margin-bottom:8px">Study Information</div>
+          <div style="font-size:11px;color:var(--tx2);line-height:2">
+            <div style="display:flex;justify-content:space-between"><span style="color:var(--tx3)">Modality</span><span>${r.type}</span></div>
+            <div style="display:flex;justify-content:space-between"><span style="color:var(--tx3)">Body Part</span><span>${r.body||'—'}</span></div>
+            <div style="display:flex;justify-content:space-between"><span style="color:var(--tx3)">Study Date</span><span>${r.date}</span></div>
+            <div style="display:flex;justify-content:space-between"><span style="color:var(--tx3)">Facility</span><span>${r.hospital||'—'}</span></div>
+            <div style="display:flex;justify-content:space-between"><span style="color:var(--tx3)">Ref. Doctor</span><span>${r.doctor||'—'}</span></div>
+            <div style="display:flex;justify-content:space-between"><span style="color:var(--tx3)">Study ID</span><span style="font-family:monospace;font-size:10px">${r.studyId||'—'}</span></div>
+            <div style="display:flex;justify-content:space-between"><span style="color:var(--tx3)">Files</span><span>${(r.files||[]).length} attached</span></div>
+          </div>
+          ${r.findings?`<div style="margin-top:10px;background:var(--bg3);border-radius:var(--r);padding:8px 10px"><div style="font-size:10px;font-weight:600;color:var(--grn);margin-bottom:4px">● Findings Summary</div><div style="font-size:11px;color:var(--tx2);line-height:1.6">${r.findings}</div></div>`:''}
+          ${r.impression?`<div style="margin-top:8px;background:var(--bg3);border-radius:var(--r);padding:8px 10px"><div style="font-size:10px;font-weight:600;color:var(--ac2);margin-bottom:4px">📝 Notes</div><div style="font-size:11px;color:var(--tx2);line-height:1.6">${r.impression}</div></div>`:''}
+          <div style="margin-top:10px">
+            <button class="btn btn-primary" style="width:100%;font-size:11px" onclick="shareStudy(${i})"><i class="ti ti-share"></i> Share Study</button>
+          </div>
+        </div>
+      </div>
+    </div>`;
+}
+
+function shareStudy(i) {
+  const r = (S.currentPatient?.radiology||[])[i];
+  if (!r) return;
+  const text = `*Radiology Study*\nType: ${r.type}\nBody: ${r.body}\nDate: ${r.date}\nHospital: ${r.hospital||'—'}\nFindings: ${r.findings||'—'}`;
+  const url = `https://wa.me/?text=${encodeURIComponent(text)}`;
+  window.open(url,'_blank');
+}
+
+function handleQuickRadUpload(e) {
+  const files=[...e.target.files];
+  if(!files.length) return;
+  // Pre-open add modal with files loaded
+  showAddRad();
+  files.forEach(f=>{
+    const reader=new FileReader();
+    reader.onload=ev=>{
+      S.radFiles.push({name:f.name,type:f.type,data:ev.target.result,size:f.size});
+      updateRadFilesPreview();
+    };
+    reader.readAsDataURL(f);
+  });
 }
 
 function deleteRad(i) {
@@ -2060,74 +2900,267 @@ function deleteMed(i) {
 function editMed(i) { showToast('Edit: coming soon — delete and re-add for now','success'); }
 
 // ============================================================
-// VITALS
+// VITALS — PHASE 2 REDESIGN
 // ============================================================
+function vt2StatusHTML(s) {
+  const dot = '●';
+  if(s==='critical'||s==='warning') return `<div class="vt2-status-critical">${dot} Abnormal</div>`;
+  if(s==='borderline') return `<div class="vt2-status-warning">${dot} Borderline</div>`;
+  return `<div class="vt2-status-normal">${dot} Normal</div>`;
+}
+
+function drawECG(canvasId, color) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  canvas.width = canvas.offsetWidth || 300;
+  canvas.height = 60;
+  const w = canvas.width, h = canvas.height;
+  ctx.clearRect(0,0,w,h);
+  // Draw ECG-like waveform
+  ctx.strokeStyle = color || '#22c55e';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  const pts = [];
+  const seg = w / 3;
+  for(let s=0;s<3;s++){
+    const ox = s*seg;
+    // flat baseline
+    pts.push([ox,h*0.6],[ox+seg*0.2,h*0.6]);
+    // P wave
+    pts.push([ox+seg*0.25,h*0.45],[ox+seg*0.3,h*0.6]);
+    // flat
+    pts.push([ox+seg*0.35,h*0.6]);
+    // Q dip
+    pts.push([ox+seg*0.38,h*0.75]);
+    // R peak
+    pts.push([ox+seg*0.42,h*0.05]);
+    // S dip
+    pts.push([ox+seg*0.46,h*0.8]);
+    // return
+    pts.push([ox+seg*0.5,h*0.6]);
+    // T wave
+    pts.push([ox+seg*0.58,h*0.42],[ox+seg*0.65,h*0.6]);
+    // flat to end
+    pts.push([ox+seg,h*0.6]);
+  }
+  ctx.moveTo(pts[0][0],pts[0][1]);
+  pts.forEach(p=>ctx.lineTo(p[0],p[1]));
+  ctx.stroke();
+}
+
+function drawRiskGauge(score) {
+  const canvas = document.getElementById('vt2-risk-gauge');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const w=200,h=120;
+  canvas.width=w; canvas.height=h;
+  ctx.clearRect(0,0,w,h);
+  const cx=w/2, cy=h-10, r=80;
+  // Background arc
+  ctx.beginPath();
+  ctx.arc(cx,cy,r,Math.PI,0);
+  ctx.lineWidth=16; ctx.strokeStyle='rgba(128,128,128,.15)';
+  ctx.stroke();
+  // Colored arc — green→yellow→red
+  const grad = ctx.createLinearGradient(cx-r,0,cx+r,0);
+  grad.addColorStop(0,'#22c55e');
+  grad.addColorStop(0.5,'#f59e0b');
+  grad.addColorStop(1,'#ef4444');
+  const angle = Math.PI + (score/100)*Math.PI;
+  ctx.beginPath();
+  ctx.arc(cx,cy,r,Math.PI,angle);
+  ctx.strokeStyle=grad; ctx.lineWidth=16;
+  ctx.stroke();
+  // Needle
+  const needleAngle = Math.PI + (score/100)*Math.PI;
+  ctx.beginPath();
+  ctx.moveTo(cx,cy);
+  ctx.lineTo(cx+Math.cos(needleAngle)*65, cy+Math.sin(needleAngle)*65);
+  ctx.strokeStyle='#fff'; ctx.lineWidth=2;
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.arc(cx,cy,6,0,Math.PI*2);
+  ctx.fillStyle='#fff'; ctx.fill();
+}
+
 function renderVitals() {
   const pt = S.currentPatient;
   if (!pt) return;
   if (S.vitalsChartInstance) { try{S.vitalsChartInstance.destroy();}catch(e){} S.vitalsChartInstance=null; }
 
-  const sorted = [...(pt.vitals||[])].sort((a,b)=>new Date(a.date)-new Date(b.date));
+  const allVitals = pt.vitals||[];
+  const age = pt.age||60;
 
-  // Alerts
-  const v0 = (pt.vitals||[])[0];
+  // --- Apply period / date filter ---
+  const mode = S.vitalsChartMode || 'today';
+  const now = new Date();
+  let cutoff = null;
+  if (mode==='today') { cutoff = new Date(now.getFullYear(),now.getMonth(),now.getDate()); }
+  else if (mode==='7d')  cutoff = new Date(now - 7*864e5);
+  else if (mode==='30d') cutoff = new Date(now - 30*864e5);
+  else if (mode==='90d') cutoff = new Date(now - 90*864e5);
+
+  // Custom date filter from date input
+  const dateInput = document.getElementById('vitals-date-filter');
+  const filterDate = dateInput?.value || null;
+
+  let vitals = allVitals;
+  if (filterDate) {
+    vitals = allVitals.filter(v=>v.date===filterDate);
+  } else if (cutoff) {
+    vitals = allVitals.filter(v=>new Date(v.date)>=cutoff);
+  }
+
+  // Use most recent overall for top cards
+  const v0 = allVitals.length ? [...allVitals].sort((a,b)=>new Date(b.date)-new Date(a.date))[0] : null;
+
+  // --- Alerts banner ---
   const alerts=[];
   if(v0){
-    const age=pt.age||60;
     if(v0.spo2&&getVitalStatus('spo2',v0.spo2,age)==='critical') alerts.push('critical:SpO2 CRITICAL: '+v0.spo2+'%');
-    if(v0.sys&&(v0.sys>180||v0.sys<90)) alerts.push('critical:BP CRITICAL: '+v0.sys+'/'+v0.dia+' mmHg');
+    if(v0.sys&&(v0.sys>180||v0.sys<90)) alerts.push('critical:Blood Pressure CRITICAL: '+v0.sys+'/'+v0.dia+' mmHg');
     if(v0.hr&&(v0.hr>120||v0.hr<50)) alerts.push('critical:Heart Rate CRITICAL: '+v0.hr+' bpm');
-    if(v0.temp&&v0.temp>100.4) alerts.push('warning:Fever: Temperature '+v0.temp+'°F (>100.4°F)');
+    if(v0.temp&&v0.temp>100.4) alerts.push('warning:Fever detected: '+v0.temp+'°F');
     if(v0.spo2&&v0.spo2<95&&v0.spo2>=92) alerts.push('warning:SpO2 borderline low: '+v0.spo2+'%');
   }
-  document.getElementById('vitals-alerts').innerHTML=alerts.map(a=>{const[lv,msg]=a.split(':');return`<div class="alert-banner alert-${lv==='critical'?'critical':'warning'}"><i class="ti ti-alert-triangle"></i> ${msg}</div>`;}).join('');
+  document.getElementById('vitals-alerts').innerHTML=alerts.map(a=>{const[lv,...rest]=a.split(':');const msg=rest.join(':');return`<div class="alert-banner alert-${lv==='critical'?'critical':'warning'}" style="margin-bottom:8px"><i class="ti ti-alert-triangle"></i> ${msg}</div>`;}).join('');
 
+  // --- Heart Rate ECG card ---
+  const hrVal = v0?.hr||null;
+  const hrStatus = hrVal ? getVitalStatus('hr',hrVal,age) : 'normal';
+  document.getElementById('vt2-hr-val').textContent = hrVal||'—';
+  document.getElementById('vt2-hr-status').innerHTML = hrVal ? vt2StatusHTML(hrStatus) : '';
+  requestAnimationFrame(()=>drawECG('vt2-ecg-canvas', hrStatus==='normal'?'#22c55e':hrStatus==='borderline'?'#f59e0b':'#ef4444'));
+
+  // --- 5 mini vital cards ---
+  const setMini = (valId, statId, val, statusFn) => {
+    const el = document.getElementById(valId);
+    const sel = document.getElementById(statId);
+    if(el) el.textContent = (val!==null&&val!==undefined&&val!=='') ? val : '—';
+    if(sel) sel.innerHTML = (val!==null&&val!==undefined&&val!=='') ? vt2StatusHTML(statusFn()) : '';
+  };
+  setMini('vt2-bp-val','vt2-bp-status', v0?.sys ? `${v0.sys}/${v0.dia}` : null, ()=>getVitalStatus('sys',v0?.sys||120,age));
+  setMini('vt2-spo2-val','vt2-spo2-status', v0?.spo2||null, ()=>getVitalStatus('spo2',v0?.spo2||98,age));
+  setMini('vt2-rr-val','vt2-rr-status', v0?.rr||null, ()=>{ const r=v0?.rr||16; return r>=12&&r<=20?'normal':r>=10&&r<=25?'borderline':'critical'; });
+  setMini('vt2-temp-val','vt2-temp-status', v0?.temp||null, ()=>getVitalStatus('temp',v0?.temp||98.6,age));
+
+  // Glucose — from vitals if entered, else from labs
+  const glucFromVital = v0?.glucose||null;
+  const glucLab = (pt.labs||[]).find(l=>l.name.toLowerCase().includes('glucose'));
+  const glucVal = glucFromVital || glucLab?.entries?.[0]?.val || null;
+  setMini('vt2-gluc-val','vt2-gluc-status', glucVal, ()=>glucVal>125?'critical':glucVal>110?'borderline':'normal');
+
+  // --- Risk Gauge ---
+  let riskScore = 0;
+  if(v0){
+    if(getVitalStatus('sys',v0.sys||120,age)!=='normal') riskScore+=25;
+    if(getVitalStatus('hr',v0.hr||72,age)!=='normal') riskScore+=20;
+    if(getVitalStatus('spo2',v0.spo2||98,age)!=='normal') riskScore+=30;
+    if(getVitalStatus('temp',v0.temp||98.6,age)!=='normal') riskScore+=15;
+  }
+  const abnLabs=(pt.labs||[]).filter(l=>{const e=l.entries[0];return e&&(e.val>l.mx||e.val<l.mn)}).length;
+  riskScore = Math.min(100, riskScore + abnLabs*5);
+  requestAnimationFrame(()=>drawRiskGauge(riskScore));
+  const riskLabel = riskScore<25?'Low Risk':riskScore<55?'Moderate Risk':'High Risk';
+  const riskColor = riskScore<25?'var(--grn)':riskScore<55?'var(--amb)':'var(--red)';
+  const riskDesc = riskScore<25?'Vitals look stable. Keep monitoring regularly.'
+    :riskScore<55?'Some values need attention. Keep monitoring and maintain a healthy lifestyle.'
+    :'Multiple values are abnormal. Please consult your doctor promptly.';
+  document.getElementById('vt2-risk-label').style.color=riskColor;
+  document.getElementById('vt2-risk-label').textContent=riskLabel;
+  document.getElementById('vt2-risk-desc').textContent=riskDesc;
+  document.getElementById('vt2-risk-grid').innerHTML=`
+    <div style="text-align:center;font-size:10px;color:var(--tx3)">Blood Pressure<br><span style="font-weight:700;color:${getVitalStatus('sys',v0?.sys||120,age)==='normal'?'var(--grn)':'var(--red)'}">${v0?.sys||'—'}/${v0?.dia||'—'}</span><br><span style="font-size:9px;color:${getVitalStatus('sys',v0?.sys||120,age)==='normal'?'var(--grn)':'var(--red)'}">${statusLabel(getVitalStatus('sys',v0?.sys||120,age))}</span></div>
+    <div style="text-align:center;font-size:10px;color:var(--tx3)">Blood Glucose<br><span style="font-weight:700;color:${glucVal&&glucVal>110?'var(--amb)':'var(--grn)'}">${glucVal||'—'} mg/dL</span><br><span style="font-size:9px;color:${glucVal&&glucVal>110?'var(--amb)':'var(--grn)'}">${glucVal&&glucVal>125?'High':glucVal&&glucVal>110?'Slightly High':'Normal'}</span></div>
+    <div style="text-align:center;font-size:10px;color:var(--tx3)">BMI<br><span style="font-weight:700;color:var(--tx)">${v0?.wt&&pt.height?((v0.wt/(pt.height/100)**2).toFixed(1)):'—'}</span><br><span style="font-size:9px;color:var(--tx3)">${v0?.wt&&pt.height?(()=>{const b=v0.wt/(pt.height/100)**2;return b<18.5?'Underweight':b<25?'Normal':b<30?'Overweight':'Obese';})():'—'}</span></div>`;
+
+  // --- History Chart ---
   requestAnimationFrame(()=>{
     const ctx=document.getElementById('vitals-chart');
-    if(!ctx)return;
-    const datasets=[];
-    if(S.vitalsChartMode==='all'||S.vitalsChartMode==='bp'){
-      datasets.push({label:'Systolic BP',data:sorted.map(v=>v.sys),borderColor:'#f87171',tension:.4,pointRadius:4,pointBackgroundColor:'#f87171',fill:false,borderWidth:2});
-      datasets.push({label:'Diastolic BP',data:sorted.map(v=>v.dia),borderColor:'#fb923c',tension:.4,pointRadius:4,pointBackgroundColor:'#fb923c',fill:false,borderWidth:1.5,borderDash:[4,3]});
+    if(!ctx) return;
+    const sorted=[...vitals].sort((a,b)=>new Date(a.date)-new Date(b.date));
+    S.vitalsChartInstance=new Chart(ctx,{
+      type:'line',
+      data:{
+        labels:sorted.map(v=>{const d=new Date(v.date);return `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}`;}),
+        datasets:[
+          {label:'Heart Rate',data:sorted.map(v=>v.hr||null),borderColor:'#f87171',backgroundColor:'#f8717122',tension:.4,pointRadius:3,fill:false,borderWidth:2},
+          {label:'BP Systolic',data:sorted.map(v=>v.sys||null),borderColor:'#3b82f6',backgroundColor:'#3b82f622',tension:.4,pointRadius:3,fill:false,borderWidth:2},
+          {label:'SpO2',data:sorted.map(v=>v.spo2||null),borderColor:'#22d3ee',backgroundColor:'#22d3ee22',tension:.4,pointRadius:3,fill:false,borderWidth:2},
+          {label:'Glucose',data:sorted.map(v=>v.glucose||glucVal||null),borderColor:'#fbbf24',backgroundColor:'#fbbf2422',tension:.4,pointRadius:3,fill:false,borderWidth:1.5,borderDash:[4,3]},
+        ]
+      },
+      options:{responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{display:false},tooltip:{mode:'index',intersect:false}},
+        scales:{
+          x:{ticks:{color:'var(--tx3)',font:{size:9}},grid:{color:'rgba(128,128,128,.1)'}},
+          y:{ticks:{color:'var(--tx3)',font:{size:9}},grid:{color:'rgba(128,128,128,.1)'}}
+        }
+      }
+    });
+    if(!sorted.length){
+      const c=ctx.getContext('2d');
+      c.fillStyle='var(--tx3)';c.font='12px sans-serif';c.textAlign='center';
+      c.fillText('No data for selected period',ctx.width/2,ctx.height/2);
     }
-    if(S.vitalsChartMode==='all'||S.vitalsChartMode==='hr')
-      datasets.push({label:'Heart Rate',data:sorted.map(v=>v.hr),borderColor:'#c084fc',tension:.4,pointRadius:4,pointBackgroundColor:'#c084fc',fill:false,borderWidth:2});
-    if(S.vitalsChartMode==='all'||S.vitalsChartMode==='spo2')
-      datasets.push({label:'SpO2',data:sorted.map(v=>v.spo2),borderColor:'#22d3ee',tension:.4,pointRadius:4,pointBackgroundColor:'#22d3ee',fill:false,borderWidth:2});
-    if(S.vitalsChartMode==='all')
-      datasets.push({label:'Weight',data:sorted.map(v=>v.wt),borderColor:'#4ade80',tension:.4,pointRadius:4,pointBackgroundColor:'#4ade80',fill:false,borderWidth:2});
-    S.vitalsChartInstance=new Chart(ctx,{type:'line',data:{labels:sorted.map(v=>v.date.slice(5)),datasets},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#50506a',font:{size:10}},grid:{color:'#1a1a2e',borderDash:[4,4]}},y:{ticks:{color:'#50506a',font:{size:10}},grid:{color:'#1a1a2e',borderDash:[4,4]}}}}});
   });
 
-  // Table
+  // --- Recent Readings Table ---
   const tbody=document.getElementById('vitals-tbody');
-  tbody.innerHTML=[...(pt.vitals||[])].sort((a,b)=>new Date(b.date)-new Date(a.date)).map((v,i)=>{
-    const age=pt.age||60;
+  const sorted2=[...allVitals].sort((a,b)=>new Date(b.date)-new Date(a.date));
+  tbody.innerHTML = sorted2.length ? sorted2.map((v,i)=>{
     const sysS=v.sys?getVitalStatus('sys',v.sys,age):'normal';
     const hrS=v.hr?getVitalStatus('hr',v.hr,age):'normal';
     const spo2S=v.spo2?getVitalStatus('spo2',v.spo2,age):'normal';
     const tempS=v.temp?getVitalStatus('temp',v.temp,age):'normal';
     const overallS=[sysS,hrS,spo2S,tempS].includes('critical')?'critical':[sysS,hrS,spo2S,tempS].includes('warning')?'warning':'normal';
+    const d=new Date(v.date);
+    const fmt=`${String(d.getDate()).padStart(2,'0')}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getFullYear()).slice(2)}`;
     return `<tr>
-      <td>${v.date}</td><td style="color:var(--tx3)">${v.time}</td>
-      <td style="font-weight:600;color:var(--tx)">${v.sys||'—'}/${v.dia||'—'}</td>
-      <td style="color:${getVitalStatus('hr',v.hr||70,age)==='normal'?'var(--grn)':'var(--red)'}">${v.hr||'—'}</td>
+      <td>${fmt} <span style="color:var(--tx3);font-size:10px">${v.time||''}</span></td>
+      <td style="color:${hrS==='normal'?'var(--grn)':'var(--red)'};font-weight:600">${v.hr||'—'} bpm</td>
+      <td style="font-weight:600;color:${sysS==='normal'?'var(--grn)':'var(--red)'}">${v.sys||'—'}/${v.dia||'—'}</td>
       <td style="color:${spo2S==='normal'?'var(--grn)':spo2S==='borderline'?'var(--amb)':'var(--red)'}">${v.spo2||'—'}%</td>
-      <td>${v.wt||'—'} kg</td>
       <td style="color:${tempS==='normal'?'var(--grn)':'var(--red)'}">${v.temp||'—'}°F</td>
+      <td>${v.wt||'—'} kg</td>
       <td><span class="vital-status-chip ${statusClass(overallS)}">${statusLabel(overallS)}</span></td>
       <td><button class="icon-btn danger" onclick="deleteVital(${i})"><i class="ti ti-trash"></i></button></td>
     </tr>`;
-  }).join('');
+  }).join('') : `<tr><td colspan="8" style="text-align:center;padding:20px;color:var(--tx3)">No vitals recorded yet</td></tr>`;
+
+  // --- Dynamic Insights ---
+  const insights=[];
+  if(v0){
+    const bpS=getVitalStatus('sys',v0.sys||120,age);
+    insights.push(bpS==='normal'
+      ? {icon:'❤️',bg:'#052e16',title:'Blood Pressure Normal',desc:`BP ${v0.sys}/${v0.dia} mmHg is within normal range. Continue monitoring regularly.`}
+      : {icon:'⚠️',bg:'#450a0a',title:'Blood Pressure Needs Attention',desc:`BP ${v0.sys}/${v0.dia} mmHg is ${bpS}. Reduce salt intake and monitor daily.`});
+    if(glucVal&&glucVal>110) insights.push({icon:'🍬',bg:'#422006',title:'Blood Glucose Elevated',desc:`Glucose ${glucVal} mg/dL is slightly elevated. Reduce sugar intake and recheck fasting.`});
+    if(v0.spo2&&v0.spo2>=95) insights.push({icon:'💧',bg:'#0c4a6e',title:'SpO2 Normal',desc:`Oxygen saturation at ${v0.spo2}% is healthy. No respiratory concerns.`});
+    else if(v0.spo2&&v0.spo2<95) insights.push({icon:'🫁',bg:'#450a0a',title:'Low Oxygen Saturation',desc:`SpO2 ${v0.spo2}% is below normal (95%+). Consult your doctor.`});
+    insights.push({icon:'🏃',bg:'#1e1060',title:'Regular Exercise Recommended',desc:'30 minutes of moderate activity daily helps heart health and blood pressure.'});
+  } else {
+    insights.push({icon:'📋',bg:'var(--bg3)',title:'No Vitals Recorded',desc:'Add your first vitals reading using the "+ Add Reading" button above.'});
+  }
+  document.getElementById('vt2-insights').innerHTML=insights.slice(0,4).map(ins=>`
+    <div class="vt2-insight-card">
+      <div class="vt2-insight-icon" style="background:${ins.bg}">${ins.icon}</div>
+      <div><div style="font-size:12px;font-weight:600;color:var(--tx);margin-bottom:2px">${ins.title}</div><div style="font-size:11px;color:var(--tx3)">${ins.desc}</div></div>
+    </div>`).join('');
 }
 
 function setVitalsChartMode(mode,btn) {
   S.vitalsChartMode=mode;
-  document.querySelectorAll('[id^="vchart-"]').forEach(b=>{b.style.background='';b.style.borderColor='';b.style.color='';});
-  btn.style.background='var(--ac3)'; btn.style.borderColor='var(--ac3)'; btn.style.color='#fff';
+  document.querySelectorAll('.vt2-period-btn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  // Clear date filter when using period buttons
+  const di=document.getElementById('vitals-date-filter');
+  if(di&&mode!=='custom') di.value='';
   if(S.vitalsChartInstance){try{S.vitalsChartInstance.destroy();}catch(e){} S.vitalsChartInstance=null;}
   renderVitals();
 }
+
 
 function deleteVital(i) {
   if(!confirm('Delete this vital record?'))return;
@@ -2212,17 +3245,67 @@ function renderSummary() {
   if(S.sumCatChart){try{S.sumCatChart.destroy();}catch(e){} S.sumCatChart=null;}
   if(S.sumVitChart){try{S.sumVitChart.destroy();}catch(e){} S.sumVitChart=null;}
 
-  const totalLabs=(pt.labs||[]).reduce((a,l)=>a+l.entries.length,0);
-  const totalVits=(pt.vitals||[]).length;
-  const totalMeds=(pt.meds||[]).filter(m=>m.active).length;
-  const totalAppts=(pt.appts||[]).length;
-  const score=Math.min(100,Math.round((totalLabs*3+totalVits*10+totalMeds*5+totalAppts*5)));
-  document.getElementById('summary-score').textContent=score+'%';
-  document.getElementById('summary-score-fill').style.width=score+'%';
-  document.getElementById('ss-labs').textContent=totalLabs;
-  document.getElementById('ss-vitals').textContent=totalVits;
-  document.getElementById('ss-meds').textContent=totalMeds;
-  document.getElementById('ss-appts').textContent=totalAppts;
+  // Trigger period filter (default 30d on first load, else preserve current)
+  const p = S.summaryPeriod || '30d';
+  const activeBtn = [...document.querySelectorAll('.spt')].find(b=>b.textContent.trim().startsWith(p==='30d'?'30':p==='90d'?'3':p==='1y'?'1':'All'));
+  if(activeBtn) setSummaryPeriod(p, activeBtn);
+  else {
+    // fallback: just render all
+    const allBtn = [...document.querySelectorAll('.spt')].find(b=>b.textContent.includes('All'));
+    if(allBtn) setSummaryPeriod('all', allBtn);
+  }
+}
+
+function setSummaryPeriod(p,btn) {
+  document.querySelectorAll('.spt').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  S.summaryPeriod = p;
+
+  const pt = S.currentPatient;
+  if (!pt) return;
+
+  const now = new Date();
+  let cutoff = null;
+  if (p==='30d')  cutoff = new Date(now - 30*24*60*60*1000);
+  else if (p==='90d') cutoff = new Date(now - 90*24*60*60*1000);
+  else if (p==='1y')  cutoff = new Date(now - 365*24*60*60*1000);
+  // 'all' → cutoff stays null
+
+  const inRange = date => !cutoff || new Date(date) >= cutoff;
+
+  // Filter counts
+  const labCount  = (pt.labs||[]).reduce((a,l)=>a+l.entries.filter(e=>inRange(e.date)).length,0);
+  const vitCount  = (pt.vitals||[]).filter(v=>inRange(v.date)).length;
+  const medCount  = (pt.meds||[]).filter(m=>m.active && inRange(m.start||'2000-01-01')).length;
+  const apptCount = (pt.appts||[]).filter(a=>inRange(a.date)).length;
+
+  document.getElementById('ss-labs').textContent  = labCount;
+  document.getElementById('ss-vitals').textContent = vitCount;
+  document.getElementById('ss-meds').textContent   = medCount;
+  document.getElementById('ss-appts').textContent  = apptCount;
+
+  // Recalc score
+  const score = Math.min(100, Math.round(labCount*3 + vitCount*10 + medCount*5 + apptCount*5));
+  document.getElementById('summary-score').textContent = score + '%';
+  document.getElementById('summary-score-fill').style.width = score + '%';
+
+  // Update label
+  const labels = {'30d':'30-Day','90d':'3-Month','1y':'1-Year','all':'All-Time'};
+  document.querySelector('.ssb-label').textContent = (labels[p]||'') + ' Health Score';
+
+  // Rebuild timeline filtered
+  const events=[];
+  (pt.labs||[]).forEach(l=>l.entries.filter(e=>inRange(e.date)).forEach(e=>events.push({date:e.date,type:'lab',content:`Lab: ${l.name} = ${e.val} ${l.unit}`,status:getStatus(l)})));
+  (pt.vitals||[]).filter(v=>inRange(v.date)).forEach(v=>events.push({date:v.date,type:'vital',content:`Vitals: BP ${v.sys}/${v.dia}, HR ${v.hr}, SpO2 ${v.spo2}%`,status:'n'}));
+  (pt.appts||[]).filter(a=>inRange(a.date)).forEach(a=>events.push({date:a.date,type:'appt',content:`Appointment: ${a.doctor} — ${a.hospital||''}`,status:a.status==='Completed'?'n':'appt'}));
+  (pt.meds||[]).filter(m=>m.start&&inRange(m.start)).forEach(m=>events.push({date:m.start,type:'med',content:`Started: ${m.name} ${m.dose} — ${m.purpose}`,status:'n'}));
+  events.sort((a,b)=>new Date(b.date)-new Date(a.date));
+  const typeColors={lab:'var(--blu)',vital:'var(--grn)',appt:'var(--ac2)',med:'var(--amb)'};
+  document.getElementById('summary-timeline').innerHTML = events.slice(0,30).map(e=>`<div class="stl-item"><div class="stl-dot" style="background:${typeColors[e.type]||'var(--ac)'}"></div><div class="stl-date">${e.date}</div><div class="stl-card"><div class="stl-type">${e.type.toUpperCase()}</div><div class="stl-content">${e.content}</div></div></div>`).join('') || '<div style="text-align:center;padding:20px;color:var(--tx3);font-size:13px">No records in this period.</div>';
+
+  // Rebuild charts
+  if(S.sumCatChart){try{S.sumCatChart.destroy();}catch(e){} S.sumCatChart=null;}
+  if(S.sumVitChart){try{S.sumVitChart.destroy();}catch(e){} S.sumVitChart=null;}
 
   const cats=['Hematology','Biochemistry','Immunology','Endocrinology','Glucose','Other'];
   requestAnimationFrame(()=>{
@@ -2230,32 +3313,19 @@ function renderSummary() {
     if(cc) S.sumCatChart=new Chart(cc,{type:'bar',data:{labels:cats,datasets:[
       {label:'Normal',data:cats.map(c=>(pt.labs||[]).filter(l=>l.cat===c&&getStatus(l)==='n').length),backgroundColor:'#22c55e66'},
       {label:'Abnormal',data:cats.map(c=>(pt.labs||[]).filter(l=>l.cat===c&&getStatus(l)!=='n').length),backgroundColor:'#ef444466'}
-    ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#9090b8',font:{size:10}}}},scales:{x:{ticks:{color:'#50506a',font:{size:9}},grid:{color:'#1a1a2e'}},y:{ticks:{color:'#50506a',font:{size:9}},grid:{color:'#1a1a2e'},beginAtZero:true}}}});
+    ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#9090b8',font:{size:10}}}},scales:{x:{ticks:{color:'#50506a',font:{size:9}},grid:{color:'rgba(128,128,128,.1)'}},y:{ticks:{color:'#50506a',font:{size:9}},grid:{color:'rgba(128,128,128,.1)'},beginAtZero:true}}}});
 
-    const sv=[...(pt.vitals||[])].sort((a,b)=>new Date(a.date)-new Date(b.date));
+    const sv=[...(pt.vitals||[])].filter(v=>inRange(v.date)).sort((a,b)=>new Date(a.date)-new Date(b.date));
     const vc=document.getElementById('summary-vit-chart');
     if(vc&&sv.length) S.sumVitChart=new Chart(vc,{type:'line',data:{labels:sv.map(v=>v.date.slice(5)),datasets:[
-      {label:'BP Sys',data:sv.map(v=>v.sys),borderColor:'#f87171',pointRadius:4,tension:.3,fill:false},
-      {label:'HR',data:sv.map(v=>v.hr),borderColor:'#c084fc',pointRadius:4,tension:.3,fill:false},
-      {label:'SpO2',data:sv.map(v=>v.spo2),borderColor:'#22d3ee',pointRadius:4,tension:.3,fill:false}
-    ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#9090b8',font:{size:10}}}},scales:{x:{ticks:{color:'#50506a',font:{size:9}},grid:{color:'#1a1a2e'}},y:{ticks:{color:'#50506a',font:{size:9}},grid:{color:'#1a1a2e'}}}}});
+      {label:'BP Sys',data:sv.map(v=>v.sys),borderColor:'#f87171',pointRadius:3,tension:.3,fill:false},
+      {label:'HR',data:sv.map(v=>v.hr),borderColor:'#c084fc',pointRadius:3,tension:.3,fill:false},
+      {label:'SpO2',data:sv.map(v=>v.spo2),borderColor:'#22d3ee',pointRadius:3,tension:.3,fill:false}
+    ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#9090b8',font:{size:10}}}},scales:{x:{ticks:{color:'#50506a',font:{size:9}},grid:{color:'rgba(128,128,128,.1)'}},y:{ticks:{color:'#50506a',font:{size:9}},grid:{color:'rgba(128,128,128,.1)'}}}}}); 
+    else if(vc) { const ctx2=vc.getContext('2d'); ctx2.clearRect(0,0,vc.width,vc.height); }
   });
 
-  // Timeline
-  const events=[];
-  (pt.labs||[]).forEach(l=>l.entries.forEach(e=>events.push({date:e.date,type:'lab',content:`Lab: ${l.name} = ${e.val} ${l.unit}`,status:getStatus(l)})));
-  (pt.vitals||[]).forEach(v=>events.push({date:v.date,type:'vital',content:`Vitals: BP ${v.sys}/${v.dia}, HR ${v.hr}, SpO2 ${v.spo2}%`,status:'n'}));
-  (pt.appts||[]).forEach(a=>events.push({date:a.date,type:'appt',content:`Appointment: ${a.doctor} — ${a.hospital||''}`,status:a.status==='Completed'?'n':'appt'}));
-  (pt.meds||[]).filter(m=>m.start).forEach(m=>events.push({date:m.start,type:'med',content:`Started: ${m.name} ${m.dose} — ${m.purpose}`,status:'n'}));
-  events.sort((a,b)=>new Date(b.date)-new Date(a.date));
-  const typeColors={lab:'var(--blu)',vital:'var(--grn)',appt:'var(--ac2)',med:'var(--amb)'};
-  document.getElementById('summary-timeline').innerHTML=events.slice(0,20).map(e=>`<div class="stl-item"><div class="stl-dot" style="background:${typeColors[e.type]||'var(--ac)'}"></div><div class="stl-date">${e.date}</div><div class="stl-card"><div class="stl-type">${e.type.toUpperCase()}</div><div class="stl-content">${e.content}</div></div></div>`).join('');
-}
-
-function setSummaryPeriod(p,btn) {
-  document.querySelectorAll('.spt').forEach(b=>b.classList.remove('on'));
-  btn.classList.add('on');
-  showToast('Period filter: '+p+' (full implementation in production)','success');
+  showToast(`Showing ${labels[p]||''} data`,'success');
 }
 
 // ============================================================
@@ -2270,52 +3340,123 @@ function setAILang(lang,btn) {
 
 function buildAISystemPrompt() {
   const pt = S.currentPatient;
-  const langInst = aiLang==='ur'?'Reply in Urdu script only.':aiLang==='ro'?'Reply in Roman Urdu (Urdu written in Latin characters).':'Reply in clear English.';
-  if (!pt) return `You are a Pakistan-based AI health advisor. ${langInst} Provide helpful medical guidance based on Karachi, Pakistan context. Always recommend consulting a real doctor. Keep responses concise (3-5 sentences).`;
-  const abn=(pt.labs||[]).filter(l=>{const e=l.entries[0];return e&&(e.val>l.mx||e.val<l.mn)}).map(l=>`${l.name}: ${l.entries[0].val} ${l.unit} (ref: ${l.ref})`);
+  const langInst = aiLang==='ur'
+    ? 'Reply in Urdu script only. Use medical terminology in Urdu.'
+    : aiLang==='ro'
+    ? 'Reply in Roman Urdu (Urdu words written in Latin/English characters).'
+    : 'Reply in clear, structured English.';
+
+  const baseInst = `You are a senior AI medical advisor assistant based in Pakistan. ${langInst}
+Format responses with clear sections using bold headers where applicable.
+Always recommend consulting a licensed doctor for diagnosis or treatment.
+When mentioning hospitals, use major Karachi institutions (AKUH, LNH, NICH, NMC, Jinnah Hospital, CMC, Liaquat National, Dr. Ziauddin).
+For medications, use Pakistan brand names where possible. Keep responses focused and practical.`;
+
+  if (!pt) return baseInst + '\nProvide general health guidance relevant to Pakistani patients.';
+
+  const abn=(pt.labs||[]).filter(l=>{const e=l.entries[0];return e&&(e.val>l.mx||e.val<l.mn)}).map(l=>{
+    const e=l.entries[0]; const trend=l.entries.length>1?(e.val>l.entries[1].val?'↑':'↓'):'';
+    return `${l.name}: ${e.val} ${l.unit} (ref: ${l.ref}) ${trend}`;
+  });
+
+  const normal=(pt.labs||[]).filter(l=>{const e=l.entries[0];return e&&e.val>=l.mn&&e.val<=l.mx}).map(l=>`${l.name}: ${l.entries[0].val} ${l.unit}`);
+
   const v=(pt.vitals||[])[0]||{};
-  return `You are a Pakistan-based AI health advisor. ${langInst}
-Patient: ${pt.name}, ${pt.age}yr ${pt.gender}. Blood: ${pt.blood}.
-Conditions: ${(pt.diseases||[]).join(', ')||'None'}.
-Issues: ${pt.issues||'None'}.
-Latest Vitals: BP ${v.sys||'?'}/${v.dia||'?'} mmHg, HR ${v.hr||'?'} bpm, SpO2 ${v.spo2||'?'}%.
-Abnormal Labs: ${abn.length?abn.join('; '):'None'}.
-Medications: ${(pt.meds||[]).filter(m=>m.active).map(m=>m.name+' '+m.dose).join(', ')||'None'}.
-Doctor: ${pt.doctor||'Unknown'}. Based in Karachi, Pakistan.
-Provide concise, practical health advice. Recommend Karachi hospitals when relevant. Always advise consulting a licensed doctor. Keep response to 4-6 sentences.`;
+  const prevV=(pt.vitals||[])[1]||{};
+
+  const upcomingAppts=(pt.appts||[]).filter(a=>a.date>=new Date().toISOString().split('T')[0]&&a.status!=='Cancelled').slice(0,3).map(a=>`${a.date}: ${a.doctor} (${a.specialty||'General'})`);
+
+  return `${baseInst}
+
+PATIENT PROFILE:
+Name: ${pt.name} | Age: ${pt.age} yrs | Gender: ${pt.gender} | Blood Group: ${pt.blood}
+Location: ${pt.address||'Karachi, Pakistan'}
+Doctor: ${pt.doctor||'Not assigned'}
+Known Conditions: ${(pt.diseases||[]).join(', ')||'None documented'}
+Allergies: ${pt.allergies||'None known'}
+Current Issues: ${pt.issues||'None reported'}
+
+LATEST VITALS (${v.date||'No data'}):
+BP: ${v.sys||'?'}/${v.dia||'?'} mmHg | HR: ${v.hr||'?'} bpm | SpO2: ${v.spo2||'?'}% | Temp: ${v.temp||'?'}°F | Weight: ${v.wt||'?'} kg
+Previous BP: ${prevV.sys||'?'}/${prevV.dia||'?'} mmHg | Previous HR: ${prevV.hr||'?'} bpm
+
+ABNORMAL LABS (${abn.length} findings):
+${abn.length ? abn.join('\n') : 'None currently abnormal'}
+
+NORMAL LABS:
+${normal.slice(0,8).join(' | ')||'No normal labs recorded'}
+
+ACTIVE MEDICATIONS (${(pt.meds||[]).filter(m=>m.active).length}):
+${(pt.meds||[]).filter(m=>m.active).map(m=>`${m.name} ${m.dose} — ${m.freq} — For: ${m.purpose}`).join('\n')||'None'}
+
+UPCOMING APPOINTMENTS:
+${upcomingAppts.join('\n')||'None scheduled'}
+
+Provide specific, actionable medical advice for this patient. Reference their actual data in responses.`;
 }
 
 async function callAI(userMsg, systemMsg) {
-  const MAX_RETRIES = 3;
+  const apiKey = localStorage.getItem('mt_apikey') || '';
+  if (!apiKey) { showAPIKeyModal(); throw new Error('No API key set'); }
+  const MAX_RETRIES = 2;
   let lastError;
+  const sys = systemMsg || buildAISystemPrompt();
   for (let attempt=0; attempt<MAX_RETRIES; attempt++) {
     try {
       const controller = new AbortController();
-      const timeout = setTimeout(()=>controller.abort(), 30000);
-      const res = await fetch('https://api.anthropic.com/v1/messages', {
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({
-          model:'claude-sonnet-4-20250514',
-          max_tokens:600,
-          system:systemMsg||buildAISystemPrompt(),
-          messages:[...S.aiHistory.slice(-6),{role:'user',content:userMsg}]
-        }),
-        signal:controller.signal
-      });
+      const timeout = setTimeout(()=>controller.abort(), 45000);
+      // Build conversation history in Gemini format
+      const history = S.aiHistory.slice(-8).map(m=>({
+        role: m.role==='assistant' ? 'model' : 'user',
+        parts:[{text: m.content}]
+      }));
+      const res = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+        {
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({
+            system_instruction:{parts:[{text: sys}]},
+            contents:[...history, {role:'user', parts:[{text: userMsg}]}],
+            generationConfig:{maxOutputTokens:800, temperature:0.7}
+          }),
+          signal:controller.signal
+        }
+      );
       clearTimeout(timeout);
-      if (!res.ok) throw new Error('API returned '+res.status);
+      if (!res.ok) {
+        const errBody = await res.text().catch(()=>'');
+        throw new Error('API '+res.status+': '+errBody.slice(0,200));
+      }
       const data = await res.json();
-      const reply=data.content?.map(c=>c.text||'').join('')||'Unable to generate response.';
+      const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || 'Unable to generate response.';
       S.aiHistory.push({role:'user',content:userMsg},{role:'assistant',content:reply});
       if(S.aiHistory.length>20) S.aiHistory=S.aiHistory.slice(-20);
       return reply;
     } catch(err) {
       lastError=err;
-      if(attempt<MAX_RETRIES-1) await new Promise(r=>setTimeout(r,1000*(attempt+1)));
+      if(attempt<MAX_RETRIES-1) await new Promise(r=>setTimeout(r,1200*(attempt+1)));
     }
   }
   throw lastError;
+}
+
+function showAPIKeyModal(){ openModal('modal-apikey'); }
+
+function saveAPIKey(){
+  const k = document.getElementById('apikey-input').value.trim();
+  if(!k || k.length < 20){ showToast('Please enter a valid Gemini API key','error'); return; }
+  localStorage.setItem('mt_apikey', k);
+  closeModal('modal-apikey');
+  showToast('Gemini API key saved. AI is ready!','success');
+  const aiMsgs = document.getElementById('ai-full-messages');
+  if(aiMsgs) { aiMsgs.innerHTML=''; renderAIPage(); }
+}
+
+function clearAPIKey(){
+  localStorage.removeItem('mt_apikey');
+  showToast('API key removed','success');
+  closeModal('modal-apikey');
 }
 
 function addAIMessage(containerId, role, text) {
@@ -2354,10 +3495,55 @@ async function sendAIMessage() {
   }
 }
 
+// Smart prompt templates
+const AI_PROMPTS = [
+  {icon:'🫀', label:'Review My Vitals', prompt:'Please review my latest vitals and provide specific precautions and recommendations based on the readings. Highlight any concerning values.'},
+  {icon:'💊', label:'Medication Review', prompt:'Review my current medications and suggest whether any doses should be increased or decreased based on my condition. Include precautions and interactions to watch for.'},
+  {icon:'📋', label:'Health Summary', prompt:'Give me a comprehensive summary of my overall health status, including lab trends, vitals patterns, and key concerns.'},
+  {icon:'🏥', label:'Nearby Hospitals', prompt:'List the top hospitals and specialists in Karachi relevant to my medical conditions. Include nephrology, hematology, and general medicine centers with approximate locations.'},
+  {icon:'📅', label:'Appointment Tips', prompt:'Based on my upcoming appointments and current health status, what should I prepare, what questions to ask my doctor, and what tests might be needed?'},
+  {icon:'🧪', label:'Explain Abnormal Labs', prompt:'Explain my abnormal lab results in simple terms — what they mean, why they might be out of range, and what I should discuss with my doctor.'},
+  {icon:'💉', label:'Pakistan Medication Info', prompt:'For each of my current medications, provide Pakistan-specific information: local brand names, dosage guidance, side effects, and overdose warnings.'},
+  {icon:'⚠️', label:'Risk Assessment', prompt:'Based on my age, conditions, vitals, and lab results, what are my top health risks right now? What lifestyle changes would help most?'},
+];
+
 function renderAIPage() {
-  const container=document.getElementById('ai-full-messages');
-  if(!container.children.length) {
-    addAIMessage('ai-full-messages','ai','Hello! I\'m your AI Health Advisor. I can help you with medical queries, medication information, lab result interpretation, and health guidance specific to Karachi, Pakistan. Ask me anything!');
+  // Build smart prompt chips
+  const chips = document.getElementById('chips-container');
+  if (chips && !chips.children.length) {
+    AI_PROMPTS.forEach(p => {
+      const btn = document.createElement('button');
+      btn.className = 'btn';
+      btn.style.cssText = 'font-size:11px;padding:5px 10px;border-radius:20px;white-space:nowrap';
+      btn.innerHTML = `${p.icon} ${p.label}`;
+      btn.onclick = () => {
+        document.getElementById('ai-full-input').value = p.prompt;
+        sendAIFull();
+      };
+      chips.appendChild(btn);
+    });
+  }
+
+  const container = document.getElementById('ai-full-messages');
+  if (!container.children.length) {
+    const hasKey = !!localStorage.getItem('mt_apikey');
+    if (!hasKey) {
+      addAIMessage('ai-full-messages','ai',
+        '⚠️ <strong>Gemini API key not set.</strong> Click <strong>AI API Key</strong> in the sidebar to set up your free key. Get it free at <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color:var(--ac2)">aistudio.google.com/app/apikey</a> — 1,500 free requests/day, no credit card needed.');
+    } else {
+      const pt = S.currentPatient;
+      const greeting = pt
+        ? `✅ AI ready. Patient loaded: <strong>${pt.name}</strong>. Use a quick prompt above or type your question.`
+        : `✅ AI ready. Select a patient first for personalized advice, or ask general medical questions.`;
+      addAIMessage('ai-full-messages','ai', greeting);
+    }
+  }
+
+  // Pre-fill key modal if key exists
+  const existing = localStorage.getItem('mt_apikey');
+  if (existing) {
+    const inp = document.getElementById('apikey-input');
+    if (inp) inp.value = existing;
   }
 }
 
@@ -2461,20 +3647,22 @@ function showAddRad(editIdx) {
   S.radFiles=[];
   document.getElementById('rad-files-preview').innerHTML='';
   const today=new Date().toISOString().split('T')[0];
+  document.getElementById('rad-modal-title').textContent=_editRadIdx!==null?'Edit Radiology Study':'Add Radiology / Imaging Study';
   if(_editRadIdx!==null){
     const r=S.currentPatient.radiology[_editRadIdx];
     document.getElementById('fr-type').value=r.type||'X-Ray';
     document.getElementById('fr-body').value=r.body||'';
     document.getElementById('fr-date').value=r.date||today;
+    document.getElementById('fr-study-id').value=r.studyId||'';
     document.getElementById('fr-doctor').value=r.doctor||'';
     document.getElementById('fr-hospital').value=r.hospital||'';
     document.getElementById('fr-findings').value=r.findings||'';
     document.getElementById('fr-impression').value=r.impression||'';
     S.radStatus=r.status||'Normal';
-    S.radFiles=r.files||[];
+    S.radFiles=r.files?r.files.map(f=>({...f})):[];
     if(S.radFiles.length) updateRadFilesPreview();
   } else {
-    ['fr-body','fr-doctor','fr-hospital','fr-findings','fr-impression'].forEach(id=>document.getElementById(id).value='');
+    ['fr-body','fr-doctor','fr-hospital','fr-findings','fr-impression','fr-study-id'].forEach(id=>document.getElementById(id).value='');
     document.getElementById('fr-date').value=today;
     S.radStatus='Normal';
   }
@@ -2486,6 +3674,8 @@ function setRadStatus(s) {
   S.radStatus=s;
   document.getElementById('rad-normal').classList.toggle('on',s==='Normal');
   document.getElementById('rad-abnormal').classList.toggle('on',s==='Abnormal');
+  const pendBtn=document.getElementById('rad-pending');
+  if(pendBtn) pendBtn.classList.toggle('on',s==='Pending');
 }
 
 function handleRadFiles(e) {
@@ -2507,11 +3697,22 @@ function updateRadFilesPreview() {
 function saveRad() {
   const date=document.getElementById('fr-date').value;
   if(!date)return showToast('Date required','error');
-  const rec={type:document.getElementById('fr-type').value,body:document.getElementById('fr-body').value,date,status:S.radStatus,doctor:document.getElementById('fr-doctor').value,hospital:document.getElementById('fr-hospital').value,findings:document.getElementById('fr-findings').value,impression:document.getElementById('fr-impression').value,files:S.radFiles};
+  const type=document.getElementById('fr-type').value;
+  const body=document.getElementById('fr-body').value;
+  const autoId=type.toUpperCase().replace(/\s/g,'').slice(0,3)+(body?body.toUpperCase().slice(0,3):'')+(date.replace(/-/g,'').slice(2));
+  const rec={
+    type,body,date,status:S.radStatus,
+    studyId:document.getElementById('fr-study-id').value||autoId,
+    doctor:document.getElementById('fr-doctor').value,
+    hospital:document.getElementById('fr-hospital').value,
+    findings:document.getElementById('fr-findings').value,
+    impression:document.getElementById('fr-impression').value,
+    files:S.radFiles
+  };
   if(_editRadIdx!==null) S.currentPatient.radiology[_editRadIdx]=rec;
   else S.currentPatient.radiology.unshift(rec);
   savePatientsToStorage(); renderRad(); closeModal('modal-add-rad');
-  showToast('Radiology record saved','success');
+  showToast('Study saved','success');
 }
 
 let _medTimes=[];
@@ -2630,45 +3831,294 @@ function doExport() {
   exportLabsPDF(pt,labs);
 }
 
-function exportLabsExcel(pt,labs) {
-  const dates=[...new Set(labs.flatMap(l=>l.entries.map(e=>e.date)))].sort((a,b)=>new Date(b)-new Date(a));
-  const rows=labs.map(l=>{const r={'Test Name':l.name,'Category':l.cat,'Ref Range':`${l.ref} ${l.unit}`,'Status':getStatus(l)==='n'?'Normal':getStatus(l)==='h'?'High':'Low'};dates.forEach(d=>{const e=l.entries.find(x=>x.date===d);r[d]=e?e.val:'';});return r;});
-  const ws=XLSX.utils.json_to_sheet(rows);const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,'Lab Tests');
-  XLSX.writeFile(wb,`${pt.name}_Lab_Tests_${new Date().toISOString().split('T')[0]}.xlsx`);
+function exportLabsExcel(pt, labs) {
+  const allDates=[...new Set(labs.flatMap(l=>l.entries.map(e=>e.date)))].sort((a,b)=>new Date(b)-new Date(a));
+  const dateLabNames={};
+  labs.forEach(l=>l.entries.forEach(e=>{ if(!dateLabNames[e.date]&&e.lab) dateLabNames[e.date]=e.lab; }));
+  // Row 1: header with formatted dates
+  const headers=['Test Name','Ref. Range',...allDates.map(d=>fmtDate(d))];
+  // Row 2: lab names under dates
+  const labRow=['','', ...allDates.map(d=>dateLabNames[d]||'')];
+  const dataRows=labs.map(l=>{
+    const s=getStatus(l);
+    return ['Test Name','Ref. Range',...allDates.map(d=>{const e=l.entries.find(x=>x.date===d);return e?e.val:''})].reduce((o,h,i)=>({...o,[headers[i]||h]:i===0?l.name:i===1?`${l.ref} ${l.unit}`:allDates[i-2]?((labs.find(x=>x.name===l.name)?.entries.find(e=>e.date===allDates[i-2])?.val)??''):''}),{});
+  });
+  // Simpler approach: build array of arrays
+  const aoa=[headers, labRow, ...labs.map(l=>[l.name,`${l.ref} ${l.unit}`,...allDates.map(d=>{const e=l.entries.find(x=>x.date===d);return e?e.val:'';})]) ];
+  const ws=XLSX.utils.aoa_to_sheet(aoa);
+  const wb=XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb,ws,'Lab Tests');
+  XLSX.writeFile(wb,`${pt.name}_Lab_Tests_${fmtDate(new Date().toISOString().split('T')[0])}.xlsx`);
   showToast('Exported to Excel','success');
 }
 
-function exportLabsPDF(pt,labs) {
-  const {jsPDF}=window.jspdf;
-  const isLandscape=_exportOrientation==='landscape';
-  const doc=new jsPDF({orientation:isLandscape?'landscape':'portrait',format:'a4'});
-  const pageW=doc.internal.pageSize.getWidth();
-  const pageH=doc.internal.pageSize.getHeight();
-  // Header
-  doc.setFillColor(61,59,142); doc.rect(0,0,pageW,28,'F');
-  doc.setTextColor(255,255,255); doc.setFontSize(18); doc.setFont('helvetica','bold');
-  doc.text('Lab Test Report',14,14);
-  doc.setFontSize(9); doc.setFont('helvetica','normal');
-  doc.text(`${pt.name} · Age: ${pt.age} · Gender: ${pt.gender} · Blood: ${pt.blood}`,14,22);
-  doc.text(`Generated: ${new Date().toLocaleString()} · Karachi, Pakistan`,pageW-14,22,{align:'right'});
-  // Dates
-  const dates=[...new Set(labs.flatMap(l=>l.entries.map(e=>e.date)))].sort((a,b)=>new Date(b)-new Date(a)).slice(0,isLandscape?8:5);
-  const headers=['Test Name','Category','Ref Range',...dates.map(d=>d.slice(5)),'Status'];
-  const rows=labs.map(l=>{const s=getStatus(l);return [l.name,l.cat,`${l.ref} ${l.unit}`,...dates.map(d=>{const e=l.entries.find(x=>x.date===d);return e?String(e.val):'—';}),s==='n'?'Normal':s==='h'?'High':'Low'];});
-  doc.autoTable({head:[headers],body:rows,startY:32,styles:{fontSize:8,cellPadding:2},headStyles:{fillColor:[61,59,142],textColor:255,fontStyle:'bold'},
-    willDrawCell:data=>{if(data.section==='body'){const lastColIdx=headers.length-1;if(data.column.index===lastColIdx){const val=data.cell.raw;if(val==='High'){doc.setFillColor(70,10,10);doc.setTextColor(248,113,113);}else if(val==='Low'){doc.setFillColor(4,44,83);doc.setTextColor(96,165,250);}else{doc.setFillColor(5,46,22);doc.setTextColor(74,222,128);}}}},
-    margin:{left:10,right:10}});
-  doc.setFontSize(7);doc.setTextColor(100,100,120);doc.text('Generated by MedTracker · © Dr. Imran · +92 348-2590727 · Karachi, Pakistan',pageW/2,pageH-6,{align:'center'});
-  doc.save(`${pt.name}_Lab_Report_${new Date().toISOString().split('T')[0]}.pdf`);
-  showToast('PDF exported','success');
+function exportLabsPDF(pt, labs) {
+  try {
+    const {jsPDF} = window.jspdf;
+    if (!jsPDF) { showToast('PDF library not loaded','error'); return; }
+    const isLandscape = _exportOrientation==='landscape';
+    const doc = new jsPDF({orientation:isLandscape?'landscape':'portrait', format:'a4'});
+    const pageW = doc.internal.pageSize.getWidth();
+    const pageH = doc.internal.pageSize.getHeight();
+
+    // Header bar
+    doc.setFillColor(61,59,142);
+    doc.rect(0,0,pageW,28,'F');
+    doc.setTextColor(255,255,255);
+    doc.setFontSize(16); doc.setFont('helvetica','bold');
+    doc.text(`Lab Test Report — ${pt.name}`, 14, 12);
+    doc.setFontSize(8); doc.setFont('helvetica','normal');
+    doc.text(`Age: ${pt.age} · ${pt.gender} · Blood: ${pt.blood||'—'} · Generated: ${fmtDate(new Date().toISOString().split('T')[0])}`, 14, 21);
+    doc.text('MedTracker © Dr. Imran · Karachi, Pakistan', pageW-14, 21, {align:'right'});
+
+    // Collect dates + lab names
+    const allDates=[...new Set(labs.flatMap(l=>l.entries.map(e=>e.date)))].sort((a,b)=>new Date(b)-new Date(a)).slice(0, isLandscape?8:5);
+    const dateLabNames={};
+    labs.forEach(l=>l.entries.forEach(e=>{ if(!dateLabNames[e.date]) dateLabNames[e.date]=''; if(e.lab&&!dateLabNames[e.date].includes(e.lab)) dateLabNames[e.date]=(dateLabNames[e.date]?dateLabNames[e.date]+'\n':'')+e.lab; }));
+
+    // Two header rows: date row + lab name row
+    const dateHeaders = allDates.map(d=>fmtDate(d));
+    const labNameSubs = allDates.map(d=>dateLabNames[d]||'');
+    const headers = ['Test', 'Ref. Range', ...dateHeaders];
+
+    const rows = labs.map(l=>{
+      const s = getStatus(l);
+      return [
+        l.name,
+        `${l.ref} ${l.unit}`,
+        ...allDates.map(d=>{ const e=l.entries.find(x=>x.date===d); return e ? String(e.val) : '—'; }),
+      ];
+    });
+
+    doc.autoTable({
+      head: [headers, ['','', ...labNameSubs]],
+      body: rows,
+      startY: 32,
+      styles: {fontSize:8, cellPadding:2.5, overflow:'linebreak'},
+      headStyles: {fillColor:[61,59,142], textColor:255, fontStyle:'bold', fontSize:8},
+      didParseCell: function(data) {
+        if (data.section==='head' && data.row.index===1) {
+          data.cell.styles.fillColor=[40,38,100];
+          data.cell.styles.textColor=[180,180,220];
+          data.cell.styles.fontSize=7;
+          data.cell.styles.fontStyle='normal';
+        }
+        if (data.section==='body') {
+          // Find which lab this row is
+          const labName = data.row.raw[0];
+          const lab = labs.find(l=>l.name===labName);
+          if (lab && data.column.index >= 2) {
+            const dateIdx = data.column.index - 2;
+            const d = allDates[dateIdx];
+            const e = lab.entries.find(x=>x.date===d);
+            if (e) {
+              if (e.val > lab.mx) {
+                data.cell.styles.textColor = [248,113,113];
+                data.cell.styles.fontStyle = 'bold';
+              } else if (e.val < lab.mn) {
+                data.cell.styles.textColor = [96,165,250];
+                data.cell.styles.fontStyle = 'bold';
+              } else {
+                data.cell.styles.textColor = [74,222,128];
+              }
+            }
+          }
+        }
+      },
+      margin: {left:10, right:10},
+      alternateRowStyles: {fillColor:[245,245,255]},
+      rowStyles: {fillColor:[255,255,255]},
+    });
+
+    // Footer
+    doc.setFontSize(7); doc.setTextColor(120,120,140);
+    doc.text('Generated by MedTracker · 01/06/2026 · Karachi, Pakistan', pageW/2, pageH-6, {align:'center'});
+    doc.save(`${pt.name}_Lab_Report_${new Date().toISOString().split('T')[0]}.pdf`);
+    showToast('PDF exported successfully','success');
+  } catch(err) {
+    console.error('PDF export error:', err);
+    showToast('PDF export failed: '+err.message,'error');
+  }
 }
 
-function printLabReport(pt,labs) {
-  const dates=[...new Set(labs.flatMap(l=>l.entries.map(e=>e.date)))].sort((a,b)=>new Date(b)-new Date(a)).slice(0,6);
-  const rows=labs.map(l=>`<tr><td>${l.name}</td><td>${l.cat}</td><td>${l.ref} ${l.unit}</td>${dates.map(d=>{const e=l.entries.find(x=>x.date===d);const v=e?e.val:null;const s=v!==null?(v>l.mx?'color:red;font-weight:bold':v<l.mn?'color:blue;font-weight:bold':'color:green'):'';return`<td style="${s}">${v!==null?v:'—'}</td>`}).join('')}<td>${getStatus(l)==='n'?'Normal':getStatus(l)==='h'?'High':'Low'}</td></tr>`).join('');
-  const w=window.open('','_blank');
-  w.document.write(`<html><head><title>Lab Report — ${pt.name}</title><style>body{font-family:Arial,sans-serif;padding:20px}table{width:100%;border-collapse:collapse}th{background:#3d3b8e;color:#fff;padding:6px 8px;text-align:left;font-size:11px}td{padding:5px 8px;border-bottom:1px solid #ddd;font-size:11px}h2{color:#3d3b8e}</style></head><body><h2>Lab Test Report — ${pt.name}</h2><p style="font-size:12px;color:#555">Age: ${pt.age} · ${pt.gender} · Blood: ${pt.blood} · Generated: ${new Date().toLocaleDateString()}</p><table><thead><tr><th>Test</th><th>Category</th><th>Ref Range</th>${dates.map(d=>`<th>${d}</th>`).join('')}<th>Status</th></tr></thead><tbody>${rows}</tbody></table><p style="font-size:10px;color:#888;margin-top:20px">Generated by MedTracker © Dr. Imran · +92 348-2590727 · Karachi, Pakistan</p></body></html>`);
-  w.document.close();w.print();
+function printLabReport(pt, labs) {
+  const allDates=[...new Set(labs.flatMap(l=>l.entries.map(e=>e.date)))].sort((a,b)=>new Date(b)-new Date(a)).slice(0,8);
+  const dateLabNames={};
+  labs.forEach(l=>l.entries.forEach(e=>{ if(!dateLabNames[e.date]&&e.lab) dateLabNames[e.date]=e.lab; }));
+
+  const rows = labs.map(l=>`<tr>
+    <td>${l.name}</td>
+    <td>${l.ref} ${l.unit}</td>
+    ${allDates.map(d=>{
+      const e=l.entries.find(x=>x.date===d);
+      const v=e?e.val:null;
+      let style='';
+      if(v!==null){ if(v>l.mx) style='color:#c00;font-weight:bold'; else if(v<l.mn) style='color:#00c;font-weight:bold'; else style='color:#006600'; }
+      return `<td style="${style}">${v!==null?v:'—'}</td>`;
+    }).join('')}
+  </tr>`).join('');
+
+  const html=`<!DOCTYPE html><html><head><title>Lab Report — ${pt.name}</title>
+  <style>
+    body{font-family:Arial,sans-serif;margin:20px;color:#222}
+    h2{color:#3d3b8e;margin-bottom:4px}
+    p.sub{font-size:12px;color:#555;margin-bottom:16px}
+    table{width:100%;border-collapse:collapse;font-size:11px}
+    th{background:#3d3b8e;color:#fff;padding:6px 8px;text-align:left}
+    th.lab-sub{background:#2c2a6e;color:#aaa;font-size:9px;font-weight:normal;padding:2px 8px}
+    td{padding:5px 8px;border-bottom:1px solid #ddd}
+    tr:nth-child(even) td{background:#f9f9ff}
+    tfoot td{font-size:10px;color:#888;text-align:center;padding-top:16px}
+    @media print{body{margin:10px}}
+  </style></head><body>
+  <h2>Lab Test Report — ${pt.name}</h2>
+  <p class="sub">Age: ${pt.age} · ${pt.gender} · Blood: ${pt.blood||'—'} · Generated: ${fmtDate(new Date().toISOString().split('T')[0])}</p>
+  <table>
+    <thead>
+      <tr><th>Test</th><th>Ref. Range</th>${allDates.map(d=>`<th>${fmtDate(d)}</th>`).join('')}</tr>
+      <tr><th></th><th></th>${allDates.map(d=>`<th class="lab-sub">${dateLabNames[d]||''}</th>`).join('')}</tr>
+    </thead>
+    <tbody>${rows}</tbody>
+    <tfoot><tr><td colspan="${allDates.length+2}">Generated by MedTracker · © Dr. Imran · +92 348-2590727 · Karachi, Pakistan</td></tr></tfoot>
+  </table>
+  <script>window.onload=function(){window.print();}<\/script>
+  </body></html>`;
+
+  const blob = new Blob([html], {type:'text/html'});
+  const url = URL.createObjectURL(blob);
+  const w = window.open(url,'_blank');
+  if (!w) { showToast('Pop-up blocked. Allow pop-ups and try again.','error'); URL.revokeObjectURL(url); return; }
+  setTimeout(()=>URL.revokeObjectURL(url), 10000);
+}
+
+function uploadLabReport() {
+  const inp = document.createElement('input');
+  inp.type = 'file';
+  inp.accept = 'image/*,.pdf,.xlsx,.csv,.xls';
+  inp.onchange = async e => {
+    const f = e.target.files[0];
+    if (!f) return;
+    showToast('Reading file...','success');
+
+    if (f.name.match(/\.(xlsx|csv|xls)$/i)) {
+      // Excel/CSV — use existing importLabs
+      importLabs(); return;
+    }
+
+    // Image/PDF — use AI to extract
+    const reader = new FileReader();
+    reader.onload = async ev => {
+      const base64 = ev.target.result.split(',')[1];
+      const mtype = f.type||'image/jpeg';
+      showToast('AI reading lab report...','success');
+      try {
+        const apiKey = localStorage.getItem('mt_apikey')||'';
+        if (!apiKey) { showAPIKeyModal(); return; }
+        const res = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key='+apiKey, {
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({contents:[{parts:[
+            {text:`You are a medical lab report reader. Extract ALL lab test results from this image/document.
+Return ONLY a JSON array, no other text. Format:
+[{"name":"Test Name","value":123,"unit":"mg/dL","refMin":70,"refMax":110,"date":"YYYY-MM-DD","lab":"Lab Name","category":"Hematology"}]
+Categories: Hematology, Biochemistry, Immunology, Endocrinology, Microbiology, Glucose, Urine/Stool, Other
+If date not visible use today: ${new Date().toISOString().split('T')[0]}
+If lab name not visible use empty string.`},
+            {inline_data:{mime_type:mtype,data:base64}}
+          ]}]})
+        });
+        const data = await res.json();
+        let text = data.candidates?.[0]?.content?.parts?.[0]?.text||'';
+        text = text.replace(/```json|```/g,'').trim();
+        const parsed = JSON.parse(text);
+        if (!Array.isArray(parsed)||!parsed.length) { showToast('No lab values found in report','error'); return; }
+        showLabVerifyModal(parsed);
+      } catch(err) {
+        showToast('Could not read report automatically. Add manually.','error');
+        showAddLab();
+      }
+    };
+    reader.readAsDataURL(f);
+  };
+  inp.click();
+}
+
+function showLabVerifyModal(extracted) {
+  // Build a verification modal dynamically
+  const existing = document.getElementById('modal-lab-verify');
+  if (existing) existing.remove();
+
+  const modal = document.createElement('div');
+  modal.className = 'modal-overlay';
+  modal.id = 'modal-lab-verify';
+  modal.style.cssText = 'display:flex';
+  modal.innerHTML = `
+    <div class="modal modal-wide" style="max-width:700px">
+      <div class="modal-header">
+        <h3>✅ Verify Extracted Lab Results</h3>
+        <button class="modal-close" onclick="document.getElementById('modal-lab-verify').remove()"><i class="ti ti-x"></i></button>
+      </div>
+      <div class="modal-body" style="max-height:60vh;overflow-y:auto">
+        <div style="font-size:11px;color:var(--tx3);margin-bottom:10px">AI extracted these values from your report. Please verify and correct any errors before saving.</div>
+        <table style="width:100%;border-collapse:collapse;font-size:12px" id="verify-tbl">
+          <thead><tr style="background:var(--bg3)">
+            <th style="padding:6px;text-align:left">✓</th>
+            <th style="padding:6px;text-align:left">Test Name</th>
+            <th style="padding:6px;text-align:left">Value</th>
+            <th style="padding:6px;text-align:left">Unit</th>
+            <th style="padding:6px;text-align:left">Ref Min</th>
+            <th style="padding:6px;text-align:left">Ref Max</th>
+            <th style="padding:6px;text-align:left">Date</th>
+            <th style="padding:6px;text-align:left">Lab</th>
+          </tr></thead>
+          <tbody>${extracted.map((r,i)=>`<tr style="border-bottom:1px solid var(--bd)">
+            <td style="padding:4px"><input type="checkbox" checked id="vr-chk-${i}"/></td>
+            <td style="padding:4px"><input type="text" value="${r.name||''}" id="vr-name-${i}" style="width:100%;background:var(--bg3);border:1px solid var(--bd);border-radius:4px;padding:3px 6px;color:var(--tx);font-size:11px"/></td>
+            <td style="padding:4px"><input type="number" value="${r.value||''}" id="vr-val-${i}" style="width:70px;background:var(--bg3);border:1px solid var(--bd);border-radius:4px;padding:3px 6px;color:var(--tx);font-size:11px"/></td>
+            <td style="padding:4px"><input type="text" value="${r.unit||''}" id="vr-unit-${i}" style="width:60px;background:var(--bg3);border:1px solid var(--bd);border-radius:4px;padding:3px 6px;color:var(--tx);font-size:11px"/></td>
+            <td style="padding:4px"><input type="number" value="${r.refMin||''}" id="vr-mn-${i}" style="width:60px;background:var(--bg3);border:1px solid var(--bd);border-radius:4px;padding:3px 6px;color:var(--tx);font-size:11px"/></td>
+            <td style="padding:4px"><input type="number" value="${r.refMax||''}" id="vr-mx-${i}" style="width:60px;background:var(--bg3);border:1px solid var(--bd);border-radius:4px;padding:3px 6px;color:var(--tx);font-size:11px"/></td>
+            <td style="padding:4px"><input type="date" value="${r.date||new Date().toISOString().split('T')[0]}" id="vr-date-${i}" style="background:var(--bg3);border:1px solid var(--bd);border-radius:4px;padding:3px 6px;color:var(--tx);font-size:11px"/></td>
+            <td style="padding:4px"><input type="text" value="${r.lab||''}" id="vr-lab-${i}" style="width:80px;background:var(--bg3);border:1px solid var(--bd);border-radius:4px;padding:3px 6px;color:var(--tx);font-size:11px"/></td>
+          </tr>`).join('')}</tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" onclick="document.getElementById('modal-lab-verify').remove()">Cancel</button>
+        <button class="btn btn-primary" onclick="saveVerifiedLabs(${extracted.length})"><i class="ti ti-device-floppy"></i> Save Verified Results</button>
+      </div>
+    </div>`;
+  document.body.appendChild(modal);
+}
+
+function saveVerifiedLabs(count) {
+  let saved = 0;
+  for (let i=0; i<count; i++) {
+    const chk = document.getElementById(`vr-chk-${i}`);
+    if (!chk?.checked) continue;
+    const name = document.getElementById(`vr-name-${i}`)?.value?.trim();
+    const val  = parseFloat(document.getElementById(`vr-val-${i}`)?.value);
+    const unit = document.getElementById(`vr-unit-${i}`)?.value?.trim()||'';
+    const mn   = parseFloat(document.getElementById(`vr-mn-${i}`)?.value)||0;
+    const mx   = parseFloat(document.getElementById(`vr-mx-${i}`)?.value)||999;
+    const date = document.getElementById(`vr-date-${i}`)?.value||new Date().toISOString().split('T')[0];
+    const lab  = document.getElementById(`vr-lab-${i}`)?.value?.trim()||'';
+    if (!name||isNaN(val)) continue;
+    const existing = S.currentPatient.labs.find(l=>l.name.toLowerCase()===name.toLowerCase());
+    if (existing) {
+      // Add new entry for this date (newest first)
+      const alreadyExists = existing.entries.find(e=>e.date===date);
+      if (!alreadyExists) existing.entries.unshift({date,lab,val});
+      else alreadyExists.val = val;
+    } else {
+      S.currentPatient.labs.push({name, cat:'Other', ref:`${mn}–${mx}`, mn, mx, unit, entries:[{date,lab,val}]});
+    }
+    saved++;
+  }
+  savePatientsToStorage();
+  document.getElementById('modal-lab-verify').remove();
+  renderLabs();
+  showToast(`${saved} lab result(s) saved successfully`,'success');
 }
 
 function importLabs() {
@@ -2785,20 +4235,44 @@ function toggleSidebar() {
 document.addEventListener('DOMContentLoaded',init);
 </script>
 
+<!-- API KEY MODAL -->
+<div class="modal-overlay" id="modal-apikey" onclick="if(event.target===this)closeModal('modal-apikey')">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>🔑 AI Advisor Setup (Free)</h3>
+      <button class="modal-close" onclick="closeModal('modal-apikey')"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="modal-body">
+      <div style="background:var(--ac4);border:1px solid var(--ac3);border-radius:var(--r);padding:10px 13px;margin-bottom:14px;font-size:12px;color:var(--ac2)">
+        <strong>Free Google Gemini API — 1,500 requests/day at no cost.</strong><br>
+        Your key is stored only in your browser. Never shared with anyone.
+      </div>
+      <div class="form-row">
+        <label>Google Gemini API Key</label>
+        <input id="apikey-input" type="password" placeholder="AIzaSy..."/>
+      </div>
+      <div style="font-size:11px;color:var(--tx3);margin-top:8px;line-height:1.8">
+        <strong>How to get your free key:</strong><br>
+        1. Go to <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color:var(--ac2)">aistudio.google.com/app/apikey</a><br>
+        2. Sign in with your Google account<br>
+        3. Click <strong>"Create API Key"</strong><br>
+        4. Copy the key (starts with <code style="font-size:10px">AIzaSy</code>) and paste above
+      </div>
+    </div>
+    <div class="modal-footer" style="justify-content:space-between">
+      <button class="btn btn-danger" onclick="clearAPIKey()">Remove Key</button>
+      <div style="display:flex;gap:8px">
+        <button class="btn" onclick="closeModal('modal-apikey')">Cancel</button>
+        <button class="btn btn-primary" onclick="saveAPIKey()">Save & Enable AI</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- App footer (shown on all pages) -->
 <div style="position:fixed;bottom:0;right:0;font-size:10px;color:var(--tx3);padding:5px 10px;background:var(--bg2);border-top-left-radius:8px;border:1px solid var(--bd);z-index:50">
   © 2026 MedTracker · Developed by <a href="https://wa.me/923482590727" target="_blank" style="color:var(--ac2)">Dr. Imran</a> · <a href="https://wa.me/923482590727" target="_blank" style="color:var(--ac2)">+92 348-2590727</a>
 </div>
 
-<script>
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('./sw.js')
-    .then(() => console.log('Service Worker Registered'));
-}
-</script>
-
-
-
-   
 </body>
 </html>
