@@ -27,15 +27,66 @@
   --font:'DM Sans',system-ui,sans-serif;--mono:'DM Mono',monospace;
   --r:10px;--r2:14px;--r3:20px;
 }
-[data-theme="ocean-blue"]{--bg:#050f1a;--bg2:#0a1828;--bg3:#0f2035;--bg4:#162840;--bd:#1e3a5a;--bd2:#2a4e78;--tx:#e0f0ff;--tx2:#7aaac8;--tx3:#3a6080;--ac:#0ea5e9;--ac2:#38bdf8;--ac3:#075985;--ac4:#0c4a6e;}
-[data-theme="forest-green"]{--bg:#060f09;--bg2:#0a1a0e;--bg3:#102418;--bg4:#162e1e;--bd:#1e4228;--bd2:#2a5a38;--tx:#e0f5e8;--tx2:#6ab884;--tx3:#2d6040;--ac:#16a34a;--ac2:#4ade80;--ac3:#14532d;--ac4:#052e16;}
-[data-theme="sunset-orange"]{--bg:#120800;--bg2:#1e0e02;--bg3:#2a1604;--bg4:#361c06;--bd:#4a2a0a;--bd2:#5e3a12;--tx:#fff3e0;--tx2:#c8926a;--tx3:#6a4020;--ac:#ea580c;--ac2:#fb923c;--ac3:#9a3412;--ac4:#7c2d12;}
-[data-theme="rose-pink"]{--bg:#120610;--bg2:#1a0a18;--bg3:#240e22;--bg4:#2e1430;--bd:#421a40;--bd2:#5a2258;--tx:#ffe8fc;--tx2:#c080b8;--tx3:#603050;--ac:#db2777;--ac2:#f472b6;--ac3:#9d174d;--ac4:#831843;}
-[data-theme="midnight"]{--bg:#000008;--bg2:#08080f;--bg3:#0e0e18;--bg4:#141420;--bd:#1e1e30;--bd2:#2a2a42;--tx:#c8c8e8;--tx2:#6868a0;--tx3:#303060;--ac:#6366f1;--ac2:#818cf8;--ac3:#3730a3;--ac4:#1e1b4b;}
-[data-theme="arctic"]{--bg:#f0f8ff;--bg2:#ffffff;--bg3:#e8f4fd;--bg4:#daeef8;--bd:#b0d8f0;--bd2:#80b8e0;--tx:#0a1e2e;--tx2:#3a6080;--tx3:#80a8c0;--ac:#0284c7;--ac2:#0369a1;--ac3:#0c4a6e;--ac4:#e0f2fe;}
-[data-theme="desert"]{--bg:#100e08;--bg2:#1a160a;--bg3:#241e0e;--bg4:#2e2814;--bd:#423c1a;--bd2:#5a5020;--tx:#f5f0d8;--tx2:#b0a060;--tx3:#605030;--ac:#ca8a04;--ac2:#eab308;--ac3:#854d0e;--ac4:#713f12;}
-[data-theme="medical-white"]{--bg:#f4f7fb;  --bg2:#ffffff;  --bg3:#edf2f7;  --bg4:#e2e8f0;  --bd:#cbd5e1;  --bd2:#94a3b8;  --tx:#0f172a;  --tx2:#334155;  --tx3:#64748b;  --ac:#2563eb; --ac2:#3b82f6;  --ac3:#1d4ed8;  --ac4:#dbeafe;  --grn:#16a34a;  --red:#dc2626;  --amb:#d97706;  --blu:#2563eb;  --cyn:#0891b2;  --pnk:#db2777;}
-[data-theme="charcoal"]{--bg:#0a0a0a;--bg2:#141414;--bg3:#1e1e1e;--bg4:#282828;--bd:#383838;--bd2:#484848;--tx:#e0e0e0;--tx2:#808080;--tx3:#484848;--ac:#60a5fa;--ac2:#93c5fd;--ac3:#1e3a5a;--ac4:#0f2040;}
+/* Dark themes — light text, colored accents */
+[data-theme="ocean-blue"]{
+  --bg:#040c18;--bg2:#081828;--bg3:#0d2238;--bg4:#122c48;
+  --bd:#1c3c5a;--bd2:#285078;--tx:#e0f0ff;--tx2:#7ab0d0;--tx3:#3a6080;
+  --ac:#0ea5e9;--ac2:#38bdf8;--ac3:#075985;--ac4:#0a2a45;
+  --grn:#22c55e;--red:#ef4444;--amb:#f59e0b;--blu:#60a5fa;--cyn:#22d3ee;--pnk:#f472b6;
+}
+[data-theme="forest-green"]{
+  --bg:#050e08;--bg2:#091808;--bg3:#0e2412;--bg4:#132e18;
+  --bd:#1a4020;--bd2:#245828;--tx:#e0f5e6;--tx2:#60b870;--tx3:#286035;
+  --ac:#16a34a;--ac2:#4ade80;--ac3:#14532d;--ac4:#052e16;
+  --grn:#4ade80;--red:#ef4444;--amb:#f59e0b;--blu:#60a5fa;--cyn:#22d3ee;--pnk:#f472b6;
+}
+[data-theme="midnight"]{
+  --bg:#000005;--bg2:#07070f;--bg3:#0d0d18;--bg4:#131325;
+  --bd:#1c1c35;--bd2:#28284a;--tx:#d0d0f0;--tx2:#6868a8;--tx3:#383868;
+  --ac:#6366f1;--ac2:#818cf8;--ac3:#3730a3;--ac4:#1e1b4b;
+  --grn:#22c55e;--red:#ef4444;--amb:#f59e0b;--blu:#60a5fa;--cyn:#22d3ee;--pnk:#f472b6;
+}
+[data-theme="charcoal"]{
+  --bg:#0a0a0a;--bg2:#141414;--bg3:#1e1e1e;--bg4:#282828;
+  --bd:#383838;--bd2:#484848;--tx:#e8e8e8;--tx2:#909090;--tx3:#585858;
+  --ac:#60a5fa;--ac2:#93c5fd;--ac3:#1e3a5a;--ac4:#0f2040;
+  --grn:#22c55e;--red:#ef4444;--amb:#f59e0b;--blu:#60a5fa;--cyn:#22d3ee;--pnk:#f472b6;
+}
+[data-theme="rose-dark"]{
+  --bg:#120610;--bg2:#1c0c1a;--bg3:#261225;--bg4:#301830;
+  --bd:#461840;--bd2:#5e2258;--tx:#ffe8fc;--tx2:#c070b0;--tx3:#703060;
+  --ac:#db2777;--ac2:#f472b6;--ac3:#9d174d;--ac4:#500f2a;
+  --grn:#22c55e;--red:#ef4444;--amb:#f59e0b;--blu:#60a5fa;--cyn:#22d3ee;--pnk:#f472b6;
+}
+/* Light themes — DARK text, dark buttons with white text */
+[data-theme="medical-white"]{
+  --bg:#f4f7fb;--bg2:#ffffff;--bg3:#edf2f7;--bg4:#e2e8f0;
+  --bd:#c8d5e5;--bd2:#8a9ab8;
+  --tx:#0f172a;--tx2:#1e3a5f;--tx3:#64748b;
+  --ac:#1d4ed8;--ac2:#1d4ed8;--ac3:#1e40af;--ac4:#dbeafe;
+  --grn:#15803d;--red:#b91c1c;--amb:#b45309;--blu:#1d4ed8;--cyn:#0e7490;--pnk:#be185d;
+}
+[data-theme="arctic"]{
+  --bg:#e8f4fd;--bg2:#ffffff;--bg3:#d0e8f8;--bg4:#b8daf2;
+  --bd:#88c0e0;--bd2:#5090b8;
+  --tx:#082030;--tx2:#0e3555;--tx3:#3a6880;
+  --ac:#0369a1;--ac2:#0369a1;--ac3:#075985;--ac4:#bae6fd;
+  --grn:#15803d;--red:#b91c1c;--amb:#b45309;--blu:#1d4ed8;--cyn:#0e7490;--pnk:#be185d;
+}
+[data-theme="warm-cream"]{
+  --bg:#fdf8f0;--bg2:#ffffff;--bg3:#f5ede0;--bg4:#ede0ce;
+  --bd:#d0b890;--bd2:#a88060;
+  --tx:#18100a;--tx2:#3d2810;--tx3:#7a5838;
+  --ac:#92400e;--ac2:#92400e;--ac3:#78350f;--ac4:#fde68a;
+  --grn:#15803d;--red:#b91c1c;--amb:#b45309;--blu:#1d4ed8;--cyn:#0e7490;--pnk:#be185d;
+}
+[data-theme="slate-light"]{
+  --bg:#f1f5f9;--bg2:#ffffff;--bg3:#e2e8f0;--bg4:#cbd5e1;
+  --bd:#94a3b8;--bd2:#64748b;
+  --tx:#0f172a;--tx2:#1e293b;--tx3:#475569;
+  --ac:#1e40af;--ac2:#1e40af;--ac3:#1e3a8a;--ac4:#dbeafe;
+  --grn:#15803d;--red:#b91c1c;--amb:#b45309;--blu:#1d4ed8;--cyn:#0e7490;--pnk:#be185d;
+}
 
 
 /* ============================================================
@@ -240,7 +291,7 @@ input,select,textarea{font-family:var(--font)}
    AI CHAT PANEL
    ============================================================ */
 .ai-panel{background:linear-gradient(135deg,var(--ac4),var(--bg3));border:1px solid var(--ac3);border-radius:var(--r2);overflow:hidden}
-.ai-panel-header{padding:12px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.08);flex-wrap:wrap;gap:8px}
+.ai-panel-header{padding:12px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--bd);flex-wrap:wrap;gap:8px}
 .ai-panel-title{display:flex;align-items:center;gap:8px}
 .ai-avatar-icon{width:32px;height:32px;background:rgba(124,111,247,.25);border-radius:8px;display:flex;align-items:center;justify-content:center}
 .ai-lang-btns{display:flex;gap:4px}
@@ -250,22 +301,22 @@ input,select,textarea{font-family:var(--font)}
 .ai-msg{display:flex;gap:8px;margin-bottom:10px}
 .ai-msg.user{flex-direction:row-reverse}
 .ai-bubble{max-width:80%;padding:9px 12px;border-radius:10px;font-size:12px;line-height:1.5}
-.ai-msg.ai .ai-bubble{background:rgba(255,255,255,.08);color:rgba(255,255,255,.85);border-bottom-left-radius:2px}
+.ai-msg.ai .ai-bubble{background:var(--bg3);color:var(--tx);border:1px solid var(--bd);border-bottom-left-radius:2px}
 .ai-msg.user .ai-bubble{background:var(--ac3);color:#fff;border-bottom-right-radius:2px}
-.ai-input-row{display:flex;gap:6px;padding:10px 12px;border-top:1px solid rgba(255,255,255,.08)}
-.ai-input{flex:1;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:7px;padding:7px 10px;color:#fff;font-size:12px;outline:none;font-family:var(--font)}
-.ai-input::placeholder{color:rgba(255,255,255,.35)}
-.ai-input:focus{border-color:rgba(255,255,255,.25)}
+.ai-input-row{display:flex;gap:6px;padding:10px 12px;border-top:1px solid var(--bd)}
+.ai-input{flex:1;background:var(--bg3);border:1px solid var(--bd);border-radius:7px;padding:7px 10px;color:var(--tx);font-size:12px;outline:none;font-family:var(--font)}
+.ai-input::placeholder{color:var(--tx3)}
+.ai-input:focus{border-color:var(--ac)}
 .ai-typing{display:flex;gap:3px;align-items:center;padding:3px 0}
-.ai-typing span{width:5px;height:5px;background:rgba(255,255,255,.4);border-radius:50%;animation:typingBounce 1.2s infinite}
+.ai-typing span{width:5px;height:5px;background:var(--tx3);border-radius:50%;animation:typingBounce 1.2s infinite}
 .ai-typing span:nth-child(2){animation-delay:.2s}
 .ai-typing span:nth-child(3){animation-delay:.4s}
 @keyframes typingBounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
-.ai-hospitals{padding:10px 12px;border-top:1px solid rgba(255,255,255,.08)}
+.ai-hospitals{padding:10px 12px;border-top:1px solid var(--bd)}
 .hospitals-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:5px}
-.hosp-card{background:rgba(0,0,0,.2);border:1px solid rgba(255,255,255,.07);border-radius:7px;padding:6px 9px}
-.hosp-name{font-size:10px;font-weight:600;color:rgba(255,255,255,.8)}
-.hosp-sub{font-size:9px;color:rgba(255,255,255,.4);margin-top:1px}
+.hosp-card{background:var(--bg3);border:1px solid var(--bd);border-radius:7px;padding:6px 9px}
+.hosp-name{font-size:10px;font-weight:600;color:var(--tx)}
+.hosp-sub{font-size:9px;color:var(--tx3);margin-top:1px}
 
 /* ============================================================
    LAB TESTS
@@ -349,18 +400,18 @@ input,select,textarea{font-family:var(--font)}
    MEDICATIONS
    ============================================================ */
 .dose-schedule{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r2);overflow:hidden;margin-bottom:12px}
-.dose-schedule-header{background:#0f3a2d;padding:10px 14px;display:flex;align-items:center;gap:7px;font-size:13px;font-weight:600;color:#4ade80}
+.dose-schedule-header{background:var(--ac3);padding:10px 14px;display:flex;align-items:center;gap:7px;font-size:13px;font-weight:600;color:#fff}
 .dose-cols{display:grid;grid-template-columns:repeat(4,1fr)}
 .dose-col{padding:10px;border-right:1px solid var(--bd)}
 .dose-col:last-child{border-right:none}
 .dose-col-header{font-size:11px;font-weight:600;margin-bottom:6px;display:flex;align-items:center;gap:5px}
 .dose-pill-card{border-radius:7px;padding:8px 10px;margin-bottom:5px}
-.dpc-morning{background:#422006;border:1px solid #78350f}
-.dpc-afternoon{background:#422006;border:1px solid #92400e}
-.dpc-evening{background:#450a0a;border:1px solid #7f1d1d}
-.dpc-night{background:#1e1060;border:1px solid var(--ac3)}
+.dpc-morning{background:var(--bg3);border-left:3px solid var(--amb);border:1px solid var(--bd);border-left:3px solid var(--amb)}
+.dpc-afternoon{background:var(--bg3);border:1px solid var(--bd);border-left:3px solid var(--cyn)}
+.dpc-evening{background:var(--bg3);border:1px solid var(--bd);border-left:3px solid var(--pnk)}
+.dpc-night{background:var(--bg3);border:1px solid var(--bd);border-left:3px solid var(--ac)}
 .dpc-name{font-size:12px;font-weight:600;color:var(--tx)}
-.dpc-dose{font-size:10px;color:var(--tx3);margin-top:1px}
+.dpc-dose{font-size:10px;color:var(--tx2);margin-top:1px}
 .med-card{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r2);padding:14px 16px;display:flex;align-items:flex-start;gap:12px;margin-bottom:8px;transition:all .2s}
 .med-card:hover{border-color:var(--bd2)}
 .med-icon{width:40px;height:40px;border-radius:10px;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
@@ -370,10 +421,10 @@ input,select,textarea{font-family:var(--font)}
 .med-reason{font-size:11px;color:var(--tx3);margin-top:2px}
 .med-time-tags{display:flex;gap:5px;margin-top:7px;flex-wrap:wrap}
 .med-tag{font-size:11px;padding:3px 9px;border-radius:5px;font-weight:500}
-.med-tag-morning{background:#422006;border:1px solid #78350f;color:#fbbf24}
-.med-tag-afternoon{background:#422006;border:1px solid #92400e;color:#fb923c}
-.med-tag-evening{background:#450a0a;border:1px solid #7f1d1d;color:#f87171}
-.med-tag-night{background:#1e1060;border:1px solid var(--ac3);color:var(--ac2)}
+.med-tag-morning{background:var(--bg4);border:1px solid var(--amb);color:var(--amb)}
+.med-tag-afternoon{background:var(--bg4);border:1px solid var(--cyn);color:var(--cyn)}
+.med-tag-evening{background:var(--bg4);border:1px solid var(--pnk);color:var(--pnk)}
+.med-tag-night{background:var(--bg4);border:1px solid var(--ac);color:var(--ac2)}
 
 /* ============================================================
    VITALS
@@ -573,18 +624,36 @@ input,select,textarea{font-family:var(--font)}
 .empty-state p{font-size:13px;margin-bottom:12px}
 .section-label{font-size:11px;font-weight:600;color:var(--tx2);margin-bottom:8px;text-transform:uppercase;letter-spacing:.4px}
 </style>
-<!-- EmailJS for real OTP email sending (free: emailjs.com) -->
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script>
+// Initialize Firebase
+const _fbApp = firebase.initializeApp({
+  apiKey: "AIzaSyD8sV8m9hDIXlMR_pQ7X3IoWh-ozjD3t7U",
+  authDomain: "medicare-tracker-33b46.firebaseapp.com",
+  projectId: "medicare-tracker-33b46",
+  storageBucket: "medicare-tracker-33b46.firebasestorage.app",
+  messagingSenderId: "1003916294622",
+  appId: "1:1003916294622:web:c37a75cb65ef31d36b854f"
+});
+const _fbAuth = firebase.auth();
+// Auto-login if session persists
+_fbAuth.onAuthStateChanged(user => {
+  if (user && document.getElementById('app').style.display==='none') {
+    S.currentUser = {name: user.displayName||user.email, email: user.email, uid: user.uid, photo: user.photoURL};
+    showApp();
+  }
+});
+// Note: Get a FREE Gemini API key at https://aistudio.google.com/app/apikey
+// Paste it in the AI Advisor page when prompted
+</script>
 </head>
 <body>
 
 <!-- ============================================================
      WHATSAPP FLOATING BUTTON (all pages)
      ============================================================ -->
-<a href="https://wa.me/923482590727" target="_blank" class="wa-float" id="wa-btn" style="display:none">
-  <i class="ti ti-brand-whatsapp" aria-hidden="true"></i>
-  Chat with Support
-</a>
 
 <!-- ============================================================
      INTRO / LOGIN SCREEN
@@ -630,15 +699,6 @@ input,select,textarea{font-family:var(--font)}
         <span class="auth-link" onclick="switchAuthTab('forgot')">Forgot password?</span>
       </div>
       <button class="auth-btn" onclick="doLogin()">Login</button>
-      <div class="auth-divider">or continue with</div>
-      <button class="social-btn" onclick="socialLogin('Google')">
-        <i class="ti ti-brand-google" style="font-size:18px;color:#ea4335" aria-hidden="true"></i>
-        Continue with Google
-      </button>
-      <button class="social-btn" onclick="socialLogin('Microsoft')">
-        <i class="ti ti-brand-windows" style="font-size:18px;color:#0078d4" aria-hidden="true"></i>
-        Continue with Microsoft
-      </button>
     </div>
 
     <!-- REGISTER -->
@@ -662,26 +722,22 @@ input,select,textarea{font-family:var(--font)}
       <button class="auth-btn" onclick="doRegister()">Create Account & Get OTP</button>
     </div>
 
-    <!-- OTP VERIFY -->
+    <!-- EMAIL SENT CONFIRMATION (used for both signup verification and password reset) -->
     <div id="tab-otp" style="display:none">
-      <p style="font-size:13px;color:var(--tx2);margin-bottom:14px;text-align:center" id="otp-label">Enter the 6-digit code sent to your email:</p>
-      <div class="otp-inputs" id="otp-inputs"></div>
-      <button class="auth-btn" onclick="verifyOTP()" style="margin-top:12px">Verify Code</button>
-      <p style="text-align:center;margin-top:10px;font-size:12px;color:var(--tx3)">Didn't receive? <span class="auth-link" onclick="resendOTP()">Resend Code</span></p>
-    </div>
-
-    <!-- NEW PASSWORD (after reset OTP verified) -->
-    <div id="tab-new-password" style="display:none">
-      <p style="font-size:13px;color:var(--tx2);margin-bottom:14px">Set your new password:</p>
-      <div class="auth-form-group">
-        <label class="auth-label">New Password</label>
-        <input type="password" class="auth-input" id="new-pass" placeholder="Min 6 characters"/>
+      <div style="text-align:center;padding:10px 0">
+        <div style="font-size:48px;margin-bottom:12px">📧</div>
+        <p style="font-size:14px;font-weight:600;color:var(--tx);margin-bottom:8px" id="otp-label">Email Sent!</p>
+        <p style="font-size:12px;color:var(--tx3);line-height:1.7" id="otp-sublabel">Check your inbox and follow the instructions in the email.</p>
+        <div style="margin-top:16px;background:var(--bg3);border-radius:var(--r);padding:12px;font-size:11px;color:var(--tx2);text-align:left">
+          <div>✅ Check your inbox (and spam/junk folder)</div>
+          <div style="margin-top:4px">✅ Click the link in the email</div>
+          <div style="margin-top:4px" id="otp-step3">✅ Then return here and login</div>
+        </div>
+        <button class="auth-btn" style="margin-top:16px" onclick="switchAuthTab('login')">Back to Login</button>
+        <p style="text-align:center;margin-top:10px;font-size:12px;color:var(--tx3)">
+          Wrong email? <span class="auth-link" onclick="switchAuthTab('forgot')">Try again</span>
+        </p>
       </div>
-      <div class="auth-form-group">
-        <label class="auth-label">Confirm Password</label>
-        <input type="password" class="auth-input" id="conf-pass" placeholder="Repeat password"/>
-      </div>
-      <button class="auth-btn" onclick="doResetPassword()">Set New Password</button>
     </div>
 
     <!-- FORGOT -->
@@ -749,7 +805,6 @@ input,select,textarea{font-family:var(--font)}
     </nav>
     <div class="sb-footer">
       <button class="sb-footer-btn" onclick="openThemePanel()"><i class="ti ti-palette" aria-hidden="true"></i><span>Themes</span></button>
-      <button class="sb-footer-btn" onclick="showAPIKeyModal()"><i class="ti ti-key" aria-hidden="true"></i><span>AI API Key</span></button>
       <button class="sb-footer-btn" onclick="doLogout()"><i class="ti ti-logout" aria-hidden="true"></i><span>Logout</span></button>
     </div>
   </div>
@@ -989,8 +1044,8 @@ input,select,textarea{font-family:var(--font)}
             <div class="ai-panel-title">
               <div class="ai-avatar-icon"><i class="ti ti-robot" style="font-size:16px;color:var(--ac2)"></i></div>
               <div>
-                <div style="font-size:12px;font-weight:600;color:#fff">AI Health Advisor — Pakistan Specific</div>
-                <div style="font-size:10px;color:rgba(255,255,255,.4)">Karachi · 3 languages</div>
+                <div style="font-size:12px;font-weight:600;color:var(--tx)">AI Health Advisor — Pakistan Specific</div>
+                <div style="font-size:10px;color:var(--tx3)">Karachi · 3 languages</div>
               </div>
             </div>
             <div style="display:flex;gap:5px;align-items:center;flex-wrap:wrap">
@@ -1010,7 +1065,7 @@ input,select,textarea{font-family:var(--font)}
             <button class="btn btn-primary" style="font-size:10px" onclick="sendAIMessage()"><i class="ti ti-send"></i> Send</button>
           </div>
           <div class="ai-hospitals">
-            <div style="font-size:9px;text-transform:uppercase;letter-spacing:.4px;color:rgba(255,255,255,.3);margin-bottom:5px">Recommended Karachi Hospitals</div>
+            <div style="font-size:9px;text-transform:uppercase;letter-spacing:.4px;color:var(--tx3);margin-bottom:5px">Recommended Karachi Hospitals</div>
             <div class="hospitals-grid">
               <div class="hosp-card"><div class="hosp-name">Aga Khan University Hospital</div><div class="hosp-sub">Stadium Rd · 021-111-911-911</div></div>
               <div class="hosp-card"><div class="hosp-name">Liaquat National Hospital</div><div class="hosp-sub">Stadium Rd · 021-111-456-456</div></div>
@@ -1394,35 +1449,80 @@ input,select,textarea{font-family:var(--font)}
 <div class="modal-overlay" id="modal-add-patient" onclick="if(event.target===this)closeModal('modal-add-patient')">
   <div class="modal modal-wide">
     <div class="modal-header">
-      <h3>Add / Edit Patient</h3>
-      <button class="modal-close" onclick="closeModal('modal-add-patient')"><i class="ti ti-x" aria-hidden="true"></i></button>
+      <h3 id="pt-modal-title">Add Patient</h3>
+      <button class="modal-close" onclick="closeModal('modal-add-patient')"><i class="ti ti-x"></i></button>
     </div>
     <div class="modal-body">
+
+      <!-- Photo upload -->
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px;padding:12px;background:var(--bg3);border-radius:var(--r2)">
+        <div id="fp-photo-preview" style="width:72px;height:72px;border-radius:50%;background:var(--bg2);border:2px solid var(--bd);display:flex;align-items:center;justify-content:center;font-size:22px;color:var(--tx3);overflow:hidden;flex-shrink:0">👤</div>
+        <div>
+          <div style="font-size:12px;font-weight:600;color:var(--tx);margin-bottom:6px">Patient Photo</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <button class="btn" style="font-size:11px" onclick="document.getElementById('fp-photo-gallery').click()"><i class="ti ti-photo"></i> Gallery</button>
+            <button class="btn" style="font-size:11px" onclick="document.getElementById('fp-photo-camera').click()"><i class="ti ti-camera"></i> Camera</button>
+            <button class="btn btn-danger" style="font-size:11px" onclick="clearPatientPhoto()"><i class="ti ti-trash"></i></button>
+          </div>
+          <input type="file" id="fp-photo-gallery" accept="image/*" style="display:none" onchange="handlePatientPhoto(event)"/>
+          <input type="file" id="fp-photo-camera" accept="image/*" capture="environment" style="display:none" onchange="handlePatientPhoto(event)"/>
+        </div>
+      </div>
+
+      <!-- Basic info -->
       <div class="form-2col">
         <div class="form-row"><label>Full Name *</label><input id="fp-name" placeholder="e.g. Hamzo Khan"/></div>
         <div class="form-row"><label>Age *</label><input id="fp-age" type="number" placeholder="e.g. 60"/></div>
       </div>
       <div class="form-2col">
-        <div class="form-row"><label>Gender</label><select id="fp-gender"><option>Male</option><option>Female</option><option>Other</option></select></div>
-        <div class="form-row"><label>Blood Group</label><select id="fp-blood"><option>O+</option><option>O-</option><option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>AB+</option><option>AB-</option><option>Unknown</option></select></div>
+        <div class="form-row"><label>Gender</label>
+          <select id="fp-gender"><option>Male</option><option>Female</option><option>Other</option></select>
+        </div>
+        <div class="form-row"><label>Blood Group</label>
+          <select id="fp-blood"><option>O+</option><option>O-</option><option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>AB+</option><option>AB-</option><option>Unknown</option></select>
+        </div>
       </div>
       <div class="form-2col">
-        <div class="form-row"><label>Phone</label><input id="fp-phone" placeholder="+92 300 1234567"/></div>
-        <div class="form-row"><label>Emergency Contact</label><input id="fp-emergency" placeholder="+92 300 7654321"/></div>
+        <div class="form-row"><label>Height (cm)</label><input id="fp-height" type="number" placeholder="e.g. 170"/></div>
+        <div class="form-row"><label>CNIC / ID</label><input id="fp-cnic" placeholder="e.g. 42101-1234567-1"/></div>
       </div>
+
+      <!-- Contact -->
+      <div style="font-size:11px;font-weight:600;text-transform:uppercase;color:var(--tx3);margin:10px 0 6px">Contact Information</div>
+      <div class="form-2col">
+        <div class="form-row"><label>Phone</label><input id="fp-phone" placeholder="+92 300 1234567"/></div>
+        <div class="form-row"><label>Address</label><input id="fp-address" placeholder="e.g. Block 5, Clifton, Karachi"/></div>
+      </div>
+
+      <!-- Emergency contact -->
+      <div style="font-size:11px;font-weight:600;text-transform:uppercase;color:var(--tx3);margin:10px 0 6px">Emergency Contact</div>
+      <div class="form-2col">
+        <div class="form-row"><label>Name</label><input id="fp-emergency-name" placeholder="e.g. Ahmed Khan (Son)"/></div>
+        <div class="form-row"><label>Phone</label><input id="fp-emergency" placeholder="+92 300 7654321"/></div>
+      </div>
+
+      <!-- Medical info -->
+      <div style="font-size:11px;font-weight:600;text-transform:uppercase;color:var(--tx3);margin:10px 0 6px">Medical Information</div>
       <div class="form-2col">
         <div class="form-row"><label>Doctor Name</label><input id="fp-doctor" placeholder="e.g. Dr. Ahmed Khan"/></div>
         <div class="form-row"><label>Last Checkup Date</label><input id="fp-checkup" type="date"/></div>
       </div>
-      <div class="form-row"><label>Major Diseases (comma separated)</label><input id="fp-diseases" placeholder="e.g. Diabetes, Hypertension"/></div>
-      <div class="form-row"><label>Current Health Issues</label><textarea id="fp-issues" placeholder="Describe current health issues..."></textarea></div>
-      <div class="form-row"><label>Allergies</label><input id="fp-allergies" placeholder="e.g. Penicillin, Sulfa drugs"/></div>
-      <div class="form-row"><label>Address</label><input id="fp-address" placeholder="e.g. Block 5, Clifton, Karachi"/></div>
-      <div class="form-row"><label>Notes</label><textarea id="fp-notes" placeholder="Additional notes..."></textarea></div>
+      <div class="form-row"><label>Known Diseases / Conditions <span style="color:var(--tx3);font-size:10px">(comma separated)</span></label>
+        <input id="fp-diseases" placeholder="e.g. Diabetes, Hypertension, CKD"/>
+      </div>
+      <div class="form-row"><label>Allergies <span style="color:var(--red);font-size:10px">⚠</span></label>
+        <input id="fp-allergies" placeholder="e.g. Penicillin, Sulfa drugs, Aspirin"/>
+      </div>
+      <div class="form-row"><label>Current Health Issues</label>
+        <textarea id="fp-issues" rows="2" placeholder="Describe current health issues or complaints..."></textarea>
+      </div>
+      <div class="form-row"><label>Patient Notes</label>
+        <textarea id="fp-notes" rows="2" placeholder="Additional notes, special instructions..."></textarea>
+      </div>
     </div>
     <div class="modal-footer">
       <button class="btn" onclick="closeModal('modal-add-patient')">Cancel</button>
-      <button class="btn btn-primary" onclick="savePatient()">Save Patient</button>
+      <button class="btn btn-primary" onclick="savePatient()"><i class="ti ti-device-floppy"></i> Save Patient</button>
     </div>
   </div>
 </div>
@@ -1727,16 +1827,16 @@ input,select,textarea{font-family:var(--font)}
 // GLOBAL STATE
 // ============================================================
 const THEMES = [
-  {id:'dark-purple',name:'Dark Purple',bg:'#0d0d16',bg2:'#12121e',ac:'#7c6ff7',dot:'#7c6ff7'},
-  {id:'ocean-blue',name:'Ocean Blue',bg:'#050f1a',bg2:'#0a1828',ac:'#0ea5e9',dot:'#0ea5e9'},
-  {id:'forest-green',name:'Forest Green',bg:'#060f09',bg2:'#0a1a0e',ac:'#16a34a',dot:'#16a34a'},
-  {id:'sunset-orange',name:'Sunset Orange',bg:'#120800',bg2:'#1e0e02',ac:'#ea580c',dot:'#ea580c'},
-  {id:'rose-pink',name:'Rose Pink',bg:'#120610',bg2:'#1a0a18',ac:'#db2777',dot:'#db2777'},
-  {id:'midnight',name:'Midnight',bg:'#000008',bg2:'#08080f',ac:'#6366f1',dot:'#6366f1'},
-  {id:'arctic',name:'Arctic Light',bg:'#f0f8ff',bg2:'#ffffff',ac:'#0284c7',dot:'#0284c7'},
-  {id:'desert',name:'Desert Gold',bg:'#100e08',bg2:'#1a160a',ac:'#ca8a04',dot:'#ca8a04'},
-  {id:'medical-white',name:'Medical White',bg:'#f8fafb',bg2:'#ffffff',ac:'#1e6ba8',dot:'#1e6ba8'},
-  {id:'charcoal',name:'Charcoal',bg:'#0a0a0a',bg2:'#141414',ac:'#60a5fa',dot:'#60a5fa'},
+  {id:'dark-purple',  name:'Dark Purple',   bg:'#0d0d16', bg2:'#12121e', ac:'#7c6ff7',  dot:'#7c6ff7'},
+  {id:'ocean-blue',   name:'Ocean Blue',    bg:'#040c18', bg2:'#081828', ac:'#0ea5e9',  dot:'#0ea5e9'},
+  {id:'forest-green', name:'Forest Green',  bg:'#050e08', bg2:'#091808', ac:'#16a34a',  dot:'#16a34a'},
+  {id:'midnight',     name:'Midnight',      bg:'#000005', bg2:'#07070f', ac:'#6366f1',  dot:'#6366f1'},
+  {id:'charcoal',     name:'Charcoal',      bg:'#0a0a0a', bg2:'#141414', ac:'#60a5fa',  dot:'#60a5fa'},
+  {id:'rose-dark',    name:'Rose Dark',     bg:'#120610', bg2:'#1c0c1a', ac:'#db2777',  dot:'#db2777'},
+  {id:'medical-white',name:'Medical White', bg:'#f4f7fb', bg2:'#ffffff', ac:'#1d4ed8',  dot:'#1d4ed8'},
+  {id:'arctic',       name:'Arctic Blue',   bg:'#e8f4fd', bg2:'#ffffff', ac:'#0369a1',  dot:'#0369a1'},
+  {id:'warm-cream',   name:'Warm Cream',    bg:'#fdf8f0', bg2:'#ffffff', ac:'#92400e',  dot:'#92400e'},
+  {id:'slate-light',  name:'Slate Light',   bg:'#f1f5f9', bg2:'#ffffff', ac:'#1e40af',  dot:'#1e40af'},
 ];
 
 const S = {
@@ -1926,7 +2026,7 @@ function closeThemePanel() { document.getElementById('theme-panel').classList.re
 // AUTH
 // ============================================================
 function switchAuthTab(tab) {
-  ['login','register','otp','forgot','new-password'].forEach(t => {
+  ['login','register','otp','forgot'].forEach(t => {
     const el = document.getElementById('tab-'+t);
     if (el) el.style.display = t===tab?'block':'none';
   });
@@ -1943,189 +2043,176 @@ function showAuthError(msg) {
 }
 
 // ============================================================
-// AUTH — Real email OTP via EmailJS (free, works on GitHub Pages)
-// EmailJS setup: https://www.emailjs.com — free 200 emails/month
-// Set your keys in localStorage: mt_ejs_service, mt_ejs_template, mt_ejs_pubkey
+// AUTH — Real Firebase Authentication
 // ============================================================
-let _pendingOTP = '';
-let _pendingEmail = '';
-let _pendingName = '';
-let _pendingPass = '';
-let _otpPurpose = 'register'; // 'register' or 'reset'
 
-function generateOTP() {
-  return String(Math.floor(100000 + Math.random() * 900000));
+function showAuthLoading(msg) {
+  const btn = document.querySelector('.auth-btn');
+  if (btn) { btn.disabled=true; btn.textContent=msg||'Please wait...'; }
+}
+function hideAuthLoading() {
+  document.querySelectorAll('.auth-btn').forEach(b=>{ b.disabled=false; });
+  // restore button text
+  const loginBtn = document.querySelector('#tab-login .auth-btn');
+  if(loginBtn) loginBtn.textContent='Login';
+  const regBtn = document.querySelector('#tab-register .auth-btn');
+  if(regBtn) regBtn.textContent='Create Account';
 }
 
-async function sendOTPEmail(email, name, otp, purpose) {
-  const serviceId  = localStorage.getItem('mt_ejs_service')  || '';
-  const templateId = localStorage.getItem('mt_ejs_template') || '';
-  const pubKey     = localStorage.getItem('mt_ejs_pubkey')   || '';
-
-  if (!serviceId || !templateId || !pubKey) {
-    // EmailJS not configured — show OTP in toast for demo
-    showToast(`Demo OTP: ${otp} (Configure EmailJS in Settings for real email)`, 'success');
-    return true;
-  }
-
-  try {
-    await emailjs.send(serviceId, templateId, {
-      to_email: email,
-      to_name: name || email,
-      otp_code: otp,
-      purpose: purpose === 'reset' ? 'Password Reset' : 'Account Verification',
-      app_name: 'MedTracker'
-    }, pubKey);
-    showToast(`OTP sent to ${email}`, 'success');
-    return true;
-  } catch(err) {
-    showToast(`Demo OTP: ${otp} (Email send failed — use this code)`, 'success');
-    return true;
-  }
-}
-
-function doLogin() {
+async function doLogin() {
   const email = document.getElementById('login-email').value.trim().toLowerCase();
   const pass  = document.getElementById('login-pass').value;
   if (!email) return showAuthError('Please enter your email address.');
   if (!pass)  return showAuthError('Please enter your password.');
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return showAuthError('Please enter a valid email address.');
-  const users = JSON.parse(localStorage.getItem('mt_accounts')||'[]');
-  const user  = users.find(u => u.email===email && u.pass===btoa(pass));
-  // Allow demo account
-  if (!user && !(email==='demo@medtracker.pk')) return showAuthError('Invalid email or password.');
-  const u = user || {name:'Demo User', email, theme:'dark-purple', verified:true};
-  if (!u.verified) return showAuthError('Email not verified. Please check your OTP email.');
-  S.currentUser = u;
-  localStorage.setItem('mt_user', JSON.stringify(u));
-  if (u.theme) applyTheme(u.theme);
-  showApp();
+  showAuthLoading('Logging in...');
+  try {
+    const cred = await _fbAuth.signInWithEmailAndPassword(email, pass);
+    const user = cred.user;
+    if (!user.emailVerified) {
+      await _fbAuth.signOut();
+      hideAuthLoading();
+      return showAuthError('Email not verified. Please check your inbox and verify your email first.');
+    }
+    S.currentUser = {name: user.displayName||email, email: user.email, uid: user.uid};
+    localStorage.setItem('mt_user', JSON.stringify(S.currentUser));
+    showApp();
+  } catch(e) {
+    hideAuthLoading();
+    const msgs = {
+      'auth/user-not-found':'No account found with this email.',
+      'auth/wrong-password':'Incorrect password. Please try again.',
+      'auth/invalid-email':'Please enter a valid email address.',
+      'auth/too-many-requests':'Too many failed attempts. Please try again later.',
+      'auth/invalid-credential':'Invalid email or password.'
+    };
+    showAuthError(msgs[e.code]||e.message);
+  }
 }
 
-function doRegister() {
+async function doRegister() {
   const name  = document.getElementById('reg-name').value.trim();
   const email = document.getElementById('reg-email').value.trim().toLowerCase();
   const pass  = document.getElementById('reg-pass').value;
   if (!name||!email||!pass) return showAuthError('Please fill all required fields.');
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return showAuthError('Please enter a valid email address.');
   if (pass.length < 6) return showAuthError('Password must be at least 6 characters.');
-  const users = JSON.parse(localStorage.getItem('mt_accounts')||'[]');
-  if (users.find(u=>u.email===email)) return showAuthError('This email is already registered. Please login.');
-  _pendingEmail = email;
-  _pendingName  = name;
-  _pendingPass  = pass;
-  _pendingOTP   = generateOTP();
-  _otpPurpose   = 'register';
-  sendOTPEmail(email, name, _pendingOTP, 'register');
-  buildOTPInputs();
-  document.getElementById('otp-label').textContent = `Enter the 6-digit code sent to ${email}`;
-  switchAuthTab('otp');
+  showAuthLoading('Creating account...');
+  try {
+    const cred = await _fbAuth.createUserWithEmailAndPassword(email, pass);
+    await cred.user.updateProfile({displayName: name});
+    await cred.user.sendEmailVerification();
+    await _fbAuth.signOut();
+    hideAuthLoading();
+    document.getElementById('otp-label').textContent = 'Verify your email address';
+    document.getElementById('otp-sublabel').textContent = `A verification email was sent to ${email}. Click the link in that email to activate your account, then come back here to login.`;
+    document.getElementById('otp-step3').textContent = '✅ Then return here and login';
+    switchAuthTab('otp');
+  } catch(e) {
+    hideAuthLoading();
+    const msgs = {
+      'auth/email-already-in-use':'This email is already registered. Please login.',
+      'auth/invalid-email':'Please enter a valid email address.',
+      'auth/weak-password':'Password too weak. Use at least 6 characters.'
+    };
+    showAuthError(msgs[e.code]||e.message);
+  }
 }
 
-function buildOTPInputs() {
+function buildOTPInputs(emailVerifyMode) {
   const c = document.getElementById('otp-inputs');
   c.innerHTML = '';
+  if (emailVerifyMode) {
+    c.innerHTML = `<p style="font-size:12px;color:var(--tx3);text-align:center">After clicking the link in your email, click below to login.</p>
+    <button class="auth-btn" onclick="switchAuthTab('login')" style="margin-top:10px">Go to Login</button>`;
+    return;
+  }
+  // OTP mode for password reset verification
   for (let i=0;i<6;i++) {
     const inp = document.createElement('input');
-    inp.type = 'text'; inp.maxLength = 1; inp.className = 'otp-input';
+    inp.type='text'; inp.maxLength=1; inp.className='otp-input';
     inp.setAttribute('inputmode','numeric');
-    inp.oninput = e => { if(e.target.value&&inp.nextSibling) inp.nextSibling.focus(); };
-    inp.onkeydown = e => { if(e.key==='Backspace'&&!e.target.value&&inp.previousSibling) inp.previousSibling.focus(); };
+    inp.oninput = e => { if(e.target.value&&inp.nextSibling&&inp.nextSibling.tagName==='INPUT') inp.nextSibling.focus(); };
+    inp.onkeydown = e => { if(e.key==='Backspace'&&!e.target.value&&inp.previousSibling&&inp.previousSibling.tagName==='INPUT') inp.previousSibling.focus(); };
     c.appendChild(inp);
   }
   setTimeout(()=>c.querySelector('.otp-input')?.focus(), 100);
 }
 
 function verifyOTP() {
-  const entered = [...document.querySelectorAll('.otp-input')].map(i=>i.value).join('');
-  if (entered.length < 6) return showAuthError('Please enter the full 6-digit code.');
-  if (entered !== _pendingOTP) return showAuthError('Incorrect code. Please try again.');
-
-  if (_otpPurpose === 'register') {
-    const users = JSON.parse(localStorage.getItem('mt_accounts')||'[]');
-    const newUser = {name:_pendingName, email:_pendingEmail, pass:btoa(_pendingPass), theme:'dark-purple', verified:true, created:new Date().toISOString()};
-    users.push(newUser);
-    localStorage.setItem('mt_accounts', JSON.stringify(users));
-    S.currentUser = newUser;
-    localStorage.setItem('mt_user', JSON.stringify(newUser));
-    showToast('Account created successfully!','success');
-    showApp();
-  } else if (_otpPurpose === 'reset') {
-    switchAuthTab('new-password');
-  }
+  // Not used for registration anymore (email verification link)
+  // Only used for password reset confirmation
+  switchAuthTab('new-password');
 }
 
 function resendOTP() {
-  _pendingOTP = generateOTP();
-  sendOTPEmail(_pendingEmail, _pendingName, _pendingOTP, _otpPurpose);
-  buildOTPInputs();
+  showToast('Please use the "Forgot Password" link to resend.','success');
 }
 
-function doForgot() {
+async function doForgot() {
   const email = document.getElementById('forgot-email').value.trim().toLowerCase();
   if (!email) return showAuthError('Please enter your email address.');
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return showAuthError('Please enter a valid email address.');
-  const users = JSON.parse(localStorage.getItem('mt_accounts')||'[]');
-  const user = users.find(u=>u.email===email);
-  if (!user) return showAuthError('No account found with this email.');
-  _pendingEmail = email;
-  _pendingName  = user.name||email;
-  _pendingOTP   = generateOTP();
-  _otpPurpose   = 'reset';
-  sendOTPEmail(email, user.name||email, _pendingOTP, 'reset');
-  buildOTPInputs();
-  document.getElementById('otp-label').textContent = `Enter the reset code sent to ${email}`;
-  switchAuthTab('otp');
+  showAuthLoading('Sending reset email...');
+  try {
+    await _fbAuth.sendPasswordResetEmail(email);
+    hideAuthLoading();
+    document.getElementById('otp-label').textContent = 'Password Reset Email Sent';
+    document.getElementById('otp-sublabel').textContent = `A password reset link was sent to ${email}. Click the link in that email to set a new password. You can then login with your new password.`;
+    document.getElementById('otp-step3').textContent = '✅ Then login with your new password';
+    switchAuthTab('otp');
+    showToast('Reset email sent! Check your inbox.','success');
+  } catch(e) {
+    hideAuthLoading();
+    const msgs = {
+      'auth/user-not-found':'No account found with this email address.',
+      'auth/invalid-email':'Please enter a valid email address.'
+    };
+    showAuthError(msgs[e.code]||e.message);
+  }
 }
 
 function doResetPassword() {
-  const newPass = document.getElementById('new-pass').value;
-  const confPass = document.getElementById('conf-pass').value;
-  if (!newPass||newPass.length<6) return showAuthError('Password must be at least 6 characters.');
-  if (newPass!==confPass) return showAuthError('Passwords do not match.');
-  const users = JSON.parse(localStorage.getItem('mt_accounts')||'[]');
-  const idx = users.findIndex(u=>u.email===_pendingEmail);
-  if (idx<0) return showAuthError('Account not found.');
-  users[idx].pass = btoa(newPass);
-  localStorage.setItem('mt_accounts', JSON.stringify(users));
-  showToast('Password reset successfully. Please login.','success');
-  setTimeout(()=>switchAuthTab('login'),1500);
+  // Firebase handles reset via email link — redirect to login
+  showToast('Check your email for the reset link.','success');
+  switchAuthTab('login');
 }
 
-function socialLogin(provider) {
-  // Social login simulation — in real deployment, use Firebase/Auth0
-  const mockEmails = {Google:'user@gmail.com', Microsoft:'user@outlook.com'};
-  const email = mockEmails[provider]||`user@${provider.toLowerCase()}.com`;
-  const users = JSON.parse(localStorage.getItem('mt_accounts')||'[]');
-  let user = users.find(u=>u.email===email);
-  if (!user) {
-    user = {name:`${provider} User`, email, pass:'', theme:'dark-purple', verified:true, social:provider};
-    users.push(user);
-    localStorage.setItem('mt_accounts', JSON.stringify(users));
+async function socialLogin(provider) {
+  showAuthLoading('Connecting...');
+  try {
+    let fbProvider;
+    if (provider==='Google') fbProvider = new firebase.auth.GoogleAuthProvider();
+    else if (provider==='Microsoft') fbProvider = new firebase.auth.OAuthProvider('microsoft.com');
+    else { hideAuthLoading(); return; }
+    const result = await _fbAuth.signInWithPopup(fbProvider);
+    const user = result.user;
+    S.currentUser = {name: user.displayName||user.email, email: user.email, uid: user.uid, photo: user.photoURL};
+    localStorage.setItem('mt_user', JSON.stringify(S.currentUser));
+    showApp();
+  } catch(e) {
+    hideAuthLoading();
+    if (e.code==='auth/popup-closed-by-user') return;
+    showAuthError('Sign in failed: '+e.message);
   }
-  S.currentUser = user;
-  localStorage.setItem('mt_user', JSON.stringify(user));
-  if (user.theme) applyTheme(user.theme);
-  showApp();
 }
 
 function showApp() {
   document.getElementById('intro-screen').style.display='none';
   document.getElementById('app').style.display='flex';
-  document.getElementById('wa-btn').style.display='flex';
   document.getElementById('mobile-nav').style.display='flex';
   buildThemeGrid();
   renderHome();
 }
 
-function doLogout() {
+async function doLogout() {
+  await _fbAuth.signOut().catch(()=>{});
   localStorage.removeItem('mt_user');
   S.currentUser = null;
   S.currentPatient = null;
   document.getElementById('intro-screen').style.display='flex';
   document.getElementById('app').style.display='none';
-  document.getElementById('wa-btn').style.display='none';
   document.getElementById('mobile-nav').style.display='none';
+  switchAuthTab('login');
 }
 
 // ============================================================
@@ -2188,13 +2275,22 @@ function selectPatient(id) {
   if (aiMsgs) aiMsgs.innerHTML = '';
   const chips = document.getElementById('chips-container');
   if (chips) chips.innerHTML = '';
-  document.getElementById('sb-av').textContent=pt.initials;
-  document.getElementById('sb-av').style.background=pt.color;
-  document.getElementById('sb-pt-name').textContent=pt.name;
-  document.getElementById('sb-pt-sub').textContent=`${pt.age} yrs · ${pt.gender}`;
-  document.getElementById('sb-back').style.display='block';
-  document.getElementById('sb-patient').style.display='block';
-  document.getElementById('patient-nav').style.display='block';
+  // Update sidebar patient info
+  const av = document.getElementById('sb-av');
+  if (pt.photo) {
+    av.innerHTML = `<img src="${pt.photo}" style="width:100%;height:100%;object-fit:cover;border-radius:50%"/>`;
+    av.style.background = 'transparent';
+  } else {
+    av.innerHTML = pt.initials;
+    av.style.background = pt.color;
+  }
+  document.getElementById('sb-pt-name').textContent = pt.name;
+  document.getElementById('sb-pt-sub').textContent = `${pt.age} yrs · ${pt.gender}`;
+  document.getElementById('sb-back').style.display = 'block';
+  document.getElementById('sb-patient').style.display = 'block';
+  document.getElementById('patient-nav').style.display = 'block';
+  // Activate mobile bottom nav on dash
+  document.querySelectorAll('.mn-item').forEach(b=>b.classList.toggle('on', b.dataset.p==='dash'));
   navigate('dash');
 }
 
@@ -3397,48 +3493,43 @@ Provide specific, actionable medical advice for this patient. Reference their ac
 
 async function callAI(userMsg, systemMsg) {
   const apiKey = localStorage.getItem('mt_apikey') || '';
-  if (!apiKey) { showAPIKeyModal(); throw new Error('No API key set'); }
-  const MAX_RETRIES = 2;
-  let lastError;
+  if (!apiKey) throw new Error('NO_KEY');
   const sys = systemMsg || buildAISystemPrompt();
-  for (let attempt=0; attempt<MAX_RETRIES; attempt++) {
-    try {
-      const controller = new AbortController();
-      const timeout = setTimeout(()=>controller.abort(), 45000);
-      // Build conversation history in Gemini format
-      const history = S.aiHistory.slice(-8).map(m=>({
-        role: m.role==='assistant' ? 'model' : 'user',
-        parts:[{text: m.content}]
-      }));
-      const res = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
-        {
-          method:'POST',
-          headers:{'Content-Type':'application/json'},
-          body:JSON.stringify({
-            system_instruction:{parts:[{text: sys}]},
-            contents:[...history, {role:'user', parts:[{text: userMsg}]}],
-            generationConfig:{maxOutputTokens:800, temperature:0.7}
-          }),
-          signal:controller.signal
-        }
-      );
-      clearTimeout(timeout);
-      if (!res.ok) {
-        const errBody = await res.text().catch(()=>'');
-        throw new Error('API '+res.status+': '+errBody.slice(0,200));
+  const history = S.aiHistory.slice(-8).map(m=>({
+    role: m.role==='assistant' ? 'model' : 'user',
+    parts:[{text: m.content}]
+  }));
+  let res;
+  try {
+    res = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+      {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({
+          system_instruction:{parts:[{text: sys}]},
+          contents:[...history, {role:'user', parts:[{text: userMsg}]}],
+          generationConfig:{maxOutputTokens:800, temperature:0.7}
+        })
       }
-      const data = await res.json();
-      const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || 'Unable to generate response.';
-      S.aiHistory.push({role:'user',content:userMsg},{role:'assistant',content:reply});
-      if(S.aiHistory.length>20) S.aiHistory=S.aiHistory.slice(-20);
-      return reply;
-    } catch(err) {
-      lastError=err;
-      if(attempt<MAX_RETRIES-1) await new Promise(r=>setTimeout(r,1200*(attempt+1)));
-    }
+    );
+  } catch(netErr) {
+    throw new Error('Network error — check your internet connection.');
   }
-  throw lastError;
+  if (!res.ok) {
+    const errBody = await res.json().catch(()=>({}));
+    const msg = errBody?.error?.message || res.statusText;
+    if (res.status===400) throw new Error('Invalid API key. Please enter a valid Gemini key below.');
+    if (res.status===403) throw new Error('API key not authorized for Gemini. Get a free key at aistudio.google.com/app/apikey');
+    if (res.status===429) throw new Error('Rate limit reached. Please wait a moment and try again.');
+    throw new Error(`Gemini error (${res.status}): ${msg}`);
+  }
+  const data = await res.json();
+  const reply = data.candidates?.[0]?.content?.parts?.[0]?.text;
+  if (!reply) throw new Error('Empty response from Gemini. Please try again.');
+  S.aiHistory.push({role:'user',content:userMsg},{role:'assistant',content:reply});
+  if(S.aiHistory.length>20) S.aiHistory=S.aiHistory.slice(-20);
+  return reply;
 }
 
 function showAPIKeyModal(){ openModal('modal-apikey'); }
@@ -3491,7 +3582,10 @@ async function sendAIMessage() {
     const reply=await callAI(text);
     if(typingDiv) typingDiv.querySelector('.ai-bubble').innerHTML=reply.replace(/\n/g,'<br>');
   } catch(e) {
-    if(typingDiv) typingDiv.querySelector('.ai-bubble').textContent='Sorry, I could not get a response. Please try again.';
+    const msg = e.message==='NO_KEY'
+      ? '⚠️ Gemini API key not set. <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color:var(--ac2)">Get free key here</a>, then enter it via <b>AI Settings</b> button.'
+      : '❌ Error: '+e.message;
+    if(typingDiv) typingDiv.querySelector('.ai-bubble').innerHTML=msg;
   }
 }
 
@@ -3508,7 +3602,6 @@ const AI_PROMPTS = [
 ];
 
 function renderAIPage() {
-  // Build smart prompt chips
   const chips = document.getElementById('chips-container');
   if (chips && !chips.children.length) {
     AI_PROMPTS.forEach(p => {
@@ -3516,10 +3609,7 @@ function renderAIPage() {
       btn.className = 'btn';
       btn.style.cssText = 'font-size:11px;padding:5px 10px;border-radius:20px;white-space:nowrap';
       btn.innerHTML = `${p.icon} ${p.label}`;
-      btn.onclick = () => {
-        document.getElementById('ai-full-input').value = p.prompt;
-        sendAIFull();
-      };
+      btn.onclick = () => { document.getElementById('ai-full-input').value = p.prompt; sendAIFull(); };
       chips.appendChild(btn);
     });
   }
@@ -3528,23 +3618,41 @@ function renderAIPage() {
   if (!container.children.length) {
     const hasKey = !!localStorage.getItem('mt_apikey');
     if (!hasKey) {
-      addAIMessage('ai-full-messages','ai',
-        '⚠️ <strong>Gemini API key not set.</strong> Click <strong>AI API Key</strong> in the sidebar to set up your free key. Get it free at <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color:var(--ac2)">aistudio.google.com/app/apikey</a> — 1,500 free requests/day, no credit card needed.');
+      const div = document.createElement('div');
+      div.className = 'ai-msg ai';
+      div.innerHTML = `<div style="width:24px;height:24px;background:rgba(124,111,247,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0">🩺</div>
+      <div class="ai-bubble" style="flex:1">
+        <strong>🔑 One-time AI Setup Required</strong><br><br>
+        <div style="font-size:11px;color:var(--tx2);line-height:2">
+          1. Go to <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color:var(--ac2)">aistudio.google.com/app/apikey</a><br>
+          2. Sign in with Google → click <b>Create API Key</b><br>
+          3. Paste it below — <b>free, 1500 requests/day, no card needed</b>
+        </div>
+        <div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap">
+          <input id="inline-apikey" type="text" placeholder="Paste API key here (AIzaSy...)"
+            style="flex:1;min-width:180px;background:var(--bg3);border:1px solid var(--bd);border-radius:var(--r);padding:7px 10px;color:var(--tx);font-size:12px;outline:none"/>
+          <button class="btn btn-primary" style="font-size:12px" onclick="saveInlineAPIKey()"><i class="ti ti-check"></i> Save & Start</button>
+        </div>
+      </div>`;
+      container.appendChild(div);
     } else {
       const pt = S.currentPatient;
-      const greeting = pt
-        ? `✅ AI ready. Patient loaded: <strong>${pt.name}</strong>. Use a quick prompt above or type your question.`
-        : `✅ AI ready. Select a patient first for personalized advice, or ask general medical questions.`;
-      addAIMessage('ai-full-messages','ai', greeting);
+      addAIMessage('ai-full-messages','ai',
+        pt ? `✅ AI ready for <strong>${pt.name}</strong>. Select a quick prompt above or ask anything.`
+           : `✅ AI ready. Select a patient for personalized advice, or ask general medical questions.`);
     }
   }
+}
 
-  // Pre-fill key modal if key exists
-  const existing = localStorage.getItem('mt_apikey');
-  if (existing) {
-    const inp = document.getElementById('apikey-input');
-    if (inp) inp.value = existing;
-  }
+function saveInlineAPIKey() {
+  const k = (document.getElementById('inline-apikey')?.value||'').trim();
+  if (!k || k.length < 20) { showToast('Please paste a valid API key','error'); return; }
+  localStorage.setItem('mt_apikey', k);
+  const container = document.getElementById('ai-full-messages');
+  if (container) container.innerHTML = '';
+  const pt = S.currentPatient;
+  addAIMessage('ai-full-messages','ai', `✅ API key saved! AI is ready${pt?` for <strong>${pt.name}</strong>`:''}. Ask me anything!`);
+  showToast('API key saved — AI is ready!','success');
 }
 
 async function sendAIFull() {
@@ -3555,9 +3663,12 @@ async function sendAIFull() {
   const typingDiv=addAIMessage('ai-full-messages','ai',`<div class="ai-typing"><span></span><span></span><span></span></div>`);
   try {
     const reply=await callAI(text);
-    if(typingDiv) typingDiv.querySelector('.ai-bubble').innerHTML=reply.replace(/\n/g,'<br>');
+    if(typingDiv) typingDiv.querySelector('.ai-bubble').innerHTML=reply.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');
   } catch(e) {
-    if(typingDiv) typingDiv.querySelector('.ai-bubble').textContent='Unable to get a response. Please try again.';
+    const msg = e.message==='NO_KEY'
+      ? '⚠️ API key not set. Scroll up and paste your Gemini key to get started.'
+      : '❌ '+e.message;
+    if(typingDiv) typingDiv.querySelector('.ai-bubble').innerHTML=msg;
   }
 }
 
@@ -3565,53 +3676,105 @@ async function sendAIFull() {
 // SAVE FORMS
 // ============================================================
 let _editPatientId = null;
+let _editPatientPhoto = null;
+
+function handlePatientPhoto(e) {
+  const f = e.target.files[0]; if (!f) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    _editPatientPhoto = ev.target.result;
+    const prev = document.getElementById('fp-photo-preview');
+    prev.innerHTML = `<img src="${ev.target.result}" style="width:100%;height:100%;object-fit:cover"/>`;
+  };
+  reader.readAsDataURL(f);
+}
+
+function clearPatientPhoto() {
+  _editPatientPhoto = null;
+  document.getElementById('fp-photo-preview').innerHTML = '👤';
+}
+
 function showAddPatient(editId) {
   _editPatientId = editId||null;
+  _editPatientPhoto = null;
+  document.getElementById('pt-modal-title').textContent = editId ? 'Edit Patient' : 'Add Patient';
+  const prev = document.getElementById('fp-photo-preview');
   if (editId) {
-    const pt=S.patients.find(p=>p.id===editId);
-    if(!pt)return;
-    document.getElementById('fp-name').value=pt.name||'';
-    document.getElementById('fp-age').value=pt.age||'';
-    document.getElementById('fp-gender').value=pt.gender||'Male';
-    document.getElementById('fp-blood').value=pt.blood||'O+';
-    document.getElementById('fp-phone').value=pt.phone||'';
-    document.getElementById('fp-emergency').value=pt.emergency||'';
-    document.getElementById('fp-doctor').value=pt.doctor||'';
-    document.getElementById('fp-checkup').value=pt.checkup||'';
-    document.getElementById('fp-diseases').value=(pt.diseases||[]).join(', ');
-    document.getElementById('fp-issues').value=pt.issues||'';
-    document.getElementById('fp-allergies').value=pt.allergies||'';
-    document.getElementById('fp-address').value=pt.address||'';
-    document.getElementById('fp-notes').value=pt.notes||'';
+    const pt = S.patients.find(p=>p.id===editId);
+    if (!pt) return;
+    document.getElementById('fp-name').value         = pt.name||'';
+    document.getElementById('fp-age').value          = pt.age||'';
+    document.getElementById('fp-gender').value       = pt.gender||'Male';
+    document.getElementById('fp-blood').value        = pt.blood||'O+';
+    document.getElementById('fp-height').value       = pt.height||'';
+    document.getElementById('fp-cnic').value         = pt.cnic||'';
+    document.getElementById('fp-phone').value        = pt.phone||'';
+    document.getElementById('fp-emergency-name').value = pt.emergencyName||'';
+    document.getElementById('fp-emergency').value    = pt.emergency||'';
+    document.getElementById('fp-doctor').value       = pt.doctor||'';
+    document.getElementById('fp-checkup').value      = pt.checkup||'';
+    document.getElementById('fp-diseases').value     = (pt.diseases||[]).join(', ');
+    document.getElementById('fp-issues').value       = pt.issues||'';
+    document.getElementById('fp-allergies').value    = pt.allergies||'';
+    document.getElementById('fp-address').value      = pt.address||'';
+    document.getElementById('fp-notes').value        = pt.notes||'';
+    if (pt.photo) {
+      _editPatientPhoto = pt.photo;
+      prev.innerHTML = `<img src="${pt.photo}" style="width:100%;height:100%;object-fit:cover"/>`;
+    } else {
+      prev.innerHTML = pt.initials||'👤';
+    }
   } else {
-    ['fp-name','fp-age','fp-phone','fp-emergency','fp-doctor','fp-diseases','fp-issues','fp-allergies','fp-address','fp-notes'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+    ['fp-name','fp-age','fp-height','fp-cnic','fp-phone','fp-emergency-name','fp-emergency','fp-doctor','fp-diseases','fp-issues','fp-allergies','fp-address','fp-notes'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+    document.getElementById('fp-checkup').value = '';
+    document.getElementById('fp-gender').value = 'Male';
+    document.getElementById('fp-blood').value = 'O+';
+    prev.innerHTML = '👤';
+    prev.style.fontSize = '22px';
   }
   openModal('modal-add-patient');
 }
 
 function savePatient() {
-  const name=document.getElementById('fp-name').value.trim();
-  const age=parseInt(document.getElementById('fp-age').value);
-  if(!name||!age)return showToast('Name and age required','error');
-  const init=name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
-  const colors=['#7c6ff7','#ec4899','#16a34a','#ea580c','#0ea5e9','#6366f1'];
-  const data={
-    name,age,gender:document.getElementById('fp-gender').value,blood:document.getElementById('fp-blood').value,
-    phone:document.getElementById('fp-phone').value,emergency:document.getElementById('fp-emergency').value,
-    doctor:document.getElementById('fp-doctor').value,checkup:document.getElementById('fp-checkup').value,
-    diseases:document.getElementById('fp-diseases').value.split(',').map(s=>s.trim()).filter(Boolean),
-    issues:document.getElementById('fp-issues').value,allergies:document.getElementById('fp-allergies').value,
-    address:document.getElementById('fp-address').value,notes:document.getElementById('fp-notes').value,
-    initials:init
+  const name = document.getElementById('fp-name').value.trim();
+  const age  = parseInt(document.getElementById('fp-age').value);
+  if (!name||!age) return showToast('Name and age required','error');
+  const init = name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+  const colors = ['#7c6ff7','#ec4899','#16a34a','#ea580c','#0ea5e9','#6366f1'];
+  const data = {
+    name, age,
+    gender:   document.getElementById('fp-gender').value,
+    blood:    document.getElementById('fp-blood').value,
+    height:   parseInt(document.getElementById('fp-height').value)||null,
+    cnic:     document.getElementById('fp-cnic').value,
+    phone:    document.getElementById('fp-phone').value,
+    emergencyName: document.getElementById('fp-emergency-name').value,
+    emergency:document.getElementById('fp-emergency').value,
+    doctor:   document.getElementById('fp-doctor').value,
+    checkup:  document.getElementById('fp-checkup').value,
+    diseases: document.getElementById('fp-diseases').value.split(',').map(s=>s.trim()).filter(Boolean),
+    issues:   document.getElementById('fp-issues').value,
+    allergies:document.getElementById('fp-allergies').value,
+    address:  document.getElementById('fp-address').value,
+    notes:    document.getElementById('fp-notes').value,
+    photo:    _editPatientPhoto||null,
+    initials: init
   };
-  if(_editPatientId){
-    const idx=S.patients.findIndex(p=>p.id===_editPatientId);
-    if(idx>-1) S.patients[idx]={...S.patients[idx],...data};
+  if (_editPatientId) {
+    const idx = S.patients.findIndex(p=>p.id===_editPatientId);
+    if (idx>-1) S.patients[idx] = {...S.patients[idx], ...data};
   } else {
-    S.patients.push({id:'p'+Date.now(),...data,color:colors[S.patients.length%colors.length],vitals:[],labs:[],meds:[],radiology:[],appts:[]});
+    S.patients.push({id:'p'+Date.now(), ...data, color:colors[S.patients.length%colors.length], vitals:[],labs:[],meds:[],radiology:[],appts:[]});
   }
-  savePatientsToStorage(); renderHome(); closeModal('modal-add-patient');
-  showToast(_editPatientId?'Patient updated':'Patient added','success');
+  savePatientsToStorage();
+  renderHome();
+  // If editing current patient, refresh persistent bar
+  if (_editPatientId && S.currentPatient?.id===_editPatientId) {
+    S.currentPatient = S.patients.find(p=>p.id===_editPatientId);
+    updatePersistentBar();
+  }
+  closeModal('modal-add-patient');
+  showToast(_editPatientId ? 'Patient updated' : 'Patient added','success');
 }
 
 function editPatient(id) { showAddPatient(id); }
@@ -4268,11 +4431,5 @@ document.addEventListener('DOMContentLoaded',init);
     </div>
   </div>
 </div>
-
-<!-- App footer (shown on all pages) -->
-<div style="position:fixed;bottom:0;right:0;font-size:10px;color:var(--tx3);padding:5px 10px;background:var(--bg2);border-top-left-radius:8px;border:1px solid var(--bd);z-index:50">
-  © 2026 MedTracker · Developed by <a href="https://wa.me/923482590727" target="_blank" style="color:var(--ac2)">Dr. Imran</a> · <a href="https://wa.me/923482590727" target="_blank" style="color:var(--ac2)">+92 348-2590727</a>
-</div>
-
 </body>
 </html>
