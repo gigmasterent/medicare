@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en" data-theme="dark-purple">
 <head>
@@ -546,7 +547,7 @@ input,select,textarea{font-family:var(--font)}
 /* ============================================================
    MOBILE BOTTOM NAV
    ============================================================ */
-.mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--bg2);border-top:1px solid var(--bd);z-index:100;justify-content:space-around;padding:4px 0 env(safe-area-inset-bottom,4px)}
+.mobile-nav{display:none!important;position:fixed;bottom:0;left:0;right:0;background:var(--bg2);border-top:1px solid var(--bd);z-index:100;justify-content:space-around;padding:4px 0 env(safe-area-inset-bottom,4px)}
 .mn-item{display:flex;flex-direction:column;align-items:center;gap:1px;padding:3px 4px;cursor:pointer;color:var(--tx3);font-size:8px;border:none;background:none;transition:all .15s;min-width:0;flex:1}
 .mn-item .mn-ico{font-size:20px;line-height:1;transition:transform .15s}
 .mn-item.on .mn-ico{transform:scale(1.2)}
@@ -554,7 +555,7 @@ input,select,textarea{font-family:var(--font)}
 .mn-item span{font-size:7.5px;margin-top:1px}
 .mn-badge{position:absolute;top:3px;right:8px;width:7px;height:7px;border-radius:50%;background:var(--red)}
 @media(max-width:768px){
-  .mobile-nav{display:flex}
+  .mobile-nav.logged-in{display:flex!important}
   .sb{display:none}
   .ct{padding:12px;padding-bottom:100px}
   .vital-cards{grid-template-columns:repeat(2,1fr)}
@@ -640,6 +641,7 @@ input,select,textarea{font-family:var(--font)}
 <!-- Firebase SDKs -->
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js" defer></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js" defer></script>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 <script>
 // Initialize Firebase
 const _fbApp = firebase.initializeApp({
@@ -1679,7 +1681,7 @@ _fbAuth.onAuthStateChanged(user => {
         <label>Medication Name *</label>
         <div style="display:flex;gap:6px">
           <input id="fm-name" placeholder="e.g. Lipiget 10mg" style="flex:1"/>
-          <button class="btn" style="font-size:11px;white-space:nowrap" onclick="lookupMedInfo()"><i class="ti ti-search"></i> Auto-Lookup</button>
+          <button class="btn" style="font-size:11px;white-space:nowrap" onclick="lookupMedInfo(event)"><i class="ti ti-search"></i> Auto-Lookup</button>
         </div>
         <div style="font-size:10px;color:var(--tx3);margin-top:3px">Looks up generic formula, usage & side effects via AI (Gemini). Always verify before relying on it.</div>
       </div>
@@ -2061,6 +2063,7 @@ function savePatientsToStorage() {
 
 let _autoSyncTimer = null;
 function scheduleAutoCloudSync() {
+  if (!S.currentUser) return; // require an authenticated session before any cloud sync
   const cfg = getCloudConfig();
   if (!cfg.owner||!cfg.repo||!cfg.token) return; // not configured — skip silently
   clearTimeout(_autoSyncTimer);
@@ -2110,6 +2113,7 @@ function getCloudConfig() {
 }
 
 function openCloudSyncModal() {
+  if (!S.currentUser) { showToast('Please log in first — cloud sync requires an authenticated session','error'); return; }
   const cfg = getCloudConfig();
   let modal = document.getElementById('modal-cloud-sync');
   if (!modal) {
@@ -2123,34 +2127,50 @@ function openCloudSyncModal() {
   modal.innerHTML = `
     <div class="modal" style="max-width:500px;width:100%">
       <div class="modal-header">
-        <h3>☁️ Cloud Sync (GitHub)</h3>
+        <h3>☁️ Backup &amp; Cloud Sync</h3>
         <button class="modal-close" onclick="document.getElementById('modal-cloud-sync').style.display='none'"><i class="ti ti-x"></i></button>
       </div>
       <div class="modal-body">
-        <p style="font-size:11px;color:var(--tx2);line-height:1.7;margin-bottom:12px">
-          Once set up below, every change <b>auto-syncs to GitHub a few seconds later — no button needed</b>. Stores all patient data and attached files (compressed) as one JSON file in your repo. Needs a Personal Access Token with <b>repo</b> / <b>Contents: Read and write</b> permission, created once at
-          <a href="https://github.com/settings/tokens" target="_blank" style="color:var(--ac2)">github.com/settings/tokens</a>.
+        <p style="font-size:10px;color:var(--tx3);margin-bottom:14px">
+          <i class="ti ti-lock"></i> Logged in as <b>${S.currentUser.email||S.currentUser.uid}</b>
         </p>
-        <div class="form-row"><label>GitHub Username/Org</label><input id="cs-owner" value="${cfg.owner}" placeholder="e.g. gigmasterent"/></div>
-        <div class="form-row"><label>Repository Name</label><input id="cs-repo" value="${cfg.repo}" placeholder="e.g. medicare"/></div>
-        <div class="form-row"><label>Branch</label><input id="cs-branch" value="${cfg.branch}" placeholder="main"/></div>
-        <div class="form-row"><label>Personal Access Token</label><input id="cs-token" type="password" value="${cfg.token}" placeholder="ghp_xxxxxxxxxxxx"/></div>
-        <div id="cs-status" style="font-size:11px;color:var(--tx3);margin-top:8px"></div>
 
-        <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--bd)">
-          <div style="font-size:12px;font-weight:600;color:var(--tx);margin-bottom:6px">Plan B — Manual Backup (no internet/API needed)</div>
-          <p style="font-size:11px;color:var(--tx3);margin-bottom:8px">Download a backup file, then drag it into any Google Drive / Dropbox / OneDrive folder yourself. On another device, download that file and import it here.</p>
-          <div style="display:flex;gap:6px;flex-wrap:wrap">
-            <button class="btn" style="font-size:11px" onclick="downloadLocalBackup()"><i class="ti ti-download"></i> Download Backup File</button>
-            <button class="btn" style="font-size:11px" onclick="document.getElementById('cs-import-file').click()"><i class="ti ti-upload"></i> Import Backup File</button>
+        <!-- OPTION 1: Google Drive / any cloud - simple download+upload -->
+        <div style="background:var(--bg3);border-radius:10px;padding:14px;margin-bottom:14px;border:1px solid var(--bd)">
+          <div style="font-size:13px;font-weight:700;color:var(--tx);margin-bottom:6px">📁 Google Drive Backup <span style="font-size:10px;font-weight:400;color:var(--grn)">(Recommended — no setup needed)</span></div>
+          <div style="font-size:11px;color:var(--tx2);line-height:1.9;margin-bottom:12px">
+            <b>To back up:</b> Click "Download Backup File" below → a file saves to your device → open Google Drive on your phone or computer → drag/upload that file into any folder.<br/>
+            <b>To restore on another device:</b> Download the backup file from your Google Drive → come back here → click "Import Backup File" → select the file.
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button class="btn btn-primary" style="font-size:12px" onclick="downloadLocalBackup()">
+              <i class="ti ti-download"></i> Download Backup File
+            </button>
+            <button class="btn" style="font-size:12px" onclick="document.getElementById('cs-import-file').click()">
+              <i class="ti ti-upload"></i> Import Backup File
+            </button>
             <input type="file" id="cs-import-file" accept=".json" style="display:none" onchange="importLocalBackup(event)"/>
           </div>
+          <div style="font-size:10px;color:var(--tx3);margin-top:8px">💡 Works with Google Drive, WhatsApp, Email, USB — any way you can move a file between devices.</div>
+        </div>
+
+        <!-- OPTION 2: GitHub auto-sync (advanced) -->
+        <div style="background:var(--bg3);border-radius:10px;padding:14px;border:1px solid var(--bd)">
+          <div style="font-size:13px;font-weight:700;color:var(--tx);margin-bottom:6px">⚙️ GitHub Auto-Sync <span style="font-size:10px;font-weight:400;color:var(--tx3)">(advanced — already working if configured)</span></div>
+          <p style="font-size:11px;color:var(--tx2);line-height:1.6;margin-bottom:10px">
+            Auto-saves all data to your GitHub repo a few seconds after every change. If you already set this up, your current settings are shown below.
+          </p>
+          <div class="form-row"><label>GitHub Username</label><input id="cs-owner" value="${cfg.owner}" placeholder="e.g. gigmasterent"/></div>
+          <div class="form-row"><label>Repository Name</label><input id="cs-repo" value="${cfg.repo}" placeholder="e.g. medicare"/></div>
+          <div class="form-row"><label>Branch</label><input id="cs-branch" value="${cfg.branch}" placeholder="main"/></div>
+          <div class="form-row"><label>Personal Access Token</label><input id="cs-token" type="password" value="${cfg.token}" placeholder="ghp_xxxxxxxxxxxx"/></div>
+          <div id="cs-status" style="font-size:11px;margin-top:8px"></div>
         </div>
       </div>
       <div class="modal-footer" style="flex-wrap:wrap;gap:6px">
         <button class="btn" onclick="document.getElementById('modal-cloud-sync').style.display='none'">Close</button>
-        <button class="btn" onclick="cloudSyncRestore()"><i class="ti ti-cloud-download"></i> Restore from Cloud</button>
-        <button class="btn btn-primary" onclick="cloudSyncPush()"><i class="ti ti-cloud-upload"></i> Save &amp; Test Sync Now</button>
+        <button class="btn" onclick="cloudSyncRestore()"><i class="ti ti-cloud-download"></i> Restore from GitHub</button>
+        <button class="btn btn-success" onclick="cloudSyncPush()"><i class="ti ti-cloud-upload"></i> Save &amp; Test GitHub Sync</button>
       </div>
     </div>`;
 }
@@ -2187,6 +2207,156 @@ function importLocalBackup(e) {
   reader.readAsText(f);
 }
 
+// ============================================================
+// GOOGLE DRIVE BACKUP — real "Sign in with Google" + auto-upload
+// Uses Google Identity Services (GIS) for OAuth and the
+// drive.file scope, which only grants access to files THIS app
+// creates (not the user's whole Drive) — no broad permission grant.
+// Gated behind the existing Firebase-authenticated session.
+// ============================================================
+let _driveAccessToken = null;   // in-memory only, never persisted
+let _driveTokenExpiry = 0;
+let _driveFileId = null;        // cached once found/created
+const DRIVE_BACKUP_FILENAME = 'medtracker_backup.json';
+const DRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
+
+function getDriveConfig() {
+  return { clientId: localStorage.getItem('mt_google_client_id')||'' };
+}
+
+function saveDriveClientId() {
+  const id = document.getElementById('cs-gclient')?.value?.trim();
+  if (id) localStorage.setItem('mt_google_client_id', id);
+}
+
+function renderDriveConnectArea() {
+  const area = document.getElementById('drive-connect-area');
+  if (!area) return;
+  const hasToken = _driveAccessToken && Date.now() < _driveTokenExpiry;
+  area.innerHTML = hasToken
+    ? `<div style="display:flex;gap:6px;flex-wrap:wrap">
+         <button class="btn" style="font-size:11px" onclick="driveBackupNow()"><i class="ti ti-cloud-upload"></i> Backup to Drive Now</button>
+         <button class="btn" style="font-size:11px" onclick="driveRestoreLatest()"><i class="ti ti-cloud-download"></i> Restore from Drive</button>
+       </div>`
+    : `<button class="btn btn-primary" style="font-size:11px" onclick="connectGoogleDrive()"><i class="ti ti-brand-google"></i> Sign in with Google</button>`;
+}
+
+function driveStatus(msg, isError) {
+  const el = document.getElementById('drive-status');
+  if (el) { el.textContent = msg; el.style.color = isError ? 'var(--red)' : 'var(--grn)'; }
+}
+
+function connectGoogleDrive() {
+  if (!S.currentUser) { showToast('Please log in first','error'); return; }
+  saveDriveClientId();
+  const cfg = getDriveConfig();
+  if (!cfg.clientId) { driveStatus('Please enter your Google OAuth Client ID first (see setup steps below)', true); return; }
+  if (typeof google === 'undefined' || !google.accounts?.oauth2) {
+    driveStatus('Google sign-in library still loading — please try again in a moment', true);
+    return;
+  }
+  driveStatus('Opening Google sign-in...');
+  const tokenClient = google.accounts.oauth2.initTokenClient({
+    client_id: cfg.clientId,
+    scope: DRIVE_SCOPE,
+    callback: (resp) => {
+      if (resp.error) {
+        driveStatus('Google sign-in failed: '+resp.error, true);
+        return;
+      }
+      _driveAccessToken = resp.access_token;
+      _driveTokenExpiry = Date.now() + (resp.expires_in||3600)*1000 - 60000; // refresh 1 min early
+      driveStatus('✅ Connected to Google Drive');
+      showToast('Signed in with Google','success');
+      renderDriveConnectArea();
+    }
+  });
+  tokenClient.requestAccessToken();
+}
+
+async function driveApiFetch(url, options) {
+  if (!_driveAccessToken || Date.now() >= _driveTokenExpiry) {
+    throw new Error('Google Drive session expired — please click "Sign in with Google" again');
+  }
+  return fetch(url, {
+    ...options,
+    headers: { ...(options?.headers||{}), 'Authorization': `Bearer ${_driveAccessToken}` }
+  });
+}
+
+async function driveFindBackupFile() {
+  if (_driveFileId) return _driveFileId;
+  const q = encodeURIComponent(`name='${DRIVE_BACKUP_FILENAME}' and trashed=false`);
+  const res = await driveApiFetch(`https://www.googleapis.com/drive/v3/files?q=${q}&fields=files(id,name)`);
+  if (!res.ok) throw new Error('Could not search Drive files');
+  const data = await res.json();
+  _driveFileId = data.files?.[0]?.id || null;
+  return _driveFileId;
+}
+
+async function driveBackupNow() {
+  if (!S.currentUser) { showToast('Please log in first','error'); return; }
+  driveStatus('Uploading to Google Drive...');
+  try {
+    const payload = { version:1, updated:new Date().toISOString(), patients:S.patients };
+    const fileContent = JSON.stringify(payload);
+    const existingId = await driveFindBackupFile();
+
+    const metadata = { name: DRIVE_BACKUP_FILENAME, mimeType: 'application/json' };
+    const boundary = '-------medtracker-boundary';
+    const body =
+      `--${boundary}\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n${JSON.stringify(existingId?{}:metadata)}\r\n` +
+      `--${boundary}\r\nContent-Type: application/json\r\n\r\n${fileContent}\r\n--${boundary}--`;
+
+    const url = existingId
+      ? `https://www.googleapis.com/upload/drive/v3/files/${existingId}?uploadType=multipart`
+      : `https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart`;
+
+    const res = await driveApiFetch(url, {
+      method: existingId ? 'PATCH' : 'POST',
+      headers: { 'Content-Type': `multipart/related; boundary=${boundary}` },
+      body
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(()=>({}));
+      throw new Error(err?.error?.message || res.statusText);
+    }
+    const result = await res.json();
+    _driveFileId = result.id;
+    driveStatus(`✅ Backed up to Google Drive at ${new Date().toLocaleTimeString()}`);
+    showToast('Data backed up to Google Drive','success');
+  } catch(err) {
+    console.error('Drive backup error:', err);
+    driveStatus('Backup failed: '+err.message, true);
+    showToast('Drive backup failed: '+err.message,'error');
+  }
+}
+
+async function driveRestoreLatest() {
+  if (!S.currentUser) { showToast('Please log in first','error'); return; }
+  if (!confirm('This will replace all local patient data with your Google Drive backup. Continue?')) return;
+  driveStatus('Downloading from Google Drive...');
+  try {
+    const fileId = await driveFindBackupFile();
+    if (!fileId) throw new Error('No backup found yet — click "Backup to Drive Now" first to create one');
+    const res = await driveApiFetch(`https://www.googleapis.com/drive/v3/files/${fileId}?alt=media`);
+    if (!res.ok) throw new Error(res.statusText);
+    const payload = await res.json();
+    if (!payload.patients || !Array.isArray(payload.patients)) throw new Error('Invalid backup file format');
+
+    S.patients = payload.patients;
+    S.currentPatient = null;
+    localStorage.setItem('mt_patients', JSON.stringify(S.patients));
+    driveStatus(`✅ Restored ${payload.patients.length} patient(s) from ${payload.updated ? new Date(payload.updated).toLocaleString() : 'Drive'}`);
+    showToast('Data restored from Google Drive','success');
+    renderHome();
+  } catch(err) {
+    console.error('Drive restore error:', err);
+    driveStatus('Restore failed: '+err.message, true);
+    showToast('Drive restore failed: '+err.message,'error');
+  }
+}
+
 function saveCloudConfig() {
   localStorage.setItem('mt_gh_owner', document.getElementById('cs-owner').value.trim());
   localStorage.setItem('mt_gh_repo', document.getElementById('cs-repo').value.trim());
@@ -2215,6 +2385,7 @@ async function ghApi(path, method, body, cfg) {
 }
 
 async function cloudSyncPush(silent) {
+  if (!S.currentUser) { if(!silent) cloudSyncStatus('Please log in first','error'); return; }
   if (!silent) saveCloudConfig();
   const cfg = getCloudConfig();
   if (!cfg.owner||!cfg.repo||!cfg.token) { if(!silent) cloudSyncStatus('Please fill in all fields','error'); return; }
@@ -2263,6 +2434,7 @@ function diagnoseCloudError(err) {
 }
 
 async function cloudSyncRestore() {
+  if (!S.currentUser) { showToast('Please log in first','error'); return; }
   const cfg = getCloudConfig();
   if (!cfg.owner||!cfg.repo||!cfg.token) { cloudSyncStatus('Please fill in all fields first','error'); return; }
   if (!confirm('This will replace all local patient data with the cloud backup. Continue?')) return;
@@ -2469,7 +2641,7 @@ async function socialLogin(provider) {
 function showApp() {
   document.getElementById('intro-screen').style.display='none';
   document.getElementById('app').style.display='flex';
-  document.getElementById('mobile-nav').style.display='flex';
+  document.getElementById('mobile-nav').classList.add('logged-in');
   buildThemeGrid();
   renderHome();
 }
@@ -2481,7 +2653,7 @@ async function doLogout() {
   S.currentPatient = null;
   document.getElementById('intro-screen').style.display='flex';
   document.getElementById('app').style.display='none';
-  document.getElementById('mobile-nav').style.display='none';
+  document.getElementById('mobile-nav').classList.remove('logged-in');
   switchAuthTab('login');
 }
 
@@ -4607,14 +4779,14 @@ function saveMed() {
 // Note: a static GitHub Pages site cannot call Google Search directly (CORS-blocked
 // without a backend proxy), so this uses the Gemini language model's medical knowledge
 // instead, which gives an equivalent result for generic name / usage / side effects.
-async function lookupMedInfo() {
+async function lookupMedInfo(evt) {
   const name = document.getElementById('fm-name').value.trim();
   if (!name) { showToast('Enter a medication name first','error'); return; }
   const apiKey = localStorage.getItem('mt_apikey')||'';
   if (!apiKey) { showToast('Set your Gemini API key in AI Advisor first','error'); return; }
 
-  const btn = event?.target?.closest('button');
-  if (btn) { btn.disabled=true; btn.innerHTML='<i class="ti ti-loader-2"></i> Looking up...'; }
+  const btn = evt?.target?.closest('button') || evt?.currentTarget;
+  if (btn) { btn.disabled=true; btn.dataset.origHtml = btn.dataset.origHtml || btn.innerHTML; btn.innerHTML='<i class="ti ti-loader-2"></i> Looking up...'; }
 
   try {
     const res = await fetch(
@@ -4634,13 +4806,17 @@ If you don't recognize the exact brand, give your best estimate based on the nam
     );
     if (!res.ok) {
       const err = await res.json().catch(()=>({}));
-      throw new Error(err?.error?.message || res.statusText);
+      const msg = err?.error?.message || res.statusText;
+      if (res.status===429 || /quota/i.test(msg)) {
+        throw new Error('Gemini quota exceeded for this API key. Generate a fresh key at aistudio.google.com/app/apikey (make sure it\'s linked to a project with the Generative Language API enabled and free-tier quota available).');
+      }
+      throw new Error(msg);
     }
     const data = await res.json();
     let text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
     text = text.replace(/```json|```/g,'').trim();
     const match = text.match(/\{[\s\S]*\}/);
-    if (!match) throw new Error('Could not parse AI response');
+    if (!match) throw new Error('AI did not return a recognizable result. Try a different spelling or enter details manually.');
     const info = JSON.parse(match[0]);
 
     if (info.formula) document.getElementById('fm-formula').value = info.formula;
@@ -4649,9 +4825,9 @@ If you don't recognize the exact brand, give your best estimate based on the nam
     showToast('Looked up — please verify the details before saving','success');
   } catch(err) {
     console.error('Med lookup error:', err);
-    showToast('Lookup failed: '+err.message+'. Please enter details manually.','error');
+    showToast('Lookup failed: '+err.message,'error');
   } finally {
-    if (btn) { btn.disabled=false; btn.innerHTML='<i class="ti ti-search"></i> Auto-Lookup'; }
+    if (btn) { btn.disabled=false; btn.innerHTML = btn.dataset.origHtml || '<i class="ti ti-search"></i> Auto-Lookup'; }
   }
 }
 
@@ -5329,12 +5505,8 @@ function showToast(msg,type='') {
 }
 
 // ============================================================
-// SIDEBAR COLLAPSE
+// (toggleSidebar function is defined earlier in the file)
 // ============================================================
-function toggleSidebar() {
-  const sb=document.getElementById('sidebar');
-  sb.classList.toggle('collapsed');
-}
 
 // ============================================================
 // START APP
