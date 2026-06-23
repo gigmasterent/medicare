@@ -641,25 +641,30 @@ input,select,textarea{font-family:var(--font)}
 <!-- Firebase SDKs -->
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js" defer></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js" defer></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js" defer></script>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <script>
-// Initialize Firebase
+window.addEventListener('DOMContentLoaded', () => {
+// Initialize Firebase — project: medicare-tracker-pk
 const _fbApp = firebase.initializeApp({
-  apiKey: "AIzaSyD8sV8m9hDIXlMR_pQ7X3IoWh-ozjD3t7U",
-  authDomain: "medicare-tracker-33b46.firebaseapp.com",
-  projectId: "medicare-tracker-33b46",
-  storageBucket: "medicare-tracker-33b46.firebasestorage.app",
-  messagingSenderId: "1003916294622",
-  appId: "1:1003916294622:web:c37a75cb65ef31d36b854f"
+  apiKey: "AIzaSyCIwLMTjDg38vAREIjcXbyeqFNtP7CFC0Y",
+  authDomain: "medicare-tracker-pk.firebaseapp.com",
+  projectId: "medicare-tracker-pk",
+  storageBucket: "medicare-tracker-pk.firebasestorage.app",
+  messagingSenderId: "1087947519702",
+  appId: "1:1087947519702:web:b500591404fc5b6ee73b77"
 });
-const _fbAuth = firebase.auth();
-// Auto-login if session persists
+window._fbAuth = firebase.auth();
+window._fbDb  = firebase.firestore();
+
+// Auto-login if Firebase session still active
 _fbAuth.onAuthStateChanged(user => {
   if (user && document.getElementById('app').style.display==='none') {
     S.currentUser = {name: user.displayName||user.email, email: user.email, uid: user.uid, photo: user.photoURL};
     showApp();
   }
 });
+}); // end DOMContentLoaded
 // Note: Get a FREE Gemini API key at https://aistudio.google.com/app/apikey
 // Paste it in the AI Advisor page when prompted
 </script>
@@ -820,7 +825,6 @@ _fbAuth.onAuthStateChanged(user => {
     </nav>
     <div class="sb-footer">
       <button class="sb-footer-btn" onclick="openThemePanel()"><i class="ti ti-palette" aria-hidden="true"></i><span>Themes</span></button>
-      <button class="sb-footer-btn" onclick="openCloudSyncModal()"><i class="ti ti-cloud" aria-hidden="true"></i><span>Cloud Sync</span></button>
       <button class="sb-footer-btn" onclick="doLogout()"><i class="ti ti-logout" aria-hidden="true"></i><span>Logout</span></button>
     </div>
   </div>
@@ -2057,8 +2061,71 @@ function loadDemoPatients() {
 }
 
 function savePatientsToStorage() {
+  // Always save locally first — works offline instantly
   localStorage.setItem('mt_patients', JSON.stringify(S.patients));
-  scheduleAutoCloudSync();
+  // Then sync to Firestore if logged in — all devices see same data
+  if (window._fbDb && S.currentUser) {
+    scheduleFirestoreSync();
+  }
+  scheduleAutoCloudSync(); // GitHub backup (if configured)
+}
+
+let _firestoreSyncTimer = null;
+function scheduleFirestoreSync() {
+  clearTimeout(_firestoreSyncTimer);
+  _firestoreSyncTimer = setTimeout(pushToFirestore, 2000);
+}
+
+async function pushToFirestore() {
+  if (!window._fbDb || !S.currentUser) return;
+  try {
+    // Store each patient as its own Firestore document
+    // This keeps documents under the 1MB limit
+    const batch = _fbDb.batch();
+    S.patients.forEach(pt => {
+      const ref = _fbDb.collection('patients').doc(pt.id);
+      batch.set(ref, { ...pt, _updatedAt: new Date().toISOString() });
+    });
+    await batch.commit();
+  } catch(err) {
+    console.warn('Firestore sync error:', err.message);
+  }
+}
+
+async function loadFromFirestore() {
+  if (!window._fbDb || !S.currentUser) return false;
+  try {
+    const snap = await _fbDb.collection('patients').get();
+    if (snap.empty) return false;
+    const pts = [];
+    snap.forEach(doc => { const d = doc.data(); delete d._updatedAt; pts.push(d); });
+    S.patients = pts;
+    localStorage.setItem('mt_patients', JSON.stringify(S.patients));
+    return true;
+  } catch(err) {
+    console.warn('Firestore load error:', err.message);
+    return false;
+  }
+}
+
+// One-time migration: push existing localStorage data to Firestore
+async function migrateLocalToFirestore() {
+  const stored = localStorage.getItem('mt_patients');
+  if (!stored) { showToast('No local data to migrate','error'); return; }
+  const pts = JSON.parse(stored);
+  if (!pts.length) { showToast('No patients found in local storage','error'); return; }
+  showToast('Migrating '+pts.length+' patient(s) to cloud...','success');
+  try {
+    const batch = _fbDb.batch();
+    pts.forEach(pt => {
+      const ref = _fbDb.collection('patients').doc(pt.id);
+      batch.set(ref, { ...pt, _updatedAt: new Date().toISOString() });
+    });
+    await batch.commit();
+    showToast('✅ Migrated '+pts.length+' patient(s) to Firestore — all devices can now see this data','success');
+  } catch(err) {
+    showToast('Migration failed: '+err.message,'error');
+  }
 }
 
 let _autoSyncTimer = null;
@@ -2135,31 +2202,35 @@ function openCloudSyncModal() {
           <i class="ti ti-lock"></i> Logged in as <b>${S.currentUser.email||S.currentUser.uid}</b>
         </p>
 
-        <!-- OPTION 1: Google Drive / any cloud - simple download+upload -->
-        <div style="background:var(--bg3);border-radius:10px;padding:14px;margin-bottom:14px;border:1px solid var(--bd)">
-          <div style="font-size:13px;font-weight:700;color:var(--tx);margin-bottom:6px">📁 Google Drive Backup <span style="font-size:10px;font-weight:400;color:var(--grn)">(Recommended — no setup needed)</span></div>
-          <div style="font-size:11px;color:var(--tx2);line-height:1.9;margin-bottom:12px">
-            <b>To back up:</b> Click "Download Backup File" below → a file saves to your device → open Google Drive on your phone or computer → drag/upload that file into any folder.<br/>
-            <b>To restore on another device:</b> Download the backup file from your Google Drive → come back here → click "Import Backup File" → select the file.
+        <!-- OPTION 1: Firebase Firestore (primary sync) -->
+        <div style="background:var(--bg3);border-radius:10px;padding:14px;margin-bottom:14px;border:2px solid var(--grn)">
+          <div style="font-size:13px;font-weight:700;color:var(--grn);margin-bottom:6px">🔥 Firebase Cloud Sync <span style="font-size:10px;font-weight:400;color:var(--tx3)">(automatic — all users see same data)</span></div>
+          <div style="font-size:11px;color:var(--tx2);line-height:1.8;margin-bottom:10px">
+            Every change syncs to Firebase within 2 seconds. Any device that logs in sees the same patients, reports and images — automatically.
           </div>
-          <div style="display:flex;gap:8px;flex-wrap:wrap">
-            <button class="btn btn-primary" style="font-size:12px" onclick="downloadLocalBackup()">
-              <i class="ti ti-download"></i> Download Backup File
-            </button>
-            <button class="btn" style="font-size:12px" onclick="document.getElementById('cs-import-file').click()">
-              <i class="ti ti-upload"></i> Import Backup File
-            </button>
-            <input type="file" id="cs-import-file" accept=".json" style="display:none" onchange="importLocalBackup(event)"/>
+          <div id="firestore-status" style="font-size:11px;color:var(--tx3);margin-bottom:10px">Checking status...</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <button class="btn btn-primary" style="font-size:12px" onclick="checkFirestoreStatus()"><i class="ti ti-cloud-check"></i> Check Sync Status</button>
+            <button class="btn" style="font-size:12px" onclick="migrateLocalToFirestore()"><i class="ti ti-database-import"></i> Migrate Local Data to Cloud</button>
           </div>
-          <div style="font-size:10px;color:var(--tx3);margin-top:8px">💡 Works with Google Drive, WhatsApp, Email, USB — any way you can move a file between devices.</div>
         </div>
 
-        <!-- OPTION 2: GitHub auto-sync (advanced) -->
+        <!-- OPTION 2: Manual Backup -->
+        <div style="background:var(--bg3);border-radius:10px;padding:14px;margin-bottom:14px;border:1px solid var(--bd)">
+          <div style="font-size:13px;font-weight:700;color:var(--tx);margin-bottom:6px">📁 Manual Backup</div>
+          <div style="font-size:11px;color:var(--tx2);line-height:1.8;margin-bottom:10px">
+            Download a backup file and save it to Google Drive, WhatsApp, or USB. Import on another device to restore.
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button class="btn" style="font-size:12px" onclick="downloadLocalBackup()"><i class="ti ti-download"></i> Download Backup</button>
+            <button class="btn" style="font-size:12px" onclick="document.getElementById('cs-import-file').click()"><i class="ti ti-upload"></i> Import Backup</button>
+            <input type="file" id="cs-import-file" accept=".json" style="display:none" onchange="importLocalBackup(event)"/>
+          </div>
+        </div>
+
+        <!-- OPTION 3: GitHub auto-sync (advanced) -->
         <div style="background:var(--bg3);border-radius:10px;padding:14px;border:1px solid var(--bd)">
-          <div style="font-size:13px;font-weight:700;color:var(--tx);margin-bottom:6px">⚙️ GitHub Auto-Sync <span style="font-size:10px;font-weight:400;color:var(--tx3)">(advanced — already working if configured)</span></div>
-          <p style="font-size:11px;color:var(--tx2);line-height:1.6;margin-bottom:10px">
-            Auto-saves all data to your GitHub repo a few seconds after every change. If you already set this up, your current settings are shown below.
-          </p>
+          <div style="font-size:13px;font-weight:700;color:var(--tx);margin-bottom:6px">⚙️ GitHub Auto-Sync <span style="font-size:10px;font-weight:400;color:var(--tx3)">(secondary backup)</span></div>
           <div class="form-row"><label>GitHub Username</label><input id="cs-owner" value="${cfg.owner}" placeholder="e.g. gigmasterent"/></div>
           <div class="form-row"><label>Repository Name</label><input id="cs-repo" value="${cfg.repo}" placeholder="e.g. medicare"/></div>
           <div class="form-row"><label>Branch</label><input id="cs-branch" value="${cfg.branch}" placeholder="main"/></div>
@@ -2173,6 +2244,22 @@ function openCloudSyncModal() {
         <button class="btn btn-success" onclick="cloudSyncPush()"><i class="ti ti-cloud-upload"></i> Save &amp; Test GitHub Sync</button>
       </div>
     </div>`;
+}
+
+async function checkFirestoreStatus() {
+  const el = document.getElementById('firestore-status');
+  if (!window._fbDb) { if(el) el.textContent='Firebase not initialized yet — please wait a moment and try again.'; return; }
+  if (!S.currentUser) { if(el) el.textContent='Not logged in — please log in first.'; return; }
+  if(el) el.textContent = 'Checking...';
+  try {
+    const snap = await _fbDb.collection('patients').get();
+    const msg = snap.empty
+      ? '⚠️ No data in cloud yet — click "Migrate Local Data to Cloud" to upload your existing data.'
+      : `✅ Cloud sync active — ${snap.size} patient(s) stored in Firebase. All logged-in users see this data.`;
+    if(el) { el.textContent = msg; el.style.color = snap.empty ? 'var(--amb)' : 'var(--grn)'; }
+  } catch(err) {
+    if(el) { el.textContent = 'Error: '+err.message; el.style.color='var(--red)'; }
+  }
 }
 
 function downloadLocalBackup() {
@@ -2508,10 +2595,10 @@ async function doLogin() {
   if (!pass)  return showAuthError('Please enter your password.');
   showAuthLoading('Logging in...');
   try {
-    const cred = await _fbAuth.signInWithEmailAndPassword(email, pass);
+    const cred = await window._fbAuth.signInWithEmailAndPassword(email, pass);
     const user = cred.user;
     if (!user.emailVerified) {
-      await _fbAuth.signOut();
+      await window._fbAuth.signOut();
       hideAuthLoading();
       return showAuthError('Email not verified. Please check your inbox and verify your email first.');
     }
@@ -2540,10 +2627,10 @@ async function doRegister() {
   if (pass.length < 6) return showAuthError('Password must be at least 6 characters.');
   showAuthLoading('Creating account...');
   try {
-    const cred = await _fbAuth.createUserWithEmailAndPassword(email, pass);
+    const cred = await window._fbAuth.createUserWithEmailAndPassword(email, pass);
     await cred.user.updateProfile({displayName: name});
     await cred.user.sendEmailVerification();
-    await _fbAuth.signOut();
+    await window._fbAuth.signOut();
     hideAuthLoading();
     document.getElementById('otp-label').textContent = 'Verify your email address';
     document.getElementById('otp-sublabel').textContent = `A verification email was sent to ${email}. Click the link in that email to activate your account, then come back here to login.`;
@@ -2596,7 +2683,7 @@ async function doForgot() {
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return showAuthError('Please enter a valid email address.');
   showAuthLoading('Sending reset email...');
   try {
-    await _fbAuth.sendPasswordResetEmail(email);
+    await window._fbAuth.sendPasswordResetEmail(email);
     hideAuthLoading();
     document.getElementById('otp-label').textContent = 'Password Reset Email Sent';
     document.getElementById('otp-sublabel').textContent = `A password reset link was sent to ${email}. Click the link in that email to set a new password. You can then login with your new password.`;
@@ -2626,7 +2713,7 @@ async function socialLogin(provider) {
     if (provider==='Google') fbProvider = new firebase.auth.GoogleAuthProvider();
     else if (provider==='Microsoft') fbProvider = new firebase.auth.OAuthProvider('microsoft.com');
     else { hideAuthLoading(); return; }
-    const result = await _fbAuth.signInWithPopup(fbProvider);
+    const result = await window._fbAuth.signInWithPopup(fbProvider);
     const user = result.user;
     S.currentUser = {name: user.displayName||user.email, email: user.email, uid: user.uid, photo: user.photoURL};
     localStorage.setItem('mt_user', JSON.stringify(S.currentUser));
@@ -2638,16 +2725,29 @@ async function socialLogin(provider) {
   }
 }
 
-function showApp() {
+async function showApp() {
   document.getElementById('intro-screen').style.display='none';
   document.getElementById('app').style.display='flex';
   document.getElementById('mobile-nav').classList.add('logged-in');
   buildThemeGrid();
+  // Try Firestore first — falls back to localStorage if offline/error
+  const fromCloud = await loadFromFirestore();
+  if (!fromCloud) {
+    const stored = localStorage.getItem('mt_patients');
+    if (stored) {
+      try { S.patients = JSON.parse(stored); } catch(e) {}
+    }
+    if (!S.patients.length) loadDemoPatients();
+  }
   renderHome();
+  // If first time with Firestore: offer to migrate existing local data
+  if (fromCloud && S.patients.length > 0) {
+    showToast('✅ Loaded '+S.patients.length+' patient(s) from cloud','success');
+  }
 }
 
 async function doLogout() {
-  await _fbAuth.signOut().catch(()=>{});
+  await window._fbAuth.signOut().catch(()=>{});
   localStorage.removeItem('mt_user');
   S.currentUser = null;
   S.currentPatient = null;
@@ -4236,37 +4336,39 @@ async function callAI(userMsg, systemMsg) {
     role: m.role==='assistant' ? 'model' : 'user',
     parts:[{text: m.content}]
   }));
-  let res;
-  try {
-    res = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
-      {
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({
-          system_instruction:{parts:[{text: sys}]},
-          contents:[...history, {role:'user', parts:[{text: userMsg}]}],
-          generationConfig:{maxOutputTokens:800, temperature:0.7}
-        })
-      }
-    );
-  } catch(netErr) {
-    throw new Error('Network error — check your internet connection.');
+  const body = {
+    system_instruction:{parts:[{text: sys}]},
+    contents:[...history, {role:'user', parts:[{text: userMsg}]}],
+    generationConfig:{maxOutputTokens:800, temperature:0.7}
+  };
+  const models = ['gemini-2.0-flash-lite','gemini-2.0-flash','gemini-1.5-flash'];
+  for (const model of models) {
+    let res;
+    try {
+      res = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,
+        {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body)}
+      );
+    } catch(netErr) {
+      throw new Error('Network error — check your internet connection.');
+    }
+    if (res.status===429) continue; // quota — try next model
+    if (!res.ok) {
+      const errBody = await res.json().catch(()=>({}));
+      const msg = errBody?.error?.message || res.statusText;
+      if (res.status===400) throw new Error('Invalid API key. Please enter a valid Gemini key in the AI Advisor page.');
+      if (res.status===403) throw new Error('API key not authorized. Get a free key at aistudio.google.com/app/apikey');
+      if (/not found|not support/i.test(msg)) continue; // model unavailable — try next
+      throw new Error(`Gemini error (${res.status}): ${msg}`);
+    }
+    const data = await res.json();
+    const reply = data.candidates?.[0]?.content?.parts?.[0]?.text;
+    if (!reply) throw new Error('Empty response from Gemini. Please try again.');
+    S.aiHistory.push({role:'user',content:userMsg},{role:'assistant',content:reply});
+    if(S.aiHistory.length>20) S.aiHistory=S.aiHistory.slice(-20);
+    return reply;
   }
-  if (!res.ok) {
-    const errBody = await res.json().catch(()=>({}));
-    const msg = errBody?.error?.message || res.statusText;
-    if (res.status===400) throw new Error('Invalid API key. Please enter a valid Gemini key below.');
-    if (res.status===403) throw new Error('API key not authorized for Gemini. Get a free key at aistudio.google.com/app/apikey');
-    if (res.status===429) throw new Error('Rate limit reached. Please wait a moment and try again.');
-    throw new Error(`Gemini error (${res.status}): ${msg}`);
-  }
-  const data = await res.json();
-  const reply = data.candidates?.[0]?.content?.parts?.[0]?.text;
-  if (!reply) throw new Error('Empty response from Gemini. Please try again.');
-  S.aiHistory.push({role:'user',content:userMsg},{role:'assistant',content:reply});
-  if(S.aiHistory.length>20) S.aiHistory=S.aiHistory.slice(-20);
-  return reply;
+  throw new Error('Rate limit reached on all models. Please wait 1 minute and try again.');
 }
 
 function showAPIKeyModal(){ openModal('modal-apikey'); }
@@ -4783,52 +4885,69 @@ async function lookupMedInfo(evt) {
   const name = document.getElementById('fm-name').value.trim();
   if (!name) { showToast('Enter a medication name first','error'); return; }
   const apiKey = localStorage.getItem('mt_apikey')||'';
-  if (!apiKey) { showToast('Set your Gemini API key in AI Advisor first','error'); return; }
+  if (!apiKey) {
+    showToast('No Gemini API key set — go to AI Advisor page to add your key','error');
+    return;
+  }
 
   const btn = evt?.target?.closest('button') || evt?.currentTarget;
   if (btn) { btn.disabled=true; btn.dataset.origHtml = btn.dataset.origHtml || btn.innerHTML; btn.innerHTML='<i class="ti ti-loader-2"></i> Looking up...'; }
 
-  try {
-    const res = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
-      {
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({
-          contents:[{parts:[{text:
-            `For the medication "${name}" (this may be a Pakistani/international brand name), return ONLY a JSON object with no extra text:
-{"formula":"generic/chemical name","usage":"1-2 sentence plain-language description of what it's used for","sideEffects":"comma-separated list of common side effects"}
-If you don't recognize the exact brand, give your best estimate based on the name and dosage. Keep usage under 250 characters.`
-          }]}],
-          generationConfig:{temperature:0.2, maxOutputTokens:400}
-        })
-      }
-    );
-    if (!res.ok) {
-      const err = await res.json().catch(()=>({}));
-      const msg = err?.error?.message || res.statusText;
-      if (res.status===429 || /quota/i.test(msg)) {
-        throw new Error('Gemini quota exceeded for this API key. Generate a fresh key at aistudio.google.com/app/apikey (make sure it\'s linked to a project with the Generative Language API enabled and free-tier quota available).');
-      }
-      throw new Error(msg);
-    }
-    const data = await res.json();
-    let text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
-    text = text.replace(/```json|```/g,'').trim();
-    const match = text.match(/\{[\s\S]*\}/);
-    if (!match) throw new Error('AI did not return a recognizable result. Try a different spelling or enter details manually.');
-    const info = JSON.parse(match[0]);
+  // Try models in order of availability — flash-lite has higher free quota (30 req/min)
+  const models = ['gemini-2.0-flash-lite','gemini-2.0-flash','gemini-1.5-flash'];
+  const prompt = `For the medication "${name}" (may be a Pakistani/international brand name), return ONLY a JSON object, no other text:
+{"formula":"generic/chemical name","usage":"1-2 sentence plain-language description of primary use","sideEffects":"comma-separated list of common side effects"}
+Best estimate if brand not recognized. Keep usage under 200 characters.`;
 
-    if (info.formula) document.getElementById('fm-formula').value = info.formula;
-    if (info.usage) document.getElementById('fm-purpose').value = info.usage;
-    if (info.sideEffects) document.getElementById('fm-sideeffects').value = info.sideEffects;
-    showToast('Looked up — please verify the details before saving','success');
-  } catch(err) {
-    console.error('Med lookup error:', err);
-    showToast('Lookup failed: '+err.message,'error');
-  } finally {
-    if (btn) { btn.disabled=false; btn.innerHTML = btn.dataset.origHtml || '<i class="ti ti-search"></i> Auto-Lookup'; }
+  let lastErr = '';
+  for (const model of models) {
+    try {
+      const res = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,
+        {
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({
+            contents:[{parts:[{text: prompt}]}],
+            generationConfig:{temperature:0.2, maxOutputTokens:300}
+          })
+        }
+      );
+      if (res.status===429) { lastErr='quota'; continue; } // try next model
+      if (res.status===400) {
+        const e = await res.json().catch(()=>({}));
+        // Model not found — try next
+        if (/not found|not support/i.test(e?.error?.message||'')) { lastErr=e?.error?.message; continue; }
+        throw new Error('Invalid API key. Get a free key at aistudio.google.com/app/apikey — make sure "Generative Language API" is enabled in the linked Google Cloud project.');
+      }
+      if (!res.ok) {
+        const e = await res.json().catch(()=>({}));
+        throw new Error(e?.error?.message || res.statusText);
+      }
+      const data = await res.json();
+      let text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+      text = text.replace(/```json|```/g,'').trim();
+      const match = text.match(/\{[\s\S]*\}/);
+      if (!match) throw new Error('AI returned an unreadable response — please try again');
+      const info = JSON.parse(match[0]);
+      if (info.formula) document.getElementById('fm-formula').value = info.formula;
+      if (info.usage) document.getElementById('fm-purpose').value = info.usage;
+      if (info.sideEffects) document.getElementById('fm-sideeffects').value = info.sideEffects;
+      showToast('Lookup successful — please verify before saving','success');
+      if (btn) { btn.disabled=false; btn.innerHTML = btn.dataset.origHtml || '<i class="ti ti-search"></i> Auto-Lookup'; }
+      return; // success — stop trying other models
+    } catch(err) {
+      // Non-quota error — don't retry
+      console.error('Med lookup error ('+model+'):', err);
+      showToast('Lookup failed: '+err.message,'error');
+      if (btn) { btn.disabled=false; btn.innerHTML = btn.dataset.origHtml || '<i class="ti ti-search"></i> Auto-Lookup'; }
+      return;
+    }
   }
+
+  // All models hit quota
+  showToast('All Gemini models are currently at free-tier limit. Wait 1 minute and try again, or get a fresh key at aistudio.google.com/app/apikey','error');
+  if (btn) { btn.disabled=false; btn.innerHTML = btn.dataset.origHtml || '<i class="ti ti-search"></i> Auto-Lookup'; }
 }
 
 let _editVitalItem = null; // reference to the actual vital object being edited (or null = adding new)
